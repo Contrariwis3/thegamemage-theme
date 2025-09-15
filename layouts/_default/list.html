@@ -23,8 +23,16 @@
     {{ else if .Params.custom_summary }}
     <p>{{ .Summary | safeHTML }}</p>
 
-    {{ else }}
+    {{ else if le (len .RawContent) 300 }}
     {{ .Content }}
+
+    {{ else if .Summary }}
+    <p>{{ .Summary }}</p>
+    <p><a href="{{ .Permalink }}">Read More</a></p>
+
+    {{ else }}
+    <p>{{ .Content | truncate 300 }}</p>
+    <p><a href="{{ .Permalink }}">Read More</a></p>
 
     {{ $categories := (.GetTerms "categories") }}
     {{ if gt (len $categories) 0 }}
