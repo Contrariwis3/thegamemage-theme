@@ -26,20 +26,26 @@
         <div class="side-title">Teleportation Circle</div>
         <ul>
           {{ range .Site.Menus.main }}
-          {{ if .Page.Params.redirect_url }}
+          {{ if and .Page (.Page.Params.redirect_url) }}
           <li><a href="{{ .Page.Params.redirect_url }}">{{ .Name }}</a></li>
           {{ else }}
-          <li><a href="{{ .URL | relLangURL | safeURL }}">{{ .Name }}</a></li>
+          <li><a href="{{ .URL | relURL | safeURL }}">{{ .Name }}</a></li>
           {{ end }}
           {{ end }}
         </ul>
       </div>
 
-      {{ $data := getJSON "https://api.omg.lol/address/contrariwise/statuses/" }}
-      {{ if $data.response.statuses }}
+      {{ $statusURL := "https://api.omg.lol/address/contrariwise/statuses/" }}
+      {{ $result := try (resources.GetRemote $statusURL) }}
+      {{ with $result.Err }}
+        {{ warnf "Failed to fetch omg.lol statuses: %s" . }}
+      {{ else }}
+        {{ with $result.Value }}
+          {{ $data := . | transform.Unmarshal }}
+          {{ with $data.response.statuses }}
       <div class="side-content status-scroll">
         <div class="side-title">Mystic Missives</div>
-        {{ range first 3 $data.response.statuses }}
+        {{ range first 3 . }}
         <div class="status-entry">
           <div class="status-header">
             <span class="status-emoji">{{ .emoji }}</span>
@@ -57,6 +63,8 @@
           </a>
         </div>
       </div>
+          {{ end }}
+        {{ end }}
       {{ end }}
 
       <div class="side-content">
@@ -71,13 +79,13 @@
       <div class="side-content">
         <div class="side-title">Allied Mages</div>
         <ul>
-          {{ range .Site.Data.blogrolls.recommendations }}
+          {{ range hugo.Data.blogrolls.recommendations }}
           <li><a href="{{ .url }}">{{ .name }}</a></li>
           {{ end }}
         </ul>
       </div>
 
-      {{ $list := ($.Site.GetPage "taxonomyTerm" "categories").Pages }}
+      {{ $list := ($.Site.GetPage "taxonomy" "categories").Pages }}
       {{ if gt (len $list) 0 }}
       <div class="side-content">
         <div class="side-title">Arcane Tags</div>

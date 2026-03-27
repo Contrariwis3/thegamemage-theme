@@ -1,6 +1,6 @@
 {{ define "main" }}
 
-{{ $paginator := .Paginate (where .Site.Pages.ByDate.Reverse "Type" "post") }}
+{{ $paginator := .Paginate (where .Site.RegularPages.ByDate.Reverse "Type" "post") }}
 {{ range .Paginator.Pages }}
 <article class="card">
   {{ if .Title }}<h2>{{ .Title }}</h2>{{ end }}

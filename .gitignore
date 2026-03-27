@@ -355,3 +355,6 @@ Icon[]
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Hugo test site (not part of the theme shipped to micro.blog)
+testsite/
