@@ -274,6 +274,7 @@ footer {
     border-radius: radius(medium);
     padding: space(xxl);
     margin-bottom: space(xxxl);
+    overflow: hidden;
     @include card-shadow();
     @include accent-border(color(primary));
 
