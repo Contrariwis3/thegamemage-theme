@@ -29,11 +29,15 @@ incompatibilities will show up in Hugo's output.
 The test site includes stub partials for templates micro.blog normally provides
 (`microblog_head.html`, `reply-by-email.html`).
 
-## Known Hugo Compatibility Concerns
+## Build and Deployment
+- NO CI/CD pipeline exists for this project
+- Webpack-generated assets in static/ MUST be committed to git
+- Build happens locally, gets pushed to repo, and Micro.blog downloads the repo as-is
+- The repo must be in final deployable form at all times
+- After running npm run build, always commit the updated static/ files
 
-These patterns work in 0.91 but are deprecated or removed in newer Hugo versions:
-
-- `getJSON` (baseof.html:38) — deprecated; replaced by `resources.GetRemote` in newer Hugo
-- `taxonomyTerm` (baseof.html:80) — renamed to `taxonomy` in Hugo 0.73+
-- `.Site.Author` (socialcardimage.html, newsletter.html) — removed in Hugo 0.124+
-- `relLangURL` pipe (baseof.html:32) — deprecated in favor of `relURL`
+## Micro.blog Limitations
+- Micro.blog does NOT support image files in themes (even in static/)
+- Images must be hosted externally (e.g., on static.thewizardly.com subdomain)
+- Other static assets like fonts work fine
+- CopyWebpackPlugin configuration kept in place for future non-image assets
