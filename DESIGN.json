@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-18T00:00:00Z",
+  "title": "Design System: The Game Mage",
+  "extensions": {
+    "colorMeta": {
+      "nightshade-void": {
+        "role": "neutral",
+        "displayName": "Nightshade Void",
+        "canonical": "#1a0533",
+        "tonalRamp": ["#0c0218", "#15042a", "#1a0533", "#2c1052", "#432078", "#6a47a0", "#9a82c4", "#cfc2e4"]
+      },
+      "ghost-script": {
+        "role": "neutral",
+        "displayName": "Ghost Script",
+        "canonical": "#f8f8ff",
+        "tonalRamp": ["#3a3a45", "#52525e", "#6f6f7d", "#9494a0", "#b9b9c4", "#d8d8e0", "#ececf2", "#f8f8ff"]
+      },
+      "scroll-surface": {
+        "role": "neutral",
+        "displayName": "Scroll Surface",
+        "canonical": "rgba(12, 3, 24, 0.8)",
+        "tonalRamp": ["#0c0318", "#140628", "#1d0a3a", "#28114f", "#371a68", "#4d2d85", "#7257a8", "#a78fce"]
+      },
+      "glyph-well": {
+        "role": "neutral",
+        "displayName": "Glyph Well",
+        "canonical": "rgba(0, 0, 0, 0.3)",
+        "tonalRamp": ["#000000", "#0d0d0d", "#1f1f1f", "#363636", "#525252", "#757575", "#a3a3a3", "#d6d6d6"]
+      },
+      "mana-teal": {
+        "role": "primary",
+        "displayName": "Mana Teal",
+        "canonical": "#3fa3a3",
+        "tonalRamp": ["#10302f", "#184a48", "#226966", "#2d8a86", "#3fa3a3", "#62b9b8", "#92d2d1", "#c7e9e8"]
+      },
+      "ember-gold": {
+        "role": "secondary",
+        "displayName": "Ember Gold",
+        "canonical": "#d99141",
+        "tonalRamp": ["#3d2710", "#5c3a17", "#7e5220", "#a36c2a", "#d99141", "#e5ab6c", "#efc79b", "#f8e3cb"]
+      },
+      "spellfire-magenta": {
+        "role": "tertiary",
+        "displayName": "Spellfire Magenta",
+        "canonical": "#e31bce",
+        "tonalRamp": ["#3f0639", "#5e0a55", "#820e74", "#ab1396", "#e31bce", "#ec55da", "#f48ae7", "#fac2f3"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Site title and post h1. Berkshire Swash, teal, soft glow. Never running text." },
+      "headline": { "displayName": "Headline", "purpose": "h2 post titles. Berkshire Swash, gold, gold hairline underline." },
+      "title": { "displayName": "Title", "purpose": "h3 and side-panel titles. Berkshire Swash, teal." },
+      "body": { "displayName": "Body", "purpose": "All running prose. Atkinson Hyperlegible Next. Cap measure 65-75ch." },
+      "label": { "displayName": "Label", "purpose": "Chip/tag text and status metadata." },
+      "code": { "displayName": "Code", "purpose": "Inline code and pre blocks. Atkinson Hyperlegible Mono." }
+    },
+    "shadows": [
+      { "name": "panel-float", "value": "0 10px 20px rgba(0,0,0,0.2)", "purpose": "Single soft diffuse shadow under .card only. Scroll resting above the ground, not a lifted Material card." },
+      { "name": "contact-glow", "value": "0 3px 8px rgba(<accent>,0.2)", "purpose": "Chip hover, tinted with that chip's own accent. Light responding to touch." },
+      { "name": "text-glow", "value": "text-shadow 0 0 10px rgba(<accent>,0.3-0.5)", "purpose": "h1 at rest and links on hover. The signature emanation; intensity rises on interaction." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "all 0.2s ease", "purpose": "The single global transition for interactive state changes (links, chips). No choreography. MUST be gated behind prefers-reduced-motion (not yet implemented; required)." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "768px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Card (Scroll)",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "The primary content surface. A translucent dark scroll floating over the ground glyph.",
+      "html": "<article class=\"ds-card\"><h2 class=\"ds-card-title\">The Apprentice's First Cantrip</h2><p>Running text set in the hyperlegible body face, comfortable on the deep ground.</p></article>",
+      "css": ".ds-card { background: rgba(12,3,24,0.8); border-radius: 8px; padding: 30px; margin-bottom: 40px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); color: #f8f8ff; font-family: 'Atkinson Hyperlegible Next', sans-serif; line-height: 1.6; overflow: hidden; } .ds-card-title { font-family: 'Berkshire Swash', cursive; font-size: 2rem; color: #d99141; border-bottom: 1px solid rgba(217,145,65,0.3); padding-bottom: 10px; margin: 0 0 20px; }"
+    },
+    {
+      "name": "Spell-Tag (Category)",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Gold category/topic chip with a sparkle glyph. Border ignites and glows on hover.",
+      "html": "<a class=\"ds-tag\" href=\"#\"><svg viewBox=\"0 0 256 256\" width=\"14\" height=\"14\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M208 144a15.78 15.78 0 0 1-10.42 14.94l-51.65 19-19 51.61a15.92 15.92 0 0 1-29.88 0l-19-51.65-51.61-19a15.92 15.92 0 0 1 0-29.88l51.65-19 19-51.61a15.92 15.92 0 0 1 29.88 0l19 51.65 51.61 19A15.78 15.78 0 0 1 208 144Z\"/></svg> Spellcraft</a>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; gap: 3px; padding: 3px 10px; border-radius: 20px; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-size: 0.8rem; background: rgba(217,145,65,0.2); color: #d99141; border: 1px solid transparent; text-decoration: none; transition: all 0.2s ease; } .ds-tag:hover { border-color: #d99141; box-shadow: 0 3px 8px rgba(217,145,65,0.2); } @media (prefers-reduced-motion: reduce) { .ds-tag { transition: none; } }"
+    },
+    {
+      "name": "Response Tag",
+      "kind": "chip",
+      "refersTo": "response-tag",
+      "description": "Magenta reply/status chip. Rare hot accent, same pill mechanics as the gold tag.",
+      "html": "<a class=\"ds-response-tag\" href=\"#\"><svg viewBox=\"0 0 256 256\" width=\"14\" height=\"14\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M229.66 218.34l-50.07-50.06a88.11 88.11 0 1 0-11.31 11.31l50.06 50.07a8 8 0 0 0 11.32-11.32ZM40 112a72 72 0 1 1 72 72 72.08 72.08 0 0 1-72-72Z\"/></svg> Reply by raven</a>",
+      "css": ".ds-response-tag { display: inline-flex; align-items: center; gap: 3px; padding: 3px 10px; border-radius: 20px; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-size: 0.8rem; background: rgba(227,27,206,0.15); color: #e31bce; border: 1px solid transparent; text-decoration: none; transition: all 0.2s ease; } .ds-response-tag:hover { border-color: #e31bce; box-shadow: 0 3px 8px rgba(227,27,206,0.2); } @media (prefers-reduced-motion: reduce) { .ds-response-tag { transition: none; } }"
+    },
+    {
+      "name": "Inline Link",
+      "kind": "custom",
+      "refersTo": "link",
+      "description": "Teal text with a dotted underline that solidifies and glows on hover.",
+      "html": "<p style=\"font-family:'Atkinson Hyperlegible Next',sans-serif;color:#f8f8ff;\">Read the <a class=\"ds-link\" href=\"#\">next scroll</a> when you are ready.</p>",
+      "css": ".ds-link { color: #3fa3a3; text-decoration: none; border-bottom: 1px dotted #3fa3a3; transition: all 0.2s ease; } .ds-link:hover { border-bottom: 1px solid #3fa3a3; text-shadow: 0 0 10px rgba(63,163,163,0.5); } @media (prefers-reduced-motion: reduce) { .ds-link { transition: none; } .ds-link:hover { text-shadow: none; } }"
+    },
+    {
+      "name": "Inline Code",
+      "kind": "custom",
+      "refersTo": "code-inline",
+      "description": "Recessed glyph-well wash behind monospace code.",
+      "html": "<p style=\"font-family:'Atkinson Hyperlegible Next',sans-serif;color:#f8f8ff;\">Invoke <code class=\"ds-code\">hugo server</code> to scry locally.</p>",
+      "css": ".ds-code { background: rgba(0,0,0,0.3); border-radius: 4px; font-family: 'Atkinson Hyperlegible Mono', monospace; font-size: 0.9rem; padding: 2px 4px; color: #f8f8ff; }"
+    },
+    {
+      "name": "Side Panel",
+      "kind": "custom",
+      "refersTo": "side-content",
+      "description": "A titled translucent panel from the side scroll (Teleportation Circle, Mystic Missives, etc.). Berkshire Swash title over a teal hairline.",
+      "html": "<div class=\"ds-side\"><div class=\"ds-side-title\">Teleportation Circle</div><ul style=\"margin:0;padding-left:1.1em;\"><li><a class=\"ds-link\" href=\"#\">Of the Author</a></li><li><a class=\"ds-link\" href=\"#\">The Archive</a></li></ul></div>",
+      "css": ".ds-side { background: rgba(12,3,24,0.8); border-radius: 8px; padding: 20px; color: #f8f8ff; font-family: 'Atkinson Hyperlegible Next', sans-serif; } .ds-side-title { font-family: 'Berkshire Swash', cursive; font-size: 1.2rem; color: #3fa3a3; border-bottom: 1px solid rgba(63,163,163,0.3); padding-bottom: 5px; margin-bottom: 15px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Lived-In Spellbook",
+    "overview": "This is a grimoire someone actually writes in. Not a museum artifact behind glass, not a launch page: a deep, worn, faintly glowing book that gets opened nightly and inscribed in. The whole system reads as continuity and atmosphere rather than polish. Every surface is the deep Nightshade Void of the page ground, faintly textured with an interlocking arcane glyph at 6% opacity. Light does not fall onto this world from above; it emanates from within it. Headings and links glow. Content sits on translucent dark scroll surfaces that float over the ground rather than casting hard shadows onto it. The persona is total and diegetic, and breaking character anywhere breaks the spell everywhere.",
+    "keyCharacteristics": [
+      "Disney-grade invisible craft: delight is felt, never spotted; the system is defined by the absence of friction, jank, and visible seams",
+      "Luminous, not lifted: depth from glow and translucency, not heavy shadows",
+      "Fully diegetic labeling - in-world names replace all conventional UI vocabulary",
+      "Committed dark palette: one deep ground, three saturated arcane accents",
+      "Decorative display script paired with a deliberately hyperlegible body face",
+      "Tactile, responsive interactive elements that glow on contact",
+      "Reading comfort is non-negotiable craft, not a compromise on the aesthetic"
+    ],
+    "rules": [
+      { "name": "The Three-Flame Rule", "body": "Teal, gold, and magenta never blend and never trade jobs. Teal is ambient structure and links; gold is warmth and section headings; magenta is rare hot emphasis. A screen where magenta does teal's job has lost the spell.", "section": "colors" },
+      { "name": "The Emanation Rule", "body": "Color is never applied as a flat fill on large areas. Accents arrive as text, hairline borders, glow, or small tinted chips against the Nightshade ground. The darkness is the canvas; the magic is the light on it.", "section": "colors" },
+      { "name": "The Inscription Rule", "body": "Berkshire Swash is for inscription, never for reading. Titles, section headers, and timestamps only. It must never set a sentence, a paragraph, or a button.", "section": "typography" },
+      { "name": "The Recolor-Not-Embolden Rule", "body": "Emphasis is carried by color, not weight. strong is Spellfire Magenta at normal weight; em is Ember Gold at normal weight, italicized.", "section": "typography" },
+      { "name": "The Emanation-Over-Elevation Rule", "body": "Never add a shadow to imply stacking or hierarchy. Depth comes from glow intensity and surface translucency. If an element needs to feel higher, it glows more, it does not cast a darker shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do sweat the small stuff. Every alignment, hover, wrap, empty state, and edge case is right 100% of the time. The Disney audit test: if a reader catches a delightful detail happening, it is too loud. Quiet it until the magic is felt, not spotted.",
+      "Do keep every label diegetic. Navigation is the Teleportation Circle, not Menu; pages are scrolls; posts are Inscribed on.",
+      "Do build atmosphere from color, type, language, and glow only. The magic lives in the system, never in imagery or texture props.",
+      "Do keep Berkshire Swash for inscription and Atkinson Hyperlegible for everything readable.",
+      "Do carry emphasis with color at normal weight: magenta strong, gold italic em.",
+      "Do convey depth with glow intensity and translucency, never a shadow stack.",
+      "Do meet WCAG 2.1 AA contrast for every accent on the Nightshade ground, and honor prefers-reduced-motion for all glow/transition effects (the code does not do this yet - it is required, not optional).",
+      "Do keep accents in their lanes per the Three-Flame Rule."
+    ],
+    "donts": [
+      "Don't use a border-left or border-right greater than 1px as a colored accent stripe on cards, code, callouts, or list items. Hard ban. The existing accent-border usages are debt to remove, not a pattern to extend.",
+      "Don't introduce SaaS-landing cliches: no hero-metric templates, no gradient CTAs, no feature-card grids, no modern clean minimalism.",
+      "Don't drift into cheesy fantasy kitsch: no faux-parchment textures, no dragons-and-Comic-Sans, no Renaissance-faire clip art, no stock wizard imagery.",
+      "Don't turn this into a sterile monospace-on-white dev blog. Atmosphere and personality outrank austerity.",
+      "Don't overdesign: no animation overload, no decorative glassmorphism, no effect that fights readability.",
+      "Don't set running text, paragraphs, or buttons in Berkshire Swash.",
+      "Don't use #000 or #fff; the ground is Nightshade Void and the ink is Ghost Script.",
+      "Don't let magenta do teal's structural job, or recolor it as decoration. It is rare hot emphasis only.",
+      "Don't ship gradient text (background-clip: text) or any effect that reads as AI made that."
+    ]
+  }
+}

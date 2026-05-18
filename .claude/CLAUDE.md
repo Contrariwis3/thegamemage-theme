@@ -40,3 +40,23 @@ Final verification happens on the Micro.blog test instance.
 - Images must be hosted externally (e.g., on static.thegamemage.com subdomain)
 - Other static assets like fonts work fine
 - CopyWebpackPlugin configuration kept in place for future non-image assets
+
+## Design Context
+Strategic design context lives in `PRODUCT.md` (root); visual system in
+`DESIGN.md`. Register: **brand** — the design IS the product. Read PRODUCT.md
+before any design/UI work. The guiding principles, keystone first:
+
+1. **Sweat the small stuff (keystone)** — the Disney thesis. Magic is hundreds
+   of small things right 100% of the time, none consciously noticed. Delight by
+   invisible craft, never spectacle; defined by the absence of friction. If a
+   detail gets caught "happening," it's too loud.
+2. **Experience first; the game is embroidered in** — long-horizon intent (not
+   a built feature): the site grows into a game woven invisibly into a
+   top-tier reading experience. Build now as if the game is coming. A delight
+   that becomes load-bearing or gets in the way has broken this.
+3. **The persona is load-bearing** — diegetic labels everywhere ("Teleportation
+   Circle," not "Navigation"); breaking character anywhere breaks the spell.
+4. **Wonder without kitsch** — atmosphere from palette/voice/type, never props.
+5. **Legibility is part of the spell** — accessibility (WCAG AA, motion-aware,
+   Atkinson Hyperlegible) is craft, not compromise.
+6. **A journey, not a portfolio** — lived-in and continuous, never a launch.
