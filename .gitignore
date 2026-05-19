@@ -46,6 +46,7 @@ Icon[
 # Test site.
 /testsite/
 
-# Ephemeral design-direction probes (generated raster). Not durable artifacts;
-# the confirmed shape brief in docs/ is the spec of record, not these.
-docs/preview/*.png
+# Ephemeral design-direction probes (raster + HTML scaffolding). Not durable
+# artifacts; the confirmed shape brief in docs/ is the spec of record. Kept
+# on-disk locally, never committed.
+docs/preview/
