@@ -631,27 +631,10 @@ footer {
 // ============================================================
 // SIDE SCROLL — Teleportation Circle, Mystic Missives, etc.
 // ============================================================
-
-.side-scroll {
-  // Default placement: a column beside the main content. Reading
-  // mode (page kind) places this as a full-width band below.
-  &--reading {
-    margin-top: space(xxl);
-    padding-top: space(xl);
-    border-top: 1px solid ink(hairline);
-
-    // In reading mode the panels lay out as a row on wide screens.
-    @media (min-width: 769px) {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: space(xl);
-
-      .side-content {
-        margin-bottom: 0;
-      }
-    }
-  }
-}
+//
+// Lives only on non-reading surfaces (index, section, taxonomy).
+// The reading page is the inscription alone — the chronicle
+// apparatus is deferred to its own pass on the non-reading surfaces.
 
 .side-content {
   background-color: ink(plate);

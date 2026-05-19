@@ -14,53 +14,35 @@
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
   </div>
 
-  {{ if eq .Kind "page" }}
   {{/*
-    Reading mode: the inscription comes first and wins. The side
-    scroll follows it as a quiet band, not a competing column —
-    nothing claims a reader's eye away from the body while they read.
+    Single grid row for the main content area.
+
+    Reading surface (page kind): the inscription stands alone — no
+    aside. The chronicle apparatus is deferred to non-reading
+    surfaces by the Inked Plate brief, so the read is not framed by
+    other-plates-on-display.
+
+    Index / section / taxonomy: scroll column + side-scroll column.
+    Index-side composition is out of scope for this craft pass; the
+    side-by-side layout is left as-is until that pass.
   */}}
   <div class="pure-g">
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
 
-    <main id="main-content" class="pure-u-1 pure-u-md-22-24">
-      {{ block "main" . }}{{ end }}
-    </main>
-
-    <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
-  </div>
-
-  <div class="pure-g">
-    <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
-
-    <aside class="pure-u-1 pure-u-md-22-24 side-scroll side-scroll--reading">
-      {{ partial "side-scroll.html" . }}
-    </aside>
-
-    <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
-  </div>
-  {{ else }}
-  {{/*
-    Index / section / taxonomy mode: scroll column beside the side
-    scroll. The listing is the surface and the side scroll is the
-    surrounding apparatus.
-  */}}
-  <div class="pure-g">
-    <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
-
-    <main id="main-content" class="pure-u-1 pure-u-md-14-24">
+    <main id="main-content" class="pure-u-1 {{ if eq .Kind "page" }}pure-u-md-22-24{{ else }}pure-u-md-14-24{{ end }}">
       {{ block "main" . }}{{ end }}
     </main>
 
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
 
-    <aside class="pure-u-1 pure-u-md-7-24 side-scroll">
+    {{ if ne .Kind "page" }}
+    <aside class="pure-u-1 pure-u-md-7-24">
       {{ partial "side-scroll.html" . }}
     </aside>
 
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
+    {{ end }}
   </div>
-  {{ end }}
 
   <div class="pure-g">
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
