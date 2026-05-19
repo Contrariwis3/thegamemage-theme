@@ -35,11 +35,19 @@ Final verification happens on the Micro.blog test instance.
 - The repo must be in final deployable form at all times
 - After running npm run build, always commit the updated static/ files
 
-## Micro.blog Limitations
-- Micro.blog does NOT support image files in themes (even in static/)
-- Images must be hosted externally (e.g., on static.thegamemage.com subdomain)
-- Other static assets like fonts work fine
-- CopyWebpackPlugin configuration kept in place for future non-image assets
+## Micro.blog Image Constraint
+- micro.blog does NOT poll git LFS. Images committed via git LFS will not be
+   fetched. Keep theme images out of LFS (check `.gitattributes`).
+- Non-LFS images committed normally in the theme are fine, provided they are
+   not huge and do not change frequently.
+- The failure mode to avoid: theme imagery that is large or churns often, or
+   anything that forces a manual out-of-band update to an external host (easy
+   to forget). It is not a ban on theme images.
+- External hosting (e.g., static.thegamemage.com) remains an option for
+   assets that change rarely.
+- Other static assets like fonts work fine. CopyWebpackPlugin stays for
+   non-image assets.
+
 
 ## Design Context
 Strategic design context lives in `PRODUCT.md` (root); visual system in
