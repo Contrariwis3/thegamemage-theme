@@ -1,0 +1,56 @@
+{{/*
+  One post as it appears in a list (home, section, taxonomy). Single
+  source of truth so titled and untitled posts always render the same
+  furniture, including the spell-tags. Context: the page.
+
+  The titled-posts-keep-their-tags fix lives here: the tag block sits
+  outside the summary branching, so both titled and untitled posts
+  carry their categories on listing surfaces.
+*/}}
+<article class="card">
+  {{ if .Title }}<h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>{{ end }}
+
+  <div class="arcane-timestamp">
+    Inscribed on
+    <a href="{{ .Permalink }}" class="permalink" title="Permanent link to this scroll">
+      <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "January 2, 2006" }}</time>
+    </a>
+  </div>
+
+  <div class="prose">
+    {{ if in .RawContent "<!--more-->" }}
+    {{ $splitContents := split .RawContent "<!--more-->" }}
+    {{ $summary := index $splitContents 0 }}
+    {{ $summary := replaceRE "\\[\\^.*?\\]" "" $summary }}
+    {{ $summary := replaceRE "\\n\\[\\^.*?\\]:.*" "" $summary }}
+    <p>{{ $summary | markdownify }}</p>
+    <p><a href="{{ .Permalink }}">Read More</a></p>
+
+    {{ else if .Params.custom_summary }}
+    <p>{{ .Summary | safeHTML }}</p>
+
+    {{ else if le (len .RawContent) 300 }}
+    {{ .Content }}
+
+    {{ else }}
+    <p>{{ .Summary }}</p>
+    <p><a href="{{ .Permalink }}">Read More</a></p>
+    {{ end }}
+  </div>
+
+  {{ $categories := (.GetTerms "categories") }}
+  {{ if gt (len $categories) 0 }}
+  <div class="post-tags">
+    <div class="pure-g">
+      <div class="pure-u-1">
+        {{ range $categories }}
+        <a class="tag" href="{{ .Permalink }}">
+          <i class="ph ph-sparkle" aria-hidden="true"></i>
+          {{ .LinkTitle }}
+        </a>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+  {{ end }}
+</article>

@@ -1,517 +1,802 @@
+// ABOUTME: The Inked Plate stylesheet — flat opaque inks, hairline rule,
+// ABOUTME: pressed type, zero glow. Tokens + components for the reading core.
+
 @use "sass:map";
 
-// ===================================
-// VARIABLES & FUNCTIONS
-// ===================================
+// ============================================================
+// THE PRESS — self-hosted IM Fell English (Regular only)
+// ============================================================
 
-// Color Palette
-$colors: (
-    // Primary Colors
-    body: #1a0533,
-
-    // Theme Colors
-    primary: #3fa3a3,
-    secondary: #d99141,
-    accent: #e31bce,
-
-    // Text Colors
-    body-text: #f8f8ff,
-
-    // Background Colors
-    card-bg: rgba(12, 3, 24, 0.8),
-    code-bg: rgba(0, 0, 0, 0.3)
-);
-
-// Typography
-$fonts: (
-    heading: ('Berkshire Swash', cursive),
-    body: ('Atkinson Hyperlegible Next', sans-serif),
-    mono: ('Atkinson Hyperlegible Mono', monospace)
-);
-
-$font-sizes: (
-    base: 16px,
-    small: 0.8rem,
-    normal: 0.9rem,
-    medium: 1.1rem,
-    large: 1.2rem,
-    h3: 1.5rem,
-    h2: 2rem,
-    h1: 3rem,
-    h1-mobile: 2.5rem
-);
-
-// Spacing
-$spacing: (
-    xs: 3px,
-    sm: 5px,
-    md: 10px,
-    lg: 15px,
-    xl: 20px,
-    xxl: 30px,
-    xxxl: 40px
-);
-
-// Borders & Effects
-$border-radius: (
-    small: 4px,
-    medium: 8px,
-    pill: 20px
-);
-
-// Helper Functions
-@function color($name) {
-    @return map.get($colors, $name);
+@font-face {
+  font-family: "IM Fell English";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/IMFellEnglish-Regular.woff2") format("woff2");
 }
 
-@function font($name) {
-    @return map.get($fonts, $name);
+// ============================================================
+// THE INKS — flat opaque palette, Hobbit-jacket anchored
+// ============================================================
+//
+// Inkstock is the stock; everything else is an ink set onto it.
+// All values authored from the DESIGN.md token block; AA verified
+// against Inkstock (Bone 17:1, Blue 8.4:1, Green 9.3:1, Red 6.4:1).
+
+$inks: (
+  inkstock:    #0d1310, // the stock
+  plate:       #13201a, // a printed plate, one value step up
+  glyph-well:  #0a0f0c, // recessed wash behind code
+  bone:        #f3ece0, // the reading ink
+  hairline:    #2c3a32, // the registration rule
+  hobbit-blue: #5fa8d3, // structure + links
+  hobbit-green:#6fb894, // section + warmth
+  smaug-red:   #e8694a, // rare hot emphasis
+);
+
+@function ink($name) {
+  @return map.get($inks, $name);
 }
+
+// ============================================================
+// THE TYPE — two-voice system: press + hyperlegible
+// ============================================================
+
+$faces: (
+  press:   ("IM Fell English", "Iowan Old Style", "Garamond", serif),
+  body:    ("Atkinson Hyperlegible Next", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif),
+  mono:    ("Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace),
+);
+
+@function face($name) {
+  @return map.get($faces, $name);
+}
+
+$sizes: (
+  base:      16px,
+  small:     0.8rem,
+  code:      0.9rem,
+  large:     1.15rem,
+  title:     1.5rem,
+  headline:  2rem,
+  display:   3rem,
+  display-m: 2.4rem, // mobile step-down for display
+);
 
 @function size($name) {
-    @return map.get($font-sizes, $name);
+  @return map.get($sizes, $name);
 }
+
+// ============================================================
+// THE MARGINS — pressed-page spacing
+// ============================================================
+//
+// Values match DESIGN.md exactly (4 / 8 / 14 / 22 / 34 / 52 / 80).
+// Generous by default; the reading core breathes.
+
+$space: (
+  xs:   4px,
+  sm:   8px,
+  md:   14px,
+  lg:   22px,
+  xl:   34px,
+  xxl:  52px,
+  xxxl: 80px,
+);
 
 @function space($name) {
-    @return map.get($spacing, $name);
+  @return map.get($space, $name);
 }
+
+$radius: (
+  small:  2px,  // small inset wash
+  stamp:  2px,  // chips
+  medium: 3px,  // plates
+);
 
 @function radius($name) {
-    @return map.get($border-radius, $name);
+  @return map.get($radius, $name);
 }
 
-// ===================================
-// MIXINS
-// ===================================
+// ============================================================
+// PRINT MIXINS — every effect is an ink press, never illumination
+// ============================================================
 
-@mixin glow($color, $intensity: 0.3) {
-    text-shadow: 0 0 10px rgba($color, $intensity);
+@mixin transition($properties, $duration: 0.15s) {
+  // Always animate named properties only; never `all`. Curve is a
+  // gentle ease-out — a press settling, not a bounce.
+  transition: $properties $duration ease-out;
 }
 
-@mixin card-shadow() {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+// The Ink-In stamp: chip-style elements invert on hover. The fill
+// goes to full accent, the label flips to the stock. A press, not
+// a glow. Call with the accent ink.
+@mixin ink-in($accent) {
+  background-color: rgba($accent, 0.10);
+  border: 1px solid $accent;
+  color: $accent;
+  @include transition(background-color color);
+
+  &:hover {
+    background-color: $accent;
+    color: ink(inkstock);
+  }
+
+  &:focus-visible {
+    outline: 2px solid ink(hobbit-blue);
+    outline-offset: 2px;
+  }
 }
 
-@mixin hover-shadow($color, $intensity: 0.2) {
-    box-shadow: 0 3px 8px rgba($color, $intensity);
-}
-
-@mixin accent-border($color, $width: 3px) {
-    border-left: $width solid $color;
-}
-
-@mixin subtle-border($color, $opacity: 0.3) {
-    border: 1px solid rgba($color, $opacity);
-}
-
-@mixin transition($properties: all, $duration: 0.2s) {
-    transition: $properties $duration ease;
-}
-
-// ===================================
-// BASE STYLES
-// ===================================
+// ============================================================
+// BASE
+// ============================================================
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  // Honor browser font-size for zoom-respect. Body in rem follows.
+  font-size: 100%;
 }
 
 body {
-    background-color: color(body);
-    background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0C6.716 0 0 6.716 0 15c8.284 0 15-6.716 15-15zM0 15c0 8.284 6.716 15 15 15 0-8.284-6.716-15-15-15zm30 0c0-8.284-6.716-15-15-15 0 8.284 6.716 15 15 15zm0 0c0 8.284-6.716 15-15 15 0-8.284 6.716-15 15-15z' fill='%23B5A693' fill-opacity='0.06' fill-rule='evenodd'/%3E%3C/svg%3E");
-    color: color(body-text);
-    font-family: font(body);
-    font-size: size(base);
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
+  background-color: ink(inkstock);
+  color: ink(bone);
+  font-family: face(body);
+  font-size: size(base);
+  // Light-on-dark needs a touch more leading. 1.65 matches DESIGN.md.
+  line-height: 1.65;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
 
-    img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-    }
+  // Modern web type polish.
+  font-kerning: normal;
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
 }
 
-// ===================================
-// TYPOGRAPHY
-// ===================================
+// ============================================================
+// THE PRESSED LINE — headings in the press face
+// ============================================================
+//
+// The Press Rule: IM Fell English never sets running text.
+// Headings only. Color carries the meaning (blue h1, green h2/h3).
 
-%heading-base {
-    font-family: font(heading);
-    margin-top: space(xxl);
-    margin-bottom: space(xl);
+%pressed {
+  font-family: face(press);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  // Even out long heading line lengths; browser picks better breaks.
+  text-wrap: balance;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    @extend %heading-base;
+h1, h2, h3, h4, h5, h6 {
+  @extend %pressed;
+  margin: space(xl) 0 space(md);
 }
 
 h1 {
-    font-size: size(h1);
-    color: color(primary);
-    @include glow(color(primary));
+  font-size: size(display);
+  line-height: 1.1;
+  color: ink(hobbit-blue);
 
-    @media (max-width: 768px) {
-        font-size: size(h1-mobile);
-    }
+  @media (max-width: 768px) {
+    font-size: size(display-m);
+  }
 }
 
 h2 {
-    font-size: size(h2);
-    color: color(secondary);
-    border-bottom: 1px solid rgba(color(secondary), 0.3);
-    padding-bottom: space(md);
+  font-size: size(headline);
+  line-height: 1.2;
+  color: ink(hobbit-green);
+  // Hairline registration rule under each section head.
+  padding-bottom: space(xs);
+  border-bottom: 1px solid ink(hairline);
 }
 
 h3 {
-    font-size: size(h3);
-    color: color(primary);
+  font-size: size(title);
+  line-height: 1.3;
+  color: ink(hobbit-green);
 }
 
-// Links
+h4, h5, h6 {
+  font-size: size(large);
+  line-height: 1.3;
+  color: ink(hobbit-green);
+}
+
+// ============================================================
+// LINKS — printed underline at rest; ink-invert on hover
+// ============================================================
+
 a {
-    color: color(primary);
-    text-decoration: none;
-    border-bottom: 1px dotted color(primary);
-    @include transition();
+  color: ink(hobbit-blue);
+  text-decoration: underline solid ink(hobbit-blue) 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-skip-ink: auto;
+  @include transition(background-color color text-decoration-color);
 
-    &:hover {
-        border-bottom: 1px solid color(primary);
-        @include glow(color(primary), 0.5);
-    }
+  &:hover {
+    background-color: ink(hobbit-blue);
+    color: ink(inkstock);
+    text-decoration-color: transparent;
+  }
+
+  &:focus-visible {
+    outline: 2px solid ink(hobbit-blue);
+    outline-offset: 3px;
+  }
 }
 
-// Text Elements
-blockquote {
-    @include accent-border(color(secondary));
-    padding-left: space(lg);
-    margin-left: 0;
+// ============================================================
+// PROSE — Atkinson Hyperlegible, capped measure, generous rhythm
+// ============================================================
+
+.prose {
+  // 65–75ch measure; the reading core's exit bar.
+  max-width: 70ch;
+  // Reduce orphans and ragged endings in long prose.
+  text-wrap: pretty;
+
+  p {
+    margin: 0 0 space(lg);
+  }
+
+  // Inline emphasis: ink color carries weight, not stroke weight.
+  strong {
+    color: ink(smaug-red);
+    font-weight: 400;
+  }
+
+  em {
+    color: ink(hobbit-green);
+    font-weight: 400;
     font-style: italic;
-    color: color(body-text);
-    opacity: 0.8;
+  }
+
+  ul, ol {
+    margin: 0 0 space(lg);
+    padding-left: space(xl);
+
+    li {
+      margin-bottom: space(xs);
+    }
+  }
+
+  blockquote {
+    // No left-stripe (banned). Full-width, recessed in value, hairline frame.
+    margin: space(xl) 0;
+    padding: space(lg) space(xl);
+    background-color: ink(plate);
+    border: 1px solid ink(hairline);
+    font-style: italic;
+    color: ink(bone);
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid ink(hairline);
+    margin: space(xxl) auto;
+    width: 40%;
+  }
+
+  // Section heads inside prose keep the hairline-rule treatment.
+  h2, h3 {
+    margin-top: space(xxl);
+  }
 }
 
-em {
-    color: color(secondary);
-    font-weight: normal;
-}
+// ============================================================
+// CODE — Glyph Well, monospace, no left-stripe
+// ============================================================
 
-strong {
-    color: color(accent);
-    font-weight: normal;
-}
-
-// Code
-%code-base {
-    background-color: color(code-bg);
-    @include accent-border(color(primary));
-    border-radius: radius(small);
-    font-family: font(mono);
-    font-size: size(normal);
+code, pre {
+  font-family: face(mono);
+  font-size: size(code);
+  line-height: 1.55;
 }
 
 code {
-    @extend %code-base;
-    padding: 2px 4px;
+  background-color: ink(glyph-well);
+  color: ink(bone);
+  border-radius: radius(small);
+  padding: 2px 5px;
 }
 
 pre {
-    @extend %code-base;
-    padding: space(lg);
-    margin: space(xl) 0;
-    white-space: pre;
-    overflow-x: auto;
+  background-color: ink(glyph-well);
+  color: ink(bone);
+  border: 1px solid ink(hairline);
+  border-radius: radius(medium);
+  padding: space(lg);
+  margin: space(xl) 0;
+  white-space: pre;
+  overflow-x: auto;
+
+  code {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+  }
 }
 
-// ===================================
-// LAYOUT
-// ===================================
+// ============================================================
+// LAYOUT — masthead, footer, spacer columns
+// ============================================================
 
+.spacer-column {
+  // Pure CSS grid pads with these; collapse on mobile.
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+// Masthead. The site title is the one moment the press face goes
+// big at the top of every page. Subtitle is Bone, restrained.
 header {
-    text-align: center;
-    margin-bottom: space(xxxl);
-    padding-bottom: space(xl);
-    @include subtle-border(color(primary));
-    border-top: none;
-    border-left: none;
-    border-right: none;
+  padding: space(xxl) 0 space(xl);
+  margin-bottom: space(xl);
+  border-bottom: 1px solid ink(hairline);
+  text-align: left;
 
-    h1 {
-        margin: 0;
-    }
+  h1 {
+    margin: 0 0 space(xs);
 
-    p {
-        color: color(body-text);
-        font-size: size(large);
-        margin-top: space(md);
+    a {
+      color: ink(hobbit-blue);
+      text-decoration: none;
+
+      &:hover {
+        background: transparent;
+        color: ink(hobbit-green);
+      }
     }
+  }
+
+  p {
+    color: ink(bone);
+    font-family: face(body);
+    font-size: size(large);
+    font-style: italic;
+    margin: 0;
+    opacity: 0.78;
+  }
 }
 
 footer {
-    text-align: center;
-    padding: space(xxl) 0;
-    @include subtle-border(color(primary));
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-    color: color(body-text);
+  padding: space(xxl) 0;
+  margin-top: space(xxl);
+  border-top: 1px solid ink(hairline);
+  text-align: center;
+  color: ink(bone);
+  font-size: size(small);
+  letter-spacing: 0.04em;
+  opacity: 0.78;
 }
 
-// ===================================
-// COMPONENTS
-// ===================================
+// ============================================================
+// THE READING CORE — incipit, body, foot colophon
+// ============================================================
+//
+// Layout: the article sits directly on Inkstock (no card wrap, no
+// plate behind it). The body is austere; the incipit is the one
+// concentrated wonder-moment at the head. Edge ornament lives on the
+// article frame, not inside the reading column.
 
-// Card Component
-.card {
-    background-color: color(card-bg);
-    border-radius: radius(medium);
-    padding: space(xxl);
-    margin-bottom: space(xxxl);
-    overflow: hidden;
-    @include card-shadow();
-    @include accent-border(color(primary));
+.reading-scroll {
+  position: relative;
+  // The reading column itself; the surrounding grid provides outer
+  // margins. Hold the prose at a comfortable measure.
+  max-width: 70ch;
+  margin: space(xxl) auto space(xxxl);
+  padding: 0 space(md);
+
+  // Edge ornament: corner registration marks. Authored as inline SVG
+  // partials placed inside the article — we just position them.
+  .corner-mark {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    color: ink(hairline);
+
+    &--tl { top: 0;    left: -22px;  }
+    &--tr { top: 0;    right: -22px; }
+    &--bl { bottom: 0; left: -22px;  }
+    &--br { bottom: 0; right: -22px; }
 
     @media (max-width: 768px) {
-        padding: space(xl);
+      // Tuck closer on small screens; ornament density reduces.
+      &--tl, &--bl { left: -4px;  }
+      &--tr, &--br { right: -4px; }
     }
+  }
 }
 
-// Sidebar Content
-.side-content {
-    background-color: color(card-bg);
-    padding: space(xl);
-    border-radius: radius(medium);
-    margin-bottom: space(xxl);
-
-    @media (max-width: 768px) {
-        @include accent-border(color(primary));
-    }
-}
-
-.side-title {
-    color: color(primary);
-    margin-bottom: space(lg);
-    font-size: size(large);
-    @include subtle-border(color(primary));
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    padding-bottom: space(sm);
-    font-family: font(heading);
-}
-
-// Tag Component
-%tag-base {
-    display: inline-block;
-    padding: space(xs) space(md);
-    border-radius: radius(pill);
-    font-size: size(small);
-    margin-right: space(sm);
-    margin-bottom: space(sm);
-    @include transition();
-    border: 1px solid transparent;
-}
-
-.tag {
-    @extend %tag-base;
-    background-color: rgba(color(secondary), 0.2);
-    color: color(secondary);
-
-    &:hover {
-        border-color: color(secondary);
-        @include hover-shadow(color(secondary));
-    }
-
-    i {
-        margin-right: space(xs);
-    }
-}
-
-.response-tag {
-    @extend %tag-base;
-    background-color: rgba(color(accent), 0.15);
-    color: color(accent);
-
-    &:hover {
-        border-color: color(accent);
-        @include hover-shadow(color(accent));
-    }
-
-    @media (max-width: 768px) {
-        display: inline-block;
-        margin-top: space(sm);
-    }
-}
-
-// Timestamp Component
+// Arcane timestamp — the diegetic "Inscribed on…" line. Used both in
+// the reading incipit (centered, larger) and on listing post-cards
+// (left, normal). The base styling applies to both; the incipit
+// modifier amplifies it.
 .arcane-timestamp {
-    color: color(secondary);
+  font-family: face(press);
+  font-size: size(title);
+  line-height: 1.3;
+  color: ink(hobbit-green);
+  margin: 0 0 space(lg);
+
+  .permalink {
+    // Quiet the permalink underline — the timestamp itself is the
+    // signal, the underline is the affordance.
+    color: ink(hobbit-green);
+    text-decoration-color: ink(hairline);
+  }
+}
+
+// The incipit: pressed title, cartouche rule, diegetic timestamp,
+// and the one decorated initial that opens the body.
+.incipit {
+  margin: space(xxl) 0 space(xl);
+
+  // Cartouche rule above the title: hairline + center fleuron, set
+  // as an inline-SVG partial. The wrapper here just gives air.
+  .cartouche-rule {
+    display: block;
+    margin: 0 auto space(lg);
+    width: 100%;
+    max-width: 28ch;
+    color: ink(hairline);
+  }
+
+  .incipit-title {
+    margin: 0 0 space(md);
+    text-align: center;
+  }
+
+  .arcane-timestamp {
+    text-align: center;
+    margin: 0 0 space(xl);
+  }
+
+  .incipit-reply {
+    text-align: center;
     font-style: italic;
-    margin-bottom: space(xl);
-    font-family: font(heading);
-    font-size: size(medium);
+    color: ink(bone);
+    opacity: 0.78;
+    margin: 0 0 space(lg);
+  }
 }
 
-.timestamp-icon {
-    color: color(accent);
+// The decorated initial: first letter of the first paragraph of the
+// reading core, set in IM Fell English Smaug Red, floated. This is
+// the one Smaug-Red moment on the surface — high-energy punctuation,
+// per DESIGN.md's "rare and hot" rule.
+.reading-body {
+  > .prose > p:first-of-type::first-letter {
+    font-family: face(press);
+    font-weight: 400;
+    color: ink(smaug-red);
+    float: left;
+    font-size: 4.2em;
+    line-height: 0.92;
+    padding: 0.08em space(sm) 0 0;
+  }
+
+  // Short / untitled notes don't carry the wonder-moment: the
+  // template adds .reading-body--untitled to suppress the cap.
+  &--untitled > .prose > p:first-of-type::first-letter {
+    font-family: inherit;
+    color: inherit;
+    float: none;
+    font-size: inherit;
+    line-height: inherit;
+    padding: 0;
+  }
 }
 
-// Post Tags Section
+// Foot colophon: the close-mark at the end of the inscription.
+.colophon {
+  margin: space(xxl) auto space(md);
+  text-align: center;
+  color: ink(hairline);
+
+  svg {
+    width: 60px;
+    height: auto;
+    display: inline-block;
+  }
+}
+
+// ============================================================
+// POST FURNITURE — tags row, reply column
+// ============================================================
+
 .post-tags {
-    margin-top: #{space(xl) + space(sm)};
-    @include subtle-border(color(primary));
-    border-bottom: none;
-    border-left: none;
-    border-right: none;
-    padding-top: space(xl);
+  margin-top: space(xl);
+  padding-top: space(lg);
+  border-top: 1px solid ink(hairline);
 }
-
-// ===================================
-// PAGINATION
-// ===================================
-
-.pagination {
-    &-link {
-        &.previous {
-            text-align: left;
-        }
-
-        &.next {
-            text-align: right;
-        }
-    }
-
-    &-icon {
-        color: color(primary);
-    }
-
-    &-pages {
-        font-family: font(heading);
-        position: relative;
-        text-align: center;
-
-        .page {
-            color: color(accent);
-            font-size: space(xl);
-        }
-    }
-}
-
-// ===================================
-// LAYOUT COLUMNS
-// ===================================
 
 .tags-column {
-    text-align: left;
+  text-align: left;
 
-    @media (max-width: 768px) {
-        width: 100% !important;
-        display: block;
-    }
+  @media (max-width: 768px) {
+    width: 100% !important;
+    display: block;
+  }
 }
 
 .response-column {
-    text-align: right;
+  text-align: right;
 
-    @media (max-width: 768px) {
-        width: 100% !important;
-        display: block;
-        text-align: left;
-        margin-top: space(lg);
+  @media (max-width: 768px) {
+    width: 100% !important;
+    display: block;
+    text-align: left;
+    margin-top: space(md);
+  }
+}
+
+// ============================================================
+// SPELL-STAMPS — chips for tags and replies
+// ============================================================
+
+%stamp-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 3px 9px;
+  margin: 0 space(xs) space(xs) 0;
+  font-family: face(body);
+  font-size: size(small);
+  letter-spacing: 0.04em;
+  border-radius: radius(stamp);
+  text-decoration: none;
+
+  @media (pointer: coarse) {
+    min-height: 32px;
+    padding: 6px 11px;
+  }
+
+  i {
+    font-size: 0.95em;
+  }
+}
+
+.tag {
+  @extend %stamp-base;
+  @include ink-in(ink(hobbit-green));
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.response-tag,
+.status-link {
+  @extend %stamp-base;
+  @include ink-in(ink(smaug-red));
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+// ============================================================
+// LIST/INDEX POST CARDS — plates separated by air + ink-value step
+// ============================================================
+//
+// The list/index surfaces use the .card class as a true Plate: an
+// opaque flat panel above Inkstock, with a hairline border. No
+// shadow, no lift, no left-stripe.
+
+.card {
+  background-color: ink(plate);
+  border: 1px solid ink(hairline);
+  border-radius: radius(medium);
+  padding: space(xl);
+  margin-bottom: space(xxl);
+
+  @media (max-width: 768px) {
+    padding: space(lg);
+  }
+
+  // Inside a card, h2 acts as the post title — keep its hairline
+  // rule but pull the margin tighter against the card edge.
+  > h2:first-child {
+    margin-top: 0;
+  }
+
+  // Cards on the list/index keep a tighter measure on their summary
+  // so the listing scans cleanly.
+  .prose {
+    max-width: none;
+  }
+}
+
+// ============================================================
+// SIDE SCROLL — Teleportation Circle, Mystic Missives, etc.
+// ============================================================
+
+.side-scroll {
+  // Default placement: a column beside the main content. Reading
+  // mode (page kind) places this as a full-width band below.
+  &--reading {
+    margin-top: space(xxl);
+    padding-top: space(xl);
+    border-top: 1px solid ink(hairline);
+
+    // In reading mode the panels lay out as a row on wide screens.
+    @media (min-width: 769px) {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: space(xl);
+
+      .side-content {
+        margin-bottom: 0;
+      }
     }
+  }
 }
 
-.response-icon {
-    margin-right: 4px;
-}
+.side-content {
+  background-color: ink(plate);
+  border: 1px solid ink(hairline);
+  border-radius: radius(medium);
+  padding: space(lg);
+  margin-bottom: space(xl);
 
-// ===================================
-// RESPONSIVE UTILITIES
-// ===================================
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 
-@media (max-width: 768px) {
-    .spacer-column {
-        display: none !important;
+    li {
+      padding: 4px 0;
     }
+  }
 }
 
-// ===================================
-// STATUS SCROLL COMPONENT (SIMPLIFIED)
-// ===================================
+.side-title {
+  font-family: face(press);
+  font-size: size(title);
+  line-height: 1.3;
+  color: ink(hobbit-green);
+  margin: 0 0 space(sm);
+  padding-bottom: space(xs);
+  border-bottom: 1px solid ink(hairline);
+}
+
+// ============================================================
+// MYSTIC MISSIVES — omg.lol status stream
+// ============================================================
 
 .status-scroll {
-    .status-entry {
-        padding: space(md) 0;
-        @include subtle-border(color(primary));
-        border-top: none;
-        border-left: none;
-        border-right: none;
+  .status-entry {
+    padding: space(sm) 0;
+    border-bottom: 1px solid ink(hairline);
 
-        &:nth-last-child(2) {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        &:first-child {
-            padding-top: 0;
-        }
+    &:first-of-type {
+      padding-top: 0;
     }
 
-    .status-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: space(sm);
+    &:last-of-type {
+      border-bottom: none;
     }
+  }
 
-    .status-emoji {
-        font-size: size(large);
+  .status-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: space(xs);
+  }
+
+  .status-emoji {
+    font-size: size(large);
+  }
+
+  .status-time {
+    font-family: face(body);
+    font-style: italic;
+    font-size: size(small);
+    color: ink(hobbit-green);
+  }
+
+  .status-content {
+    font-size: size(small);
+    line-height: 1.55;
+    color: ink(bone);
+  }
+
+  .status-footer {
+    margin-top: space(md);
+    padding-top: space(sm);
+    border-top: 1px solid ink(hairline);
+    text-align: right;
+  }
+}
+
+// ============================================================
+// PAGINATION — unboxed scroll-N-of-M
+// ============================================================
+
+.pagination {
+  margin: space(xxl) 0;
+  padding: space(lg) 0;
+  border-top: 1px solid ink(hairline);
+  border-bottom: 1px solid ink(hairline);
+
+  &-link {
+    &.previous { text-align: left; }
+    &.next     { text-align: right; }
+  }
+
+  &-icon {
+    color: ink(hobbit-blue);
+    margin: 0 0.25em;
+  }
+
+  &-pages {
+    font-family: face(press);
+    text-align: center;
+    color: ink(bone);
+
+    .page {
+      color: ink(smaug-red);
+      font-size: size(title);
     }
+  }
+}
 
-    .status-time {
-        font-size: size(small);
-        color: color(secondary);
-        font-family: font(heading);
-        font-style: italic;
-    }
+// ============================================================
+// SKIP LINK — bypass masthead and side scroll
+// ============================================================
 
-    .status-content {
-        font-size: size(normal);
-        line-height: 1.5;
-        color: color(body-text);
-    }
+.skip-link {
+  position: absolute;
+  left: space(md);
+  top: -10rem;
+  z-index: 100;
+  padding: space(sm) space(lg);
+  background-color: ink(inkstock);
+  color: ink(hobbit-blue);
+  border: 1px solid ink(hobbit-blue);
+  border-radius: radius(medium);
+  font-family: face(press);
+  font-size: size(large);
+  text-decoration: none;
 
-    .status-footer {
-        margin-top: space(lg);
-        padding-top: space(md);
-        @include subtle-border(color(primary));
-        border-bottom: none;
-        border-left: none;
-        border-right: none;
-    }
+  &:focus {
+    top: space(md);
+  }
+}
 
-    .status-link {
-        @extend %tag-base;
-        background-color: rgba(color(accent), 0.15);
-        color: color(accent);
-        font-family: font(heading);
-        display: inline-block;
-        margin-top: 0.8em;
+// ============================================================
+// REDUCED MOTION — every transition neutralized
+// ============================================================
 
-        i {
-            margin-right: space(xs);
-        }
-
-        &:hover {
-            border-color: color(accent);
-            @include hover-shadow(color(accent));
-        }
-    }
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }

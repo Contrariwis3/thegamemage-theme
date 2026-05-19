@@ -1,0 +1,17 @@
+{{/*
+  The foot colophon: a symmetric three-mark fleuron that closes the
+  inscription. A printer's flourish, deliberately quiet. Stroke and
+  fill follow currentColor (hairline ink in default placement).
+*/}}
+<svg class="colophon-mark" viewBox="0 0 80 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <g fill="currentColor" stroke="none">
+    {{/* left flourish: a horizontal hairline tapering to a dot */}}
+    <rect x="0" y="5.5" width="22" height="1" />
+    <circle cx="26" cy="6" r="1.4" />
+    {{/* center fleuron */}}
+    <path d="M 40 1 L 44 6 L 40 11 L 36 6 Z" />
+    {{/* right flourish, mirrored */}}
+    <circle cx="54" cy="6" r="1.4" />
+    <rect x="58" y="5.5" width="22" height="1" />
+  </g>
+</svg>

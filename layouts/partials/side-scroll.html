@@ -1,0 +1,96 @@
+{{/*
+  The side scroll — the strongest expression of the diegetic naming.
+  Context: the page (needed so Random Incantations can exclude the
+  current scroll). Placement (column vs reading band) is decided by
+  baseof; this partial only owns the panels.
+
+  Random Incantations holds still for a day: the order is a per-day
+  md5 of each scroll's permalink. Same-day returnees see the same
+  three; the morning brings a fresh shuffle.
+*/}}
+<nav class="side-content" aria-label="Teleportation Circle">
+  <div class="side-title">Teleportation Circle</div>
+  <ul>
+    {{ range .Site.Menus.main }}
+    {{ if and .Page (.Page.Params.redirect_url) }}
+    <li><a href="{{ .Page.Params.redirect_url }}">{{ .Name }}</a></li>
+    {{ else }}
+    <li><a href="{{ .URL | relURL | safeURL }}">{{ .Name }}</a></li>
+    {{ end }}
+    {{ end }}
+  </ul>
+</nav>
+
+{{ $statusURL := "https://api.omg.lol/address/contrariwise/statuses/" }}
+{{ $result := try (resources.GetRemote $statusURL) }}
+{{ with $result.Err }}
+  {{ warnf "Failed to fetch omg.lol statuses: %s" . }}
+{{ else }}
+  {{ with $result.Value }}
+    {{ $data := . | transform.Unmarshal }}
+    {{ with $data.response.statuses }}
+<div class="side-content status-scroll">
+  <div class="side-title">Mystic Missives</div>
+  {{ range first 3 . }}
+  <div class="status-entry">
+    <div class="status-header">
+      <span class="status-emoji">{{ .emoji }}</span>
+      {{ $created := .created | int }}
+      <time class="status-time" datetime="{{ $created | dateFormat "2006-01-02" }}">
+        {{ $created | dateFormat "Jan 2" }}
+      </time>
+    </div>
+    <div class="status-content">{{ .content | safeHTML }}</div>
+  </div>
+  {{ end }}
+  <div class="status-footer">
+    <a href="https://contrariwise.status.lol" class="status-link">
+      <i class="ph ph-scroll" aria-hidden="true"></i>
+      View all scrolls
+    </a>
+  </div>
+</div>
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ $today := now.Format "2006-01-02" }}
+{{ $pool := where (where (where .Site.RegularPages "Type" "post") "Permalink" "!=" .Permalink) "Title" "!=" "" }}
+{{ $keyed := slice }}
+{{ range $pool }}
+{{ $keyed = $keyed | append (dict "p" . "k" (md5 (printf "%s|%s" .Permalink $today))) }}
+{{ end }}
+{{ if gt (len $keyed) 0 }}
+<div class="side-content">
+  <div class="side-title">Random Incantations</div>
+  <ul>
+    {{ range first 3 (sort $keyed "k") }}
+    <li><a href="{{ .p.RelPermalink }}">{{ .p.LinkTitle }}</a></li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}
+
+<div class="side-content">
+  <div class="side-title">Allied Mages</div>
+  <ul>
+    {{ range first 8 hugo.Data.blogrolls.recommendations }}
+    <li><a href="{{ .url }}">{{ .name }}</a></li>
+    {{ end }}
+  </ul>
+</div>
+
+{{ $list := ($.Site.GetPage "taxonomy" "categories").Pages }}
+{{ if gt (len $list) 0 }}
+<div class="side-content">
+  <div class="side-title">Arcane Tags</div>
+  <div>
+    {{ range first 12 $list }}
+    <a class="tag" href="{{ .Permalink }}">
+      <i class="ph ph-sparkle" aria-hidden="true"></i>
+      {{ .Title }}
+    </a>
+    {{ end }}
+  </div>
+</div>
+{{ end }}

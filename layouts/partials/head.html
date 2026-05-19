@@ -34,10 +34,16 @@
   <!-- Goat Counter -->
   <script data-goatcounter="https://thegamemage.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
-  <!-- Google Fonts -->
+  {{/*
+    Preload the press face so the incipit doesn't reflow. The font is
+    self-hosted via webpack and lands in /assets/ with a stable name.
+  */}}
+  <link rel="preload" href="{{ "assets/IMFellEnglish-Regular.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+
+  <!-- Google Fonts: the hyperlegible body voices (Atkinson Next + Mono). -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Atkinson+Hyperlegible+Next&family=Atkinson+Hyperlegible+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="{{ "styles.css" | relURL }}?{{ .Site.Params.theme_seconds }}">
 

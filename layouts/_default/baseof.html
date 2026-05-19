@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ .Site.Language.Lang | default "en" }}">
 
 {{ partial "head.html" . }}
 
 <body>
+  <a class="skip-link" href="#main-content">Skip to the inscription</a>
+
   <div class="pure-g">
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
 
@@ -12,98 +14,53 @@
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
   </div>
 
+  {{ if eq .Kind "page" }}
+  {{/*
+    Reading mode: the inscription comes first and wins. The side
+    scroll follows it as a quiet band, not a competing column —
+    nothing claims a reader's eye away from the body while they read.
+  */}}
   <div class="pure-g">
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
 
-    <main class="pure-u-1 pure-u-md-14-24">
+    <main id="main-content" class="pure-u-1 pure-u-md-22-24">
+      {{ block "main" . }}{{ end }}
+    </main>
+
+    <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
+  </div>
+
+  <div class="pure-g">
+    <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
+
+    <aside class="pure-u-1 pure-u-md-22-24 side-scroll side-scroll--reading">
+      {{ partial "side-scroll.html" . }}
+    </aside>
+
+    <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
+  </div>
+  {{ else }}
+  {{/*
+    Index / section / taxonomy mode: scroll column beside the side
+    scroll. The listing is the surface and the side scroll is the
+    surrounding apparatus.
+  */}}
+  <div class="pure-g">
+    <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
+
+    <main id="main-content" class="pure-u-1 pure-u-md-14-24">
       {{ block "main" . }}{{ end }}
     </main>
 
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
 
-    <aside class="pure-u-1 pure-u-md-7-24">
-      <div class="side-content">
-        <div class="side-title">Teleportation Circle</div>
-        <ul>
-          {{ range .Site.Menus.main }}
-          {{ if and .Page (.Page.Params.redirect_url) }}
-          <li><a href="{{ .Page.Params.redirect_url }}">{{ .Name }}</a></li>
-          {{ else }}
-          <li><a href="{{ .URL | relURL | safeURL }}">{{ .Name }}</a></li>
-          {{ end }}
-          {{ end }}
-        </ul>
-      </div>
-
-      {{ $statusURL := "https://api.omg.lol/address/contrariwise/statuses/" }}
-      {{ $result := try (resources.GetRemote $statusURL) }}
-      {{ with $result.Err }}
-        {{ warnf "Failed to fetch omg.lol statuses: %s" . }}
-      {{ else }}
-        {{ with $result.Value }}
-          {{ $data := . | transform.Unmarshal }}
-          {{ with $data.response.statuses }}
-      <div class="side-content status-scroll">
-        <div class="side-title">Mystic Missives</div>
-        {{ range first 3 . }}
-        <div class="status-entry">
-          <div class="status-header">
-            <span class="status-emoji">{{ .emoji }}</span>
-            {{ $created := .created | int }}
-            <time class="status-time" datetime="{{ $created | dateFormat "2006-01-02" }}">
-              {{ $created | dateFormat "Jan 2" }}
-            </time>
-          </div>
-          <div class="status-content">{{ .content | safeHTML }}</div>
-        </div>
-        {{ end }}
-        <div class="status-footer">
-          <a href="https://contrariwise.status.lol" class="status-link">
-            <i class="ph ph-scroll"></i> View all scrolls
-          </a>
-        </div>
-      </div>
-          {{ end }}
-        {{ end }}
-      {{ end }}
-
-      <div class="side-content">
-        <div class="side-title">Random Incantations</div>
-        <ul>
-          {{ range first 3 (shuffle (where (where (where site.RegularPages "Type" "post") "Permalink" "!=" .Permalink) "Title" "!=" "")) }}
-          <li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>
-          {{ end }}
-        </ul>
-      </div>
-
-      <div class="side-content">
-        <div class="side-title">Allied Mages</div>
-        <ul>
-          {{ range hugo.Data.blogrolls.recommendations }}
-          <li><a href="{{ .url }}">{{ .name }}</a></li>
-          {{ end }}
-        </ul>
-      </div>
-
-      {{ $list := ($.Site.GetPage "taxonomy" "categories").Pages }}
-      {{ if gt (len $list) 0 }}
-      <div class="side-content">
-        <div class="side-title">Arcane Tags</div>
-        <div>
-          {{ range $list }}
-          <a class="tag" href="{{ .Permalink }}">
-            <i class="ph ph-sparkle"></i> {{ .Title }}
-          </a>
-          {{ end }}
-        </div>
-      </div>
-      {{ end }}
+    <aside class="pure-u-1 pure-u-md-7-24 side-scroll">
+      {{ partial "side-scroll.html" . }}
     </aside>
 
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
-
   </div>
-
+  {{ end }}
 
   <div class="pure-g">
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>

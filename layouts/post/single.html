@@ -1,15 +1,62 @@
+{{/*
+  The reading core: a single inscribed scroll.
+
+  Composition follows the confirmed shape brief — a C-incipit on a
+  B-calm body. One concentrated wonder-moment at the head (cartouche
+  rule, pressed title, diegetic timestamp, a decorated initial in
+  Smaug Red), then the page recedes into austere, edge-crafted
+  reading. Corner registration marks frame the scroll as a quiet
+  tipped-in plate; the foot colophon closes the inscription.
+
+  No card wrap on the article: the body sits directly on the
+  Inkstock so prose is unobstructed and the ornament is felt at the
+  edges, not as a frame around it.
+
+  Diegetic strings are wired to Hugo variables. No placeholder copy.
+*/}}
 {{ define "main" }}
-<article class="card">
-  {{ if .Title }}<h2>{{ .Title }}</h2>{{ end }}
-  <div class="arcane-timestamp">
-    <span class="timestamp-icon"><i class="ph ph-calendar"></i></span> Inscribed on <a href="{{ .Permalink }}" class="permalink" title="Permanent link to this scroll"><time datetime="{{ .Date.Format "2006-01-02 15:04:05 -0700" }}">{{ .Date.Format "January 2, 2006" }}</time></a>
+<article class="reading-scroll" lang="{{ .Site.Language.Lang | default "en" }}">
+  {{ partial "ornament/corner-mark.html" "tl" }}
+  {{ partial "ornament/corner-mark.html" "tr" }}
+
+  <header class="incipit">
+    {{ partial "ornament/cartouche-rule.html" . }}
+
+    {{ if .Title }}
+    <h1 class="incipit-title">{{ .Title }}</h1>
+    {{ end }}
+
+    <div class="arcane-timestamp">
+      Inscribed on
+      <a href="{{ .Permalink }}" class="permalink" title="Permanent link to this scroll">
+        <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "January 2, 2006" }}</time>
+      </a>
+    </div>
+
+    {{ if .Params.reply_to_url }}
+    <p class="incipit-reply">
+      Replying to
+      {{ if eq .Params.reply_to_hostname "micro.blog" }}
+      <a href="{{ .Params.reply_to_url }}">@{{ .Params.reply_to_username }}</a>
+      {{ else }}
+      <a href="{{ .Params.reply_to_url }}">{{ .Params.reply_to_hostname }}</a>
+      {{ end }}
+    </p>
+    {{ end }}
+  </header>
+
+  {{/*
+    The reading body. The first paragraph's first letter receives the
+    Smaug-Red decorated initial via CSS ::first-letter, but only when
+    the post has a title — short untitled notes don't carry the
+    wonder-moment. The :has() selector on the article handles the
+    guard at the CSS layer.
+  */}}
+  <div class="reading-body{{ if not .Title }} reading-body--untitled{{ end }}">
+    <div class="prose">
+      {{ .Content }}
+    </div>
   </div>
-
-  {{ if .Params.reply_to_url }}
-  <p>Replying to: {{ if eq .Params.reply_to_hostname "micro.blog" }} <a href="{{ .Params.reply_to_url }}">@{{ .Params.reply_to_username }}</a> {{ else }} <a href="{{ .Params.reply_to_url }}">{{ .Params.reply_to_hostname }}</a>{{ end }}</p>
-  {{ end }}
-
-  {{ .Content }}
 
   {{ $categories := (.GetTerms "categories") }}
   {{ if gt (len $categories) 0 }}
@@ -18,7 +65,8 @@
       <div class="pure-u-2-3 tags-column">
         {{ range $categories }}
         <a class="tag" href="{{ .Permalink }}">
-          <i class="ph ph-sparkle"></i> {{ .LinkTitle }}
+          <i class="ph ph-sparkle" aria-hidden="true"></i>
+          {{ .LinkTitle }}
         </a>
         {{ end }}
       </div>
@@ -29,5 +77,12 @@
     </div>
   </div>
   {{ end }}
+
+  <footer class="colophon" aria-hidden="true">
+    {{ partial "ornament/colophon.html" . }}
+  </footer>
+
+  {{ partial "ornament/corner-mark.html" "bl" }}
+  {{ partial "ornament/corner-mark.html" "br" }}
 </article>
 {{ end }}
