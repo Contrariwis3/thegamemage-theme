@@ -105,8 +105,8 @@ curiosity with delight that is never load-bearing and never in the way.
 
 ## Accessibility & Inclusion
 
-Target WCAG 2.1 AA. Color contrast must meet AA against the deep-purple
-ground, including the teal/amber/magenta accents on body text. Honor
-`prefers-reduced-motion` for glow and transition effects. Keep Atkinson
-Hyperlegible (Next / Mono) as the legibility backbone of body and code; the
-decorative Berkshire Swash is for display headings only, never running text.
+Target WCAG 2.1 AA. Every text and accent color must meet AA contrast against
+the background it sits on. Honor `prefers-reduced-motion` for all transition
+and motion effects. Keep Atkinson Hyperlegible (Next / Mono) as the legibility
+backbone of running body text and code; reserve any decorative display face
+for headings only, never for running text.
