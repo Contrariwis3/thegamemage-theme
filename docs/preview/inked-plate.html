@@ -1,0 +1,274 @@
+<!doctype html>
+<!-- ABOUTME: Throwaway static visual probe of the "Inked Plate" DESIGN.md system. -->
+<!-- ABOUTME: Shape-phase scaffolding only; not part of the Hugo theme. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Game Mage — Inked Plate (visual probe)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  /* --- Tokens (defaults = proposed "Inkstock"; swapped by the scaffolding switcher) --- */
+  :root{
+    --ground:#0d1310; --plate:#13201a; --well:#0a0f0c; --hairline:#2c3a32;
+    --bone:#f3ece0; --blue:#5fa8d3; --green:#6fb894; --red:#e8694a;
+    --display:"IM Fell English",serif;
+    --body:"Atkinson Hyperlegible",sans-serif; /* preview approximates the spec'd "Next" */
+    --mono:"Atkinson Hyperlegible",ui-monospace,monospace; /* spec'd: Atkinson Hyperlegible Mono */
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:var(--ground)}
+  body{
+    background:var(--ground); color:var(--bone);
+    font-family:var(--body); font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .skip{position:absolute;left:-9999px}
+  .skip:focus{left:14px;top:14px;position:fixed;background:var(--plate);
+    color:var(--bone);padding:8px 14px;border:1px solid var(--hairline);z-index:50}
+
+  a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--blue)}
+  a:hover{background:var(--blue);color:var(--ground);border-bottom-color:transparent}
+  a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:56px 28px 96px;
+    display:grid;grid-template-columns:1fr 300px;gap:52px}
+  @media (max-width:768px){.wrap{grid-template-columns:1fr;gap:34px;padding:34px 20px 64px}}
+
+  /* --- Masthead --- */
+  .masthead{grid-column:1/-1;border-bottom:1px solid var(--hairline);
+    padding-bottom:22px;margin-bottom:8px}
+  .masthead h1{font-family:var(--display);font-weight:400;color:var(--blue);
+    font-size:3rem;line-height:1.1;letter-spacing:.01em}
+  @media (max-width:768px){.masthead h1{font-size:2.5rem}}
+  .masthead p{color:var(--bone);opacity:.8;margin-top:6px;font-size:.95rem}
+  nav.tp{margin-top:16px;display:flex;gap:22px;flex-wrap:wrap;font-size:.9rem}
+
+  /* --- A scroll (post) --- */
+  article{min-width:0}
+  article .meta{font-family:var(--display);color:var(--green);
+    font-size:1.5rem;line-height:1.3;margin-bottom:18px}
+  article h2{font-family:var(--display);font-weight:400;color:var(--green);
+    font-size:2rem;line-height:1.2;margin:38px 0 6px;
+    padding-bottom:8px;border-bottom:1px solid var(--hairline)}
+  article h3{font-family:var(--display);font-weight:400;color:var(--green);
+    font-size:1.5rem;line-height:1.3;margin:30px 0 4px}
+  article p{max-width:68ch;margin:14px 0}
+  article ul{max-width:68ch;margin:14px 0 14px 22px}
+  article li{margin:6px 0}
+  strong{color:var(--red);font-weight:400}
+  em{color:var(--green);font-style:italic}
+  blockquote{border:1px solid var(--hairline);background:var(--plate);
+    padding:18px 22px;margin:22px 0;max-width:68ch}
+  blockquote p{margin:0;color:var(--bone);font-style:italic}
+  code{font-family:var(--mono);font-size:.9rem;background:var(--well);
+    color:var(--bone);padding:2px 5px;border-radius:2px}
+  pre{font-family:var(--mono);font-size:.9rem;line-height:1.55;
+    background:var(--well);color:var(--bone);padding:18px 20px;
+    border:1px solid var(--hairline);border-radius:3px;margin:22px 0;
+    max-width:68ch;overflow:auto}
+  pre code{background:none;padding:0}
+
+  /* --- Spell-Stamps --- */
+  .stamps{display:flex;gap:8px;flex-wrap:wrap;margin:30px 0 0}
+  .stamp{font-family:var(--body);font-size:.8rem;letter-spacing:.04em;
+    padding:3px 9px;border-radius:2px;border:1px solid currentColor;
+    background:transparent}
+  .stamp.tag{color:var(--green)}
+  .stamp.reply{color:var(--red)}
+  .stamp:hover{color:var(--ground)}
+  .stamp.tag:hover{background:var(--green)}
+  .stamp.reply:hover{background:var(--red)}
+
+  nav.pager{grid-column:1/-1;display:flex;gap:14px;align-items:baseline;
+    border-top:1px solid var(--hairline);margin-top:46px;padding-top:22px;
+    font-family:var(--display);font-size:1.1rem}
+  nav.pager .here{color:var(--red)}
+
+  /* --- The Side Scroll --- */
+  aside{display:flex;flex-direction:column;gap:22px;min-width:0}
+  .plate{background:var(--plate);border:1px solid var(--hairline);
+    border-radius:3px;padding:22px}
+  .plate h4{font-family:var(--display);font-weight:400;color:var(--green);
+    font-size:1.5rem;line-height:1.3;padding-bottom:8px;
+    border-bottom:1px solid var(--hairline);margin-bottom:14px}
+  .plate ul{list-style:none;display:flex;flex-direction:column;gap:9px;
+    font-size:.95rem}
+  .missive{font-size:.95rem}
+  .missive .when{font-family:var(--display);font-style:italic;
+    color:var(--green);font-size:1rem;display:block;margin-top:8px}
+  .footer-stamp{margin-top:14px}
+
+  footer{grid-column:1/-1;border-top:1px solid var(--hairline);
+    margin-top:30px;padding-top:22px;color:var(--bone);opacity:.7;
+    font-size:.85rem}
+
+  /* Honor reduced motion: transitions are tiny and optional anyway */
+  @media (prefers-reduced-motion:no-preference){
+    a,.stamp{transition:background .15s ease-out,color .15s ease-out}
+  }
+
+  /* --- Preview scaffolding (NOT part of the design) --- */
+  .rig{position:fixed;left:14px;bottom:14px;z-index:40;
+    background:#0a0f0c;border:1px solid #2c3a32;border-radius:3px;
+    padding:12px 14px;font-family:ui-monospace,monospace;font-size:12px;
+    color:#9fb3a8;max-width:280px}
+  .rig b{color:#cfe0d6;display:block;margin-bottom:6px;font-weight:400}
+  .rig .grp{margin-bottom:8px}
+  .rig button{font:inherit;color:#9fb3a8;background:transparent;
+    border:1px solid #2c3a32;border-radius:2px;padding:3px 7px;
+    margin:2px 3px 2px 0;cursor:pointer}
+  .rig button[aria-pressed=true]{color:#0a0f0c;background:#9fb3a8}
+  .rig small{display:block;margin-top:4px;color:#6f8479;line-height:1.4}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the chronicle</a>
+
+<div class="wrap">
+  <header class="masthead">
+    <h1>The Game Mage</h1>
+    <p>Following a dream, and die trying — a chronicle, inscribed as it happens.</p>
+    <nav class="tp" aria-label="Teleportation Circle">
+      <a href="#">The Chronicle</a>
+      <a href="#">Scrolls</a>
+      <a href="#">The Mage</a>
+      <a href="#">Allied Mages</a>
+      <a href="#">Arcane Tags</a>
+    </nav>
+  </header>
+
+  <article id="main">
+    <p class="meta">Inscribed on the 19th day of the fifth moon, 2026</p>
+    <h2>On choosing the stock before the ink</h2>
+
+    <p>There is a temptation, when a workshop is new, to reach first for the
+    brightest pigments. The temptation is a trap. The <strong>stock decides
+    everything</strong>: an ink that sings on one page mutters on another, and
+    no amount of flourish recovers a sheet chosen carelessly. So we begin where
+    the careful binder begins, with the page itself, held to the light and
+    turned until it is right.</p>
+
+    <p>A reader should never notice this decision. That is the whole of the
+    craft: the work that is <em>felt and never spotted</em>. If you catch a
+    detail happening and think "oh, neat," it was, by a hair, too loud — and we
+    quiet it until the magic is only felt. For a longer treatment, see the
+    <a href="#">earlier note on invisible seams</a>.</p>
+
+    <h3>What the press taught us</h3>
+    <p>Depth here is not borrowed from shadow. It is the honest depth of a
+    printed plate: one ink laid beside another, a hairline ruled where a
+    boundary is needed, and margin enough to breathe.</p>
+
+    <blockquote>
+      <p>The plate has no glow. It was never lit. It was inked, by someone who
+      cared, and set down exactly where it belongs.</p>
+    </blockquote>
+
+    <p>The mono hand is reserved for the literal glyphs of the craft:</p>
+    <pre><code>spell := bind(stock, ink)        # the page comes first
+cast  := spell.press()           # flat, opaque, no halo
+assert cast.legible              # legibility is part of the spell</code></pre>
+
+    <ul>
+      <li>The stock is dark by conviction, not by reflex.</li>
+      <li>The ink is flat, opaque, and committed.</li>
+      <li>The reading hand stays hyperlegible, always.</li>
+    </ul>
+
+    <div class="stamps" aria-label="Arcane tags on this scroll">
+      <span class="stamp tag">✦ craft</span>
+      <span class="stamp tag">✦ the-workshop</span>
+      <span class="stamp tag">✦ first-principles</span>
+      <span class="stamp reply">↪ reply by raven</span>
+    </div>
+  </article>
+
+  <aside aria-label="The Side Scroll">
+    <section class="plate">
+      <h4>Teleportation Circle</h4>
+      <ul>
+        <li><a href="#">The Chronicle</a></li>
+        <li><a href="#">All Scrolls</a></li>
+        <li><a href="#">The Mage Behind It</a></li>
+        <li><a href="#">Arcane Tags</a></li>
+      </ul>
+    </section>
+
+    <section class="plate">
+      <h4>Mystic Missives</h4>
+      <div class="missive">
+        <p>🜂 Tuning the stock today. Held four greens to the lamp; three were
+        vanity, one was right.</p>
+        <span class="when">murmured two hours past</span>
+      </div>
+      <div class="footer-stamp">
+        <span class="stamp reply">↪ View all scrolls</span>
+      </div>
+    </section>
+
+    <section class="plate">
+      <h4>Random Incantations</h4>
+      <ul>
+        <li><a href="#">The seam you were not meant to see</a></li>
+        <li><a href="#">Why the margin is the spell</a></li>
+        <li><a href="#">A dragon's worth of red, used once</a></li>
+      </ul>
+    </section>
+
+    <section class="plate">
+      <h4>Allied Mages</h4>
+      <ul>
+        <li><a href="#">The Cartographer's Table</a></li>
+        <li><a href="#">Lamplight &amp; Longhand</a></li>
+      </ul>
+    </section>
+  </aside>
+
+  <nav class="pager" aria-label="Pagination">
+    <a href="#">‹ Older</a>
+    <span class="here">2</span>
+    <a href="#">3</a>
+    <a href="#">Newer ›</a>
+  </nav>
+
+  <footer>
+    Inscribed by the Game Mage. Bound, not launched.
+  </footer>
+</div>
+
+<div class="rig" aria-hidden="true">
+  <b>preview scaffolding — not the design</b>
+  <div class="grp" data-set="ground">ground:
+    <button data-g="0d1310,13201a,0a0f0c,2c3a32" aria-pressed="true">Inkstock (proposed)</button>
+    <button data-g="102a1d,163826,0c2016,2f5641">Forest Ink</button>
+    <button data-g="0c2417,123420,081b10,2a5038">Dark Angels</button>
+    <button data-g="081109,0e1a10,050b06,243a2b">Deep Pine (darkest)</button>
+  </div>
+  <div class="grp" data-set="green">structural green:
+    <button data-c="6fb894" aria-pressed="true">Sage</button>
+    <button data-c="4fae7d">Forest</button>
+  </div>
+  <small>Ground steps the plate/well/hairline with it. Forest greens that
+  pass AA as text are lighter than Dark-Angels green on armor.</small>
+</div>
+
+<script>
+  document.querySelectorAll('.rig .grp').forEach(function(grp){
+    grp.addEventListener('click',function(e){
+      var btn=e.target.closest('button'); if(!btn) return;
+      grp.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',b===btn)});
+      var r=document.documentElement.style;
+      if(btn.dataset.g){
+        var p=btn.dataset.g.split(',');
+        r.setProperty('--ground','#'+p[0]); r.setProperty('--plate','#'+p[1]);
+        r.setProperty('--well','#'+p[2]);   r.setProperty('--hairline','#'+p[3]);
+      }
+      if(btn.dataset.c){ r.setProperty('--green','#'+btn.dataset.c); }
+    });
+  });
+</script>
+</body>
+</html>
