@@ -451,7 +451,7 @@ footer {
 // land before lands here because the incipit has enough visual
 // weight to anchor against the left-aligned reading column beneath.
 .incipit {
-  margin: space(xxl) 0 space(xxxl);
+  margin: space(xxl) auto space(xxxl);
   text-align: center;
 }
 
@@ -481,7 +481,7 @@ footer {
     line-height: 1.05;
     letter-spacing: 0.01em;
     text-wrap: balance;
-    margin: space(lg) 0 space(md);
+    margin: space(lg) auto space(md);
   }
 
   .arcane-timestamp {
@@ -489,7 +489,7 @@ footer {
     font-size: size(title);
     line-height: 1.3;
     color: ink(hobbit-green);
-    margin: 0 0 space(lg);
+    margin: 0 auto space(lg);
   }
 }
 
@@ -500,14 +500,14 @@ footer {
   font-size: size(title);
   line-height: 1.3;
   color: ink(hobbit-green);
-  margin: 0 0 space(xl);
+  margin: 0 auto space(xl);
 }
 
 .incipit-reply {
   font-style: italic;
   color: ink(bone);
   opacity: 0.78;
-  margin: 0 0 space(lg);
+  margin: 0 auto space(lg);
   text-align: center;
 }
 
