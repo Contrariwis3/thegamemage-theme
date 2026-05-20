@@ -41,16 +41,9 @@
   {{ $categories := (.GetTerms "categories") }}
   {{ if gt (len $categories) 0 }}
   <div class="post-tags">
-    <div class="pure-g">
-      <div class="pure-u-1">
-        {{ range $categories }}
-        <a class="tag" href="{{ .Permalink }}">
-          <i class="ph ph-sparkle" aria-hidden="true"></i>
-          {{ .LinkTitle }}
-        </a>
-        {{ end }}
-      </div>
-    </div>
+    {{ range $categories }}
+    <a class="tag" href="{{ .Permalink }}">{{ .LinkTitle }}</a>
+    {{ end }}
   </div>
   {{ end }}
 </article>
