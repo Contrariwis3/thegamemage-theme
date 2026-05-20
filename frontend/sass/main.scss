@@ -353,12 +353,15 @@ pre {
 // Masthead wrapper. The .title-plate inside handles the visual
 // composition — same cartouche-bracketed plate the post incipit
 // uses, so masthead and post titles read as one unified system.
+// padding-top space(xxxl) so the plate is set into a generous
+// page the way the reading page's title plate is — the chronicle's
+// title page needs the same breath above it.
 // The site title's link gets the title's appearance (Hobbit Blue,
 // no underline; inks to green on hover) since the h1 IS the link.
 header {
   max-width: 70ch;
   margin: 0 auto space(xxl);
-  padding: space(xxl) space(md);
+  padding: space(xxxl) space(md) space(xxl);
 
   h1 a {
     color: ink(hobbit-blue);
@@ -757,6 +760,13 @@ footer {
   // so the listing scans cleanly.
   .prose {
     max-width: none;
+  }
+
+  // Spacer between the body/Read More and the tag row, so the
+  // tags read as a separate section of the card rather than
+  // butting against the previous paragraph.
+  .post-tags {
+    margin-top: space(xl);
   }
 }
 
