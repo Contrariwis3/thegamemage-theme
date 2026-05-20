@@ -1,22 +1,28 @@
 {{/*
   Unboxed pagination, shared by every list. Context: a paginator.
+
+  Diegetic labels: a paginator's previous page holds the newer
+  inscriptions (already-seen, closer to the front of the catalog);
+  the next page holds the older ones, deeper in the chronicle.
+  Only the current page number wears Smaug Red — the rare hot ink
+  marks where the reader stands, not where the catalog ends.
 */}}
 {{ if or .HasPrev .HasNext }}
 <nav class="pagination" aria-label="Scroll pagination">
   <div class="pure-g">
     <div class="pure-u-1-3 pagination-link previous">
       {{ if .HasPrev }}
-      <a href="{{ .Prev.URL }}"><span class="pagination-icon" aria-hidden="true">←</span> Previous</a>
+      <a href="{{ .Prev.URL }}"><span class="pagination-icon" aria-hidden="true">←</span> Newer inscriptions</a>
       {{ end }}
     </div>
 
     <div class="pure-u-1-3 pagination-pages">
-      Scroll <span class="page">{{ .PageNumber }}</span> of <span class="page">{{ .TotalPages }}</span>
+      Scroll <span class="page page--current">{{ .PageNumber }}</span> of <span class="page page--total">{{ .TotalPages }}</span>
     </div>
 
     <div class="pure-u-1-3 pagination-link next">
       {{ if .HasNext }}
-      <a href="{{ .Next.URL }}">More <span class="pagination-icon" aria-hidden="true">→</span></a>
+      <a href="{{ .Next.URL }}">Older inscriptions <span class="pagination-icon" aria-hidden="true">→</span></a>
       {{ end }}
     </div>
   </div>

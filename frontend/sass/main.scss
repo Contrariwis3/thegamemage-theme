@@ -732,6 +732,59 @@ footer {
 }
 
 // ============================================================
+// CATALOG RUBRIC — section / taxonomy identity line
+// ============================================================
+//
+// Sits between the masthead and the post-card stack on section and
+// taxonomy listings. Names the surface in printed catalog voice —
+// the press face for warmth, a centered single line, a hairline
+// under to mark the transition from header to catalog. The masthead
+// stays the chronicle's title page; the rubric is the chapter mark
+// below it.
+
+.catalog-rubric {
+  max-width: 70ch;
+  margin: 0 auto space(xxl);
+  padding: 0 space(md) space(lg);
+  text-align: center;
+  border-bottom: 1px solid ink(hairline);
+
+  &__line {
+    font-family: face(press);
+    font-size: size(title);
+    line-height: 1.3;
+    color: ink(hobbit-green);
+    margin: 0;
+    text-wrap: balance;
+
+    em {
+      // Inside the rubric, em is the term name. Italic carries the
+      // emphasis; the ink stays in family so the line reads as one
+      // pressed string.
+      font-style: italic;
+      font-weight: 400;
+      color: ink(hobbit-green);
+    }
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: space(xl);
+    padding-bottom: space(md);
+  }
+}
+
+// The taxonomy index's catalog of sigils: every term in use,
+// rendered as the stamp vocabulary the side panel already uses, so
+// the surface reads as the same printed catalog seen elsewhere.
+.catalog-sigils {
+  max-width: 70ch;
+  margin: 0 auto space(xxxl);
+  padding: 0 space(md);
+  justify-content: center;
+  gap: space(md);
+}
+
+// ============================================================
 // LIST/INDEX POST CARDS — plates separated by air + ink-value step
 // ============================================================
 //
@@ -750,10 +803,14 @@ footer {
     padding: space(lg);
   }
 
-  // Inside a card, h2 acts as the post title — keep its hairline
-  // rule but pull the margin tighter against the card edge.
+  // On post-cards the h2 is the title-plate of a catalog entry, not
+  // a body section-head. Drop the body h2's hairline-under so the
+  // title and the timestamp below it read as one composed title
+  // block, framed by the card border alone.
   > h2:first-child {
     margin-top: 0;
+    padding-bottom: 0;
+    border-bottom: none;
   }
 
   // Cards on the list/index keep a tighter measure on their summary
@@ -882,8 +939,20 @@ footer {
     color: ink(bone);
 
     .page {
-      color: ink(smaug-red);
       font-size: size(title);
+
+      // The current page wears Smaug Red — the one rare hot ink on
+      // the surface marks where the reader stands. The total is a
+      // count, not a position, and stays in the reading ink so the
+      // red pulls the eye to the bookmark rather than the catalog's
+      // length.
+      &--current {
+        color: ink(smaug-red);
+      }
+
+      &--total {
+        color: ink(bone);
+      }
     }
   }
 }

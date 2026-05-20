@@ -1,16 +1,65 @@
 {{ define "main" }}
 
-{{ if and .Title (not .IsHome) }}
-<div class="card">
-  <h1>{{ .Title }}</h1>
+{{/*
+  Listing surfaces (section, taxonomy term, taxonomy index). Home has
+  its own template; the masthead always names the chronicle.
+
+  The page's identity sits in a printed catalog rubric below the
+  masthead — a quiet press-face line in diegetic voice, set off by
+  a hairline rule. The SaaS-blog reflex (a bare card with an <h1>)
+  is gone.
+
+  Taxonomy index pages render the chronicle's sigils as a stamped
+  catalog of terms; section and term pages render their post list
+  with the rubric naming what's being inscribed beneath.
+*/}}
+
+{{ if not .IsHome }}
+{{/*
+  The rubric is a single quiet line — no cartouche above. The
+  masthead already closes with a cartouche directly overhead;
+  stacking a second one would double the ornament and break the
+  keystone. A hairline rule beneath the line carries the printed
+  catalog feel without competing with the title plate.
+*/}}
+<div class="catalog-rubric">
+  <p class="catalog-rubric__line">
+    {{- if eq .Kind "term" -}}
+    Inscribed under the sigil of <em>{{ .Title }}</em>
+    {{- else if eq .Kind "taxonomy" -}}
+    The chronicle's sigils
+    {{- else if eq .Kind "section" -}}
+    Inscribed within <em>{{ .Title }}</em>
+    {{- else -}}
+    {{ .Title }}
+    {{- end -}}
+  </p>
 </div>
 {{ end }}
 
+{{ if eq .Kind "taxonomy" }}
+{{/*
+  Taxonomy index: the catalog of every sigil in use. Rendered as a
+  stamp row of spell-tags, so the page is the same vocabulary the
+  Arcane Tags side-panel uses. Previously this surface filtered to
+  Type="post" and silently rendered nothing — the term pages were
+  unreachable as a list.
+*/}}
+{{ $terms := .Pages.ByTitle }}
+{{ if gt (len $terms) 0 }}
+<div class="catalog-sigils post-tags">
+  {{ range $terms }}
+  <a class="tag" href="{{ .Permalink }}">{{ .LinkTitle }}</a>
+  {{ end }}
+</div>
+{{ end }}
+{{ else }}
 {{ $paginator := .Paginate (where .Pages.ByDate.Reverse "Type" "post") }}
 {{ range $paginator.Pages }}
 {{ partial "post-card.html" . }}
 {{ end }}
 
 {{ partial "pagination.html" $paginator }}
+{{ end }}
 
 {{ end }}
