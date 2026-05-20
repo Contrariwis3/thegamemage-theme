@@ -41,6 +41,7 @@
   {{ $categories := (.GetTerms "categories") }}
   {{ if gt (len $categories) 0 }}
   <div class="post-tags">
+    {{ partial "ornament/sigil.html" . }}
     {{ range $categories }}
     <a class="tag" href="{{ .Permalink }}">{{ .LinkTitle }}</a>
     {{ end }}

@@ -448,14 +448,21 @@ footer {
 
 // The incipit: pressed title, cartouche rule, diegetic timestamp,
 // and the one decorated initial that opens the body.
+//
+// Text in the incipit aligns left to share the body's reading axis;
+// the cartouche rule is the centered-in-its-own-width ornament that
+// precedes the title — the page's punctuation, not its frame.
 .incipit {
   margin: space(xxl) 0 space(xl);
 
-  // Cartouche rule above the title: hairline + center fleuron, set
-  // as an inline-SVG partial. The wrapper here just gives air.
+  // Cartouche rule: a 28ch wide engraved mark sitting at the left
+  // edge of the column, above the title. Not auto-centered — the
+  // brief's "ornament banished to the edges" + brand.md's "don't
+  // default to centering everything" both say the rule belongs on
+  // the same left axis as the title beneath it.
   .cartouche-rule {
     display: block;
-    margin: 0 auto space(lg);
+    margin: 0 0 space(lg);
     width: 100%;
     max-width: 28ch;
     color: ink(hairline);
@@ -463,16 +470,13 @@ footer {
 
   .incipit-title {
     margin: 0 0 space(md);
-    text-align: center;
   }
 
   .arcane-timestamp {
-    text-align: center;
     margin: 0 0 space(xl);
   }
 
   .incipit-reply {
-    text-align: center;
     font-style: italic;
     color: ink(bone);
     opacity: 0.78;
@@ -613,33 +617,44 @@ footer {
 // The article's closing matter — tags above, decorative close-mark
 // below — wrapped in a single <footer> so the inscription's foot
 // reads as one block of closing furniture, not three loose pieces.
+//
+// Tags align left (same axis as the body and the incipit). The
+// colophon mark stays centered as the closing ornament punctuation,
+// giving the page rhythm rather than a centered-stack symmetry.
 .post-foot {
   margin-top: space(xxl);
 
-  // Reading-surface composition is centered (colophon mark and
-  // foot-nav both center on their own axis). The tag row joins
-  // that axis here.
   .post-tags {
-    justify-content: center;
     margin-top: 0;
   }
 
-  // Tag-less posts: the colophon mark is the only child of the
-  // foot. Suppress its top margin so the post-foot's own margin
-  // is the entire gap.
   > .colophon:first-child {
     margin-top: 0;
   }
 }
 
-// Base tag row. Flex-wrapping list of spell-stamps with default
-// flex-start alignment — listing post-cards inherit this directly
-// (left-aligned, matching the body alignment of the card).
+// Base tag row. Flex-wrapping list of spell-stamps with a leading
+// printed sigil. align-items: baseline keeps the sigil's small
+// diamond visually seated with the stamp labels.
 .post-tags {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: space(xs);
   margin-top: space(xl);
+}
+
+// The small printed sigil: a four-point diamond, the same shape
+// that lives at the center of the cartouche rule and the colophon.
+// Re-using the system's signature mark as a leading sigil keeps
+// the ornament vocabulary tight.
+.sigil {
+  display: inline-block;
+  width: 10px;
+  height: 12px;
+  color: ink(hobbit-green);
+  flex-shrink: 0;
+  margin-right: space(xs);
 }
 
 // ============================================================
