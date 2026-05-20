@@ -358,8 +358,12 @@ header {
   padding: space(xxl) space(md) space(lg);
   text-align: left;
 
+  // Masthead h1 yields to the post incipit h1: site identity at
+  // headline size, page identity at display size. Stops the two
+  // headings from reading as siblings stacked on the same axis.
   h1 {
     margin: 0 0 space(xs);
+    font-size: size(headline);
 
     a {
       color: ink(hobbit-blue);
@@ -459,17 +463,34 @@ footer {
 .incipit {
   margin: space(xxl) 0 space(xl);
 
-  // Cartouche rule: a 28ch wide engraved mark sitting at the left
-  // edge of the column, above the title. Not auto-centered — the
-  // brief's "ornament banished to the edges" + brand.md's "don't
-  // default to centering everything" both say the rule belongs on
-  // the same left axis as the title beneath it.
+  // Cartouche rule: a small printed sigil at the column's left edge
+  // followed by a 1px hairline rule extending right. The diamond
+  // sits on the same x-axis as the title's first letter beneath it,
+  // so it reads as a paragraph-opening mark rather than a floating
+  // ornament centered above orphan text.
   .cartouche-rule {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: space(xs);
     margin: 0 0 space(lg);
     width: 100%;
     max-width: 28ch;
     color: ink(hairline);
+
+    .sigil {
+      // Inherit the cartouche's hairline color (the sigil's default
+      // is hobbit-green for tag-row use). Zero margin-right inside
+      // the cartouche — the flex gap owns spacing here, no doubling.
+      color: inherit;
+      margin-right: 0;
+    }
+
+    &__line {
+      display: block;
+      flex: 1;
+      height: 1px;
+      background-color: currentColor;
+    }
   }
 
   .incipit-title {
