@@ -72,34 +72,6 @@
   </div>
 
   <footer class="post-foot">
-    {{ $categories := (.GetTerms "categories") }}
-    {{ if gt (len $categories) 0 }}
-    {{/*
-      Section break: a small printed mark above the tag row, paired
-      with the colophon mark below. Together they bracket the tags
-      as their own section the way the cartouche bars bracket the
-      title plate — the foot has the same compositional vocabulary
-      as the head.
-    */}}
-    <div class="section-break" aria-hidden="true">
-      {{ partial "ornament/colophon.html" . }}
-    </div>
-    <div class="post-tags">
-      {{ partial "ornament/sigil.html" . }}
-      {{ range $categories }}
-      <a class="tag" href="{{ .Permalink }}">{{ .LinkTitle }}</a>
-      {{ end }}
-    </div>
-    {{ end }}
-
-    {{/*
-      Reply-by-email is its own block — micro.blog injects a form
-      here on production and nothing on the testsite. Keeping it out
-      of the tag row means an empty reply doesn't deform the
-      composition; the tag row's axis stays clean.
-    */}}
-    {{ partial "reply-by-email.html" . }}
-
     <div class="colophon" aria-hidden="true">
       {{ partial "ornament/colophon.html" . }}
     </div>
@@ -107,20 +79,38 @@
 </article>
 
 {{/*
-  The chronicle continues. A three-handle foot-nav so a reader who
-  drops in on a single scroll doesn't reach a dead-end at the
-  colophon. Sits outside the inscribed article, in the body italic
-  voice — a running-foot marginalia, not a section heading.
+  Page-level matter below the inscribed plate: catalog tags, the
+  micro.blog reply action, a hairline section rule, and the
+  three-handle chronicle navigation. The article ends at the
+  colophon mark; everything below is the chronicle's apparatus
+  around the plate, not the plate's own closing furniture.
+*/}}
 
-  Direction reads in narrative time. Hugo's .Next points to the
-  newer page in the section (forward in chronicle time); .Prev
-  points to the older page (backward in time).
+{{ $categories := (.GetTerms "categories") }}
+{{ if gt (len $categories) 0 }}
+<div class="post-tags post-tags--standalone">
+  {{ range $categories }}
+  <a class="tag" href="{{ .Permalink }}">{{ .LinkTitle }}</a>
+  {{ end }}
+</div>
+{{ end }}
+
+{{ partial "reply-by-email.html" . }}
+
+<hr class="post-divider" aria-hidden="true">
+
+{{/*
+  The chronicle's three handles: backward in time, return to the
+  chronicle, forward in time. When a step doesn't exist (the first
+  or the most recent scroll), the slot is held by a ghost — same
+  words, quieter — implying the path that will exist when the next
+  plate is inscribed. The chronicle has a continuing tense.
 */}}
 <nav class="post-footnav" aria-label="Chronicle navigation">
   {{ with .PrevInSection }}
   <a href="{{ .RelPermalink }}" rel="prev" class="post-footnav__step post-footnav__step--back">← Step backward in time</a>
   {{ else }}
-  <span class="post-footnav__step post-footnav__step--back post-footnav__step--placeholder" aria-hidden="true"></span>
+  <span class="post-footnav__step post-footnav__step--back post-footnav__step--ghost" aria-hidden="true">← Step backward in time</span>
   {{ end }}
 
   <a href="{{ "/" | relURL }}" class="post-footnav__home">Return to the chronicle</a>
@@ -128,7 +118,7 @@
   {{ with .NextInSection }}
   <a href="{{ .RelPermalink }}" rel="next" class="post-footnav__step post-footnav__step--forward">Step forward in time →</a>
   {{ else }}
-  <span class="post-footnav__step post-footnav__step--forward post-footnav__step--placeholder" aria-hidden="true"></span>
+  <span class="post-footnav__step post-footnav__step--forward post-footnav__step--ghost" aria-hidden="true">Step forward in time →</span>
   {{ end }}
 </nav>
 {{ end }}

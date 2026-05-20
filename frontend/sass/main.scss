@@ -391,8 +391,8 @@ header {
 
 footer {
   max-width: 70ch;
-  margin: space(xxxl) auto 0;
-  padding: space(xxl) space(md);
+  margin: space(xl) auto 0;
+  padding: space(xl) space(md);
   text-align: center;
   color: ink(bone);
   font-size: size(small);
@@ -542,10 +542,10 @@ footer {
   }
 }
 
-// Foot colophon: the decorative close-mark inside the article's
-// post-foot. Centered on its own line below the tags.
+// Foot colophon: the decorative close-mark of the inscription.
+// Sits at the very foot of the article, marking its end.
 .colophon {
-  margin: space(xl) auto space(md);
+  margin: 0 auto space(md);
   text-align: center;
   color: ink(hairline);
 
@@ -568,14 +568,13 @@ footer {
 
 .post-footnav {
   max-width: 70ch;
-  margin: space(xl) auto space(xxl);
+  margin: space(xl) auto;
   padding: 0 space(md);
 
   // Three explicit slots: backward (left), home (center), forward
-  // (right). Each slot is a column in its own right, so the home
-  // link stays centered regardless of whether prev / next exist,
-  // and the right slot holds its space even when there's no next
-  // to navigate to.
+  // (right). Each slot has its own grid column, so the home link
+  // stays perfectly centered regardless of whether the prev or
+  // next handles exist as live links or as ghosts.
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: space(lg);
@@ -616,9 +615,16 @@ footer {
     justify-self: end;
   }
 
-  // Placeholders inherit their column from the directional modifier
-  // they carry alongside (--back or --forward); the empty span
-  // holds the grid slot at zero visible width.
+  // The ghost: the journey not yet taken. Same words as an active
+  // step, same italic body voice — just quieter, holding the slot
+  // for what will exist when the next plate is inscribed. The
+  // chronicle has a continuing tense, and this is its visible
+  // form on the page.
+  &__step--ghost {
+    opacity: 0.4;
+    text-decoration: none;
+    cursor: default;
+  }
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -631,13 +637,8 @@ footer {
       justify-self: center;
       text-align: center;
     }
-
-    &__step--placeholder {
-      // On a stacked mobile layout an empty slot would just be an
-      // awkward gap; hide it. Desktop's right-edge balance is what
-      // matters; stacked navigation reorders naturally.
-      display: none;
-    }
+    // Ghost stays visible on mobile too — the placeholder is the
+    // point, not a layout crutch we hide when we can.
   }
 }
 
@@ -645,47 +646,42 @@ footer {
 // POST FURNITURE — tags row, reply column
 // ============================================================
 
-// The article's closing matter — tags bracketed by ornament marks
-// (the section-break above, the colophon below) — wrapped in a
-// single <footer> so the inscription's foot reads as one block of
-// closing furniture.
+// The article's foot — just the colophon close-mark now. Tag row,
+// reply, divider, and chronicle navigation all live outside the
+// article as page-level matter around the inscribed plate.
 .post-foot {
-  margin-top: space(xxl);
-
-  .post-tags {
-    margin-top: 0;
-  }
-
-  > .colophon:first-child {
-    margin-top: 0;
-  }
+  margin-top: space(xl);
 }
 
-// The section break: a small mark above the tag row, paired with
-// the colophon mark below it. Together they bracket the tags as
-// their own section — the way the cartouche bars bracket the title.
-.section-break {
-  text-align: center;
-  margin: 0 auto space(lg);
-  color: ink(hairline);
-
-  svg {
-    width: 50px;
-    height: auto;
-    display: inline-block;
-  }
-}
-
-// Base tag row. Flex-wrapping list of spell-stamps with a leading
-// printed sigil. Generous gap so each stamp sits in its own air;
-// the row reads as a printed catalog entry, not a cluster of chips
-// pressed against each other.
+// Tag row. Base styling serves the listing post-card context
+// (left-aligned, modest gap, sits inside .card). The --standalone
+// modifier centers the row below the article on a single post and
+// gives it generous breathing room — a printed catalog entry
+// rather than a cluster of chips.
 .post-tags {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: space(md);
-  margin-top: space(xl);
+  gap: space(sm);
+
+  &--standalone {
+    max-width: 70ch;
+    margin: space(xl) auto;
+    padding: 0 space(md);
+    justify-content: center;
+    gap: space(lg);
+  }
+}
+
+// The page-level section rule between post metadata and chronicle
+// navigation. Centered, 40ch wide — a short printed line, not a
+// full-width divider.
+.post-divider {
+  max-width: 40ch;
+  margin: space(xl) auto;
+  border: 0;
+  height: 1px;
+  background-color: ink(hairline);
 }
 
 // The small printed sigil: a four-point diamond, the same shape
