@@ -81,7 +81,7 @@
 {{ if gt (len $list) 0 }}
 <div class="side-content">
   <div class="side-title">Arcane Tags</div>
-  <div>
+  <div class="post-tags">
     {{ range first 12 $list }}
     <a class="tag" href="{{ .Permalink }}">{{ .Title }}</a>
     {{ end }}

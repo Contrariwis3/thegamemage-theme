@@ -350,42 +350,24 @@ pre {
   }
 }
 
-// Masthead. The site title is the one moment the press face goes
-// big at the top of every page. Constrained to the same 70ch column
-// the reading-scroll inhabits so the page reads as a single left
-// axis from top to bottom — masthead, cartouche, title, body, tags,
-// colophon, foot-nav, footer all sit on one column edge.
+// Masthead wrapper. The .title-plate inside handles the visual
+// composition — same cartouche-bracketed plate the post incipit
+// uses, so masthead and post titles read as one unified system.
+// The site title's link gets the title's appearance (Hobbit Blue,
+// no underline; inks to green on hover) since the h1 IS the link.
 header {
   max-width: 70ch;
   margin: 0 auto space(xxl);
-  padding: space(xxl) space(md) space(lg);
-  text-align: left;
+  padding: space(xxl) space(md);
 
-  // Masthead h1 yields to the post incipit h1: site identity at
-  // headline size, page identity at display size. Stops the two
-  // headings from reading as siblings stacked on the same axis.
-  h1 {
-    margin: 0 0 space(xs);
-    font-size: size(headline);
+  h1 a {
+    color: ink(hobbit-blue);
+    text-decoration: none;
 
-    a {
-      color: ink(hobbit-blue);
-      text-decoration: none;
-
-      &:hover {
-        background: transparent;
-        color: ink(hobbit-green);
-      }
+    &:hover {
+      background: transparent;
+      color: ink(hobbit-green);
     }
-  }
-
-  p {
-    color: ink(bone);
-    font-family: face(body);
-    font-size: size(large);
-    font-style: italic;
-    margin: 0;
-    opacity: 0.78;
   }
 }
 
@@ -462,6 +444,10 @@ footer {
   display: block;
   margin: 0 auto;
   color: ink(hobbit-blue);
+  // Self-contained centering — title plates render the same in
+  // any context (post incipit, site masthead) without depending
+  // on a text-align: center inherited from a parent wrapper.
+  text-align: center;
 
   .cartouche-rule {
     display: block;

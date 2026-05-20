@@ -1,4 +1,21 @@
 <header class="pure-u-1 pure-u-md-22-24">
-	<h1><a href="/">{{ .Site.Title }}</a></h1>
-	<p>Documenting one mage's journey to follow his dream and die trying</p>
+  {{/*
+    The chronicle's title page. Same engraved title-plate
+    composition as a single post — cartouche bars bracketing a
+    press-face title and a press-face subtitle — so the masthead
+    and the post incipit read as one visual system. On listing
+    surfaces the masthead IS the page's principal heading; on
+    single posts the masthead is absent and the post's own title
+    plate carries the role.
+  */}}
+  <div class="title-plate">
+    {{ partial "ornament/cartouche-rule.html" . }}
+    <h1 class="incipit-title">
+      <a href="/">{{ .Site.Title }}</a>
+    </h1>
+    <div class="arcane-timestamp">
+      Documenting one mage's journey to follow his dream and die trying
+    </div>
+    {{ partial "ornament/cartouche-rule.html" . }}
+  </div>
 </header>
