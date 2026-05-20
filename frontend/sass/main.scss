@@ -110,9 +110,10 @@ $radius: (
 
 // The Ink-In stamp: chip-style elements invert on hover. The fill
 // goes to full accent, the label flips to the stock. A press, not
-// a glow. Call with the accent ink.
+// a glow. Background tint at low strength so the at-rest stamp
+// reads as a quiet ink wash, not an assertive chip.
 @mixin ink-in($accent) {
-  background-color: rgba($accent, 0.10);
+  background-color: rgba($accent, 0.06);
   border: 1px solid $accent;
   color: $accent;
   @include transition(background-color color);
@@ -245,12 +246,10 @@ a {
 // ============================================================
 
 .prose {
-  // 65–75ch measure; the reading core's exit bar. Auto margins keep
-  // the prose centered inside the wider .reading-scroll container,
-  // so the body's air is symmetrical around the column.
+  // 65–75ch measure; the reading core's exit bar. Fills the
+  // .reading-scroll's 70ch column directly — no inner centering
+  // needed since the article container already holds the measure.
   max-width: 70ch;
-  margin-left: auto;
-  margin-right: auto;
   // Reduce orphans and ragged endings in long prose.
   text-wrap: pretty;
 
@@ -412,13 +411,13 @@ footer {
 
 .reading-scroll {
   position: relative;
-  // The article gives the title plate room to breathe — wider than
-  // the body's reading measure so titles at frontispiece scale fit
-  // on one line and the cartouche bars don't read as squeezed.
-  // Body and post-foot constrain themselves back to 70ch for
-  // comfortable reading; the extra width up top is the plate's air.
-  max-width: 90ch;
-  margin: space(xxxl) auto space(xxxl);
+  // Single 70ch reading column for the whole article. Title plate,
+  // body, and post-foot share the same container width and centering
+  // axis — when the article was wider than the body, the body's
+  // drop-cap-anchored visual mass disagreed with the title plate's
+  // container-centered axis, and the title plate read as left-shifted.
+  max-width: 70ch;
+  margin: space(xxl) auto space(xxxl);
   padding: 0 space(md);
 }
 
@@ -522,12 +521,12 @@ footer {
     font-weight: 400;
     color: ink(smaug-red);
     float: left;
-    // Substantial decorated initial — the one Smaug-Red moment on
-    // the surface, sized as the bridge between the loud incipit and
-    // the calm body. Tightened line-height keeps the cap seated
-    // against the first line of running text.
-    font-size: 6em;
-    line-height: 0.82;
+    // Decorated initial — the one Smaug-Red moment on the surface,
+    // the bridge between the loud incipit and the calm body.
+    // Sized one notch down from peak so the body returns to full
+    // measure sooner and the cap doesn't out-shout the title above.
+    font-size: 5em;
+    line-height: 0.85;
     padding: 0.04em space(md) 0 0;
   }
 
@@ -646,15 +645,12 @@ footer {
 // POST FURNITURE — tags row, reply column
 // ============================================================
 
-// The article's closing matter — tags above, decorative close-mark
-// below — wrapped in a single <footer> so the inscription's foot
-// reads as one block of closing furniture, not three loose pieces.
-// Constrained to 70ch (the body's measure) so the foot composition
-// sits inside the same reading band as the prose, not at the wider
-// title-plate width.
+// The article's closing matter — tags bracketed by ornament marks
+// (the section-break above, the colophon below) — wrapped in a
+// single <footer> so the inscription's foot reads as one block of
+// closing furniture.
 .post-foot {
-  max-width: 70ch;
-  margin: space(xxl) auto 0;
+  margin-top: space(xxl);
 
   .post-tags {
     margin-top: 0;
@@ -665,14 +661,30 @@ footer {
   }
 }
 
+// The section break: a small mark above the tag row, paired with
+// the colophon mark below it. Together they bracket the tags as
+// their own section — the way the cartouche bars bracket the title.
+.section-break {
+  text-align: center;
+  margin: 0 auto space(lg);
+  color: ink(hairline);
+
+  svg {
+    width: 50px;
+    height: auto;
+    display: inline-block;
+  }
+}
+
 // Base tag row. Flex-wrapping list of spell-stamps with a leading
-// printed sigil. align-items: baseline keeps the sigil's small
-// diamond visually seated with the stamp labels.
+// printed sigil. Generous gap so each stamp sits in its own air;
+// the row reads as a printed catalog entry, not a cluster of chips
+// pressed against each other.
 .post-tags {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: space(xs);
+  gap: space(md);
   margin-top: space(xl);
 }
 
@@ -696,7 +708,7 @@ footer {
 %stamp-base {
   display: inline-flex;
   align-items: center;
-  padding: 3px 9px;
+  padding: 6px 14px;
   font-family: face(body);
   font-size: size(small);
   letter-spacing: 0.04em;
@@ -704,8 +716,8 @@ footer {
   text-decoration: none;
 
   @media (pointer: coarse) {
-    min-height: 32px;
-    padding: 6px 11px;
+    min-height: 36px;
+    padding: 8px 16px;
   }
 }
 

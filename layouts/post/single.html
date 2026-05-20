@@ -74,6 +74,16 @@
   <footer class="post-foot">
     {{ $categories := (.GetTerms "categories") }}
     {{ if gt (len $categories) 0 }}
+    {{/*
+      Section break: a small printed mark above the tag row, paired
+      with the colophon mark below. Together they bracket the tags
+      as their own section the way the cartouche bars bracket the
+      title plate — the foot has the same compositional vocabulary
+      as the head.
+    */}}
+    <div class="section-break" aria-hidden="true">
+      {{ partial "ornament/colophon.html" . }}
+    </div>
     <div class="post-tags">
       {{ partial "ornament/sigil.html" . }}
       {{ range $categories }}
