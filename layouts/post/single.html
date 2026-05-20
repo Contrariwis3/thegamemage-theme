@@ -28,9 +28,7 @@
 
     <div class="arcane-timestamp">
       Inscribed on
-      <a href="{{ .Permalink }}" class="permalink" title="Permanent link to this scroll">
-        <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "January 2, 2006" }}</time>
-      </a>
+      <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "January 2, 2006" }}</time>
     </div>
 
     {{ if .Params.reply_to_url }}
@@ -85,4 +83,30 @@
   {{ partial "ornament/corner-mark.html" "bl" }}
   {{ partial "ornament/corner-mark.html" "br" }}
 </article>
+
+{{/*
+  The chronicle continues. A three-handle foot-nav so a reader who
+  drops in on a single scroll doesn't reach a dead-end at the
+  colophon. Sits outside the inscribed article, in the body italic
+  voice — a running-foot marginalia, not a section heading.
+
+  Direction reads in narrative time. Hugo's .Next points to the
+  newer page in the section (forward in chronicle time); .Prev
+  points to the older page (backward in time).
+*/}}
+<nav class="post-footnav" aria-label="Chronicle navigation">
+  {{ with .PrevInSection }}
+  <a href="{{ .RelPermalink }}" rel="prev" class="post-footnav__step post-footnav__step--back">← Step backward in time</a>
+  {{ else }}
+  <span class="post-footnav__step post-footnav__step--placeholder" aria-hidden="true"></span>
+  {{ end }}
+
+  <a href="{{ "/" | relURL }}" class="post-footnav__home">Return to the chronicle</a>
+
+  {{ with .NextInSection }}
+  <a href="{{ .RelPermalink }}" rel="next" class="post-footnav__step post-footnav__step--forward">Step forward in time →</a>
+  {{ else }}
+  <span class="post-footnav__step post-footnav__step--placeholder" aria-hidden="true"></span>
+  {{ end }}
+</nav>
 {{ end }}
