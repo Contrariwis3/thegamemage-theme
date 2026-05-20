@@ -1,13 +1,22 @@
 {{/*
-  The cartouche rule: a printed mark sitting at the left edge of the
-  reading column above the post title. A small four-point diamond
-  (the system's sigil) sits on the title's left axis; a 1px hairline
-  rule extends rightward as the pressed underline of the title plate.
+  The cartouche rule: a composed engraved bar. Used twice in the
+  title plate — once above the title, once below the timestamp —
+  so the title and its metadata read as one inscribed plate, not
+  as text floating between two unrelated marks.
 
-  The diamond reuses ornament/sigil.html — the same shape lives at
-  the head of the tag row and at the center of the colophon mark.
+  Composition is symmetric: tip-dot, rule, inner-dot, center diamond,
+  inner-dot, rule, tip-dot. Reads as an engraved title-bar, not a
+  hairline. Fill follows currentColor; the title plate sets that
+  to Hobbit Blue so the bar inks the same pass as the title above it.
 */}}
-<div class="cartouche-rule" aria-hidden="true">
-  {{ partial "ornament/sigil.html" . }}
-  <span class="cartouche-rule__line"></span>
-</div>
+<svg class="cartouche-rule" viewBox="0 0 240 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet">
+  <g fill="currentColor" stroke="none">
+    <circle cx="4" cy="7" r="1.6" />
+    <rect x="12" y="6.4" width="80" height="1.2" />
+    <circle cx="100" cy="7" r="1.6" />
+    <path d="M 120 0.5 L 128 7 L 120 13.5 L 112 7 Z" />
+    <circle cx="140" cy="7" r="1.6" />
+    <rect x="148" y="6.4" width="80" height="1.2" />
+    <circle cx="236" cy="7" r="1.6" />
+  </g>
+</svg>

@@ -454,59 +454,75 @@ footer {
   }
 }
 
-// The incipit: pressed title, cartouche rule, diegetic timestamp,
-// and the one decorated initial that opens the body.
+// The incipit: a composed engraved title plate that is the only
+// place wonder is allowed to be near-visible. The brief asks for
+// "C-incipit on a B-calm body" — a concentrated wonder-moment at
+// the head, then austere reading. This zone is the C; the body
+// below recedes into B by deliberate contrast.
 //
-// Text in the incipit aligns left to share the body's reading axis;
-// the cartouche rule is the centered-in-its-own-width ornament that
-// precedes the title — the page's punctuation, not its frame.
+// The title plate is centered as one composed block; the body that
+// follows stays left-aligned and austere. The asymmetry that didn't
+// land before lands here because the incipit has enough visual
+// weight to anchor against the left-aligned reading column beneath.
 .incipit {
-  margin: space(xxl) 0 space(xl);
+  margin: space(xxl) 0 space(xxxl);
+  text-align: center;
+}
 
-  // Cartouche rule: a small printed sigil at the column's left edge
-  // followed by a 1px hairline rule extending right. The diamond
-  // sits on the same x-axis as the title's first letter beneath it,
-  // so it reads as a paragraph-opening mark rather than a floating
-  // ornament centered above orphan text.
+.title-plate {
+  display: block;
+  margin: 0 auto;
+  color: ink(hobbit-blue);
+
   .cartouche-rule {
-    display: flex;
-    align-items: center;
-    gap: space(xs);
-    margin: 0 0 space(lg);
+    display: block;
     width: 100%;
-    max-width: 28ch;
-    color: ink(hairline);
-
-    .sigil {
-      // Inherit the cartouche's hairline color (the sigil's default
-      // is hobbit-green for tag-row use). Zero margin-right inside
-      // the cartouche — the flex gap owns spacing here, no doubling.
-      color: inherit;
-      margin-right: 0;
-    }
-
-    &__line {
-      display: block;
-      flex: 1;
-      height: 1px;
-      background-color: currentColor;
-    }
+    max-width: 32ch;
+    height: auto;
+    margin: 0 auto;
+    color: inherit;
   }
 
   .incipit-title {
-    margin: 0 0 space(md);
+    font-family: face(press);
+    font-weight: 400;
+    color: ink(hobbit-blue);
+    // Frontispiece scale. Fluid from ~3rem at mobile to ~6rem at
+    // wide desktop — committed wonder-moment, no longer "polite
+    // serif at 3rem." The tuning happens here; back off later if
+    // the keystone audit fails.
+    font-size: clamp(3rem, 5vw + 1rem, 6rem);
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+    margin: space(lg) 0 space(md);
   }
 
   .arcane-timestamp {
-    margin: 0 0 space(xl);
-  }
-
-  .incipit-reply {
-    font-style: italic;
-    color: ink(bone);
-    opacity: 0.78;
+    font-family: face(press);
+    font-size: size(title);
+    line-height: 1.3;
+    color: ink(hobbit-green);
     margin: 0 0 space(lg);
   }
+}
+
+// Bare timestamp for untitled microblog-style notes — no title
+// plate, just the diegetic date alone on its own axis.
+.arcane-timestamp--bare {
+  font-family: face(press);
+  font-size: size(title);
+  line-height: 1.3;
+  color: ink(hobbit-green);
+  margin: 0 0 space(xl);
+}
+
+.incipit-reply {
+  font-style: italic;
+  color: ink(bone);
+  opacity: 0.78;
+  margin: 0 0 space(lg);
+  text-align: center;
 }
 
 // The decorated initial: first letter of the first paragraph of the
@@ -519,9 +535,13 @@ footer {
     font-weight: 400;
     color: ink(smaug-red);
     float: left;
-    font-size: 4.2em;
-    line-height: 0.92;
-    padding: 0.08em space(sm) 0 0;
+    // Substantial decorated initial — the one Smaug-Red moment on
+    // the surface, sized as the bridge between the loud incipit and
+    // the calm body. Tightened line-height keeps the cap seated
+    // against the first line of running text.
+    font-size: 6em;
+    line-height: 0.82;
+    padding: 0.04em space(md) 0 0;
   }
 
   // Short / untitled notes don't carry the wonder-moment: the

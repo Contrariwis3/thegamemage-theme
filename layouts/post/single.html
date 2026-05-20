@@ -20,16 +20,34 @@
   {{ partial "ornament/corner-mark.html" "tr" }}
 
   <header class="incipit">
-    {{ partial "ornament/cartouche-rule.html" . }}
-
     {{ if .Title }}
-    <h1 class="incipit-title">{{ .Title }}</h1>
-    {{ end }}
-
-    <div class="arcane-timestamp">
+    {{/*
+      Titled scrolls get the full engraved title plate: a composed
+      cartouche above the title, the title at frontispiece scale,
+      the diegetic timestamp, and a matching cartouche below the
+      timestamp. Together they read as one inscribed plate — the
+      C-incipit wonder-moment the brief asks for.
+    */}}
+    <div class="title-plate">
+      {{ partial "ornament/cartouche-rule.html" . }}
+      <h1 class="incipit-title">{{ .Title }}</h1>
+      <div class="arcane-timestamp">
+        Inscribed on
+        <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "January 2, 2006" }}</time>
+      </div>
+      {{ partial "ornament/cartouche-rule.html" . }}
+    </div>
+    {{ else }}
+    {{/*
+      Untitled scrolls (microblog-style short notes) skip the title
+      plate entirely — they don't carry the wonder-moment, just the
+      diegetic timestamp on its own.
+    */}}
+    <div class="arcane-timestamp arcane-timestamp--bare">
       Inscribed on
       <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "January 2, 2006" }}</time>
     </div>
+    {{ end }}
 
     {{ if .Params.reply_to_url }}
     <p class="incipit-reply">
