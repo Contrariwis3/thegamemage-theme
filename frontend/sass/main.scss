@@ -507,9 +507,10 @@ footer {
   }
 }
 
-// Foot colophon: the close-mark at the end of the inscription.
+// Foot colophon: the decorative close-mark inside the article's
+// post-foot. Centered on its own line below the tags.
 .colophon {
-  margin: space(xxl) auto space(md);
+  margin: space(xl) auto space(md);
   text-align: center;
   color: ink(hairline);
 
@@ -534,11 +535,17 @@ footer {
   max-width: 70ch;
   margin: space(xl) auto space(xxl);
   padding: 0 space(md);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: baseline;
+
+  // Three explicit slots: backward (left), home (center), forward
+  // (right). Each slot is a column in its own right, so the home
+  // link stays centered regardless of whether prev / next exist,
+  // and the right slot holds its space even when there's no next
+  // to navigate to.
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   gap: space(lg);
+  align-items: baseline;
+
   font-family: face(body);
   font-style: italic;
   font-size: size(base);
@@ -559,18 +566,41 @@ footer {
     }
   }
 
-  &__step--placeholder {
-    // Hold the slot when prev or next is absent (first / last scroll).
-    flex: 0 1 auto;
+  &__step--back {
+    grid-column: 1;
+    justify-self: start;
   }
 
+  &__home {
+    grid-column: 2;
+    justify-self: center;
+  }
+
+  &__step--forward {
+    grid-column: 3;
+    justify-self: end;
+  }
+
+  // Placeholders inherit their column from the directional modifier
+  // they carry alongside (--back or --forward); the empty span
+  // holds the grid slot at zero visible width.
+
   @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    grid-template-columns: 1fr;
     gap: space(md);
 
+    &__step--back,
+    &__home,
+    &__step--forward {
+      grid-column: 1;
+      justify-self: center;
+      text-align: center;
+    }
+
     &__step--placeholder {
+      // On a stacked mobile layout an empty slot would just be an
+      // awkward gap; hide it. Desktop's right-edge balance is what
+      // matters; stacked navigation reorders naturally.
       display: none;
     }
   }
@@ -580,10 +610,30 @@ footer {
 // POST FURNITURE — tags row, reply column
 // ============================================================
 
-.post-tags {
-  // Margin alone separates the tag stamps from the body — no rule
-  // overhead. The stamps' own ink-tint plates carry their boundary.
+// The article's closing matter — tags above, decorative close-mark
+// below — wrapped in a single <footer> so the inscription's foot
+// reads as one block of closing furniture, not three loose pieces.
+.post-foot {
   margin-top: space(xxl);
+
+  .post-tags {
+    // The wrapper owns the gap above; the stamps' own ink-tint
+    // plates carry their boundary, no hairline rule.
+    margin-top: 0;
+  }
+
+  // Tag-less posts: the colophon mark is the only child of the
+  // foot. Suppress its top margin so the post-foot's own margin
+  // is the entire gap.
+  > .colophon:first-child {
+    margin-top: 0;
+  }
+}
+
+.post-tags {
+  // Used inside .post-foot on single and inside .card on the
+  // listing post-card. The base rule serves the listing context.
+  margin-top: space(xl);
 }
 
 .tags-column {

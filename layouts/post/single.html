@@ -56,28 +56,30 @@
     </div>
   </div>
 
-  {{ $categories := (.GetTerms "categories") }}
-  {{ if gt (len $categories) 0 }}
-  <div class="post-tags">
-    <div class="pure-g">
-      <div class="pure-u-2-3 tags-column">
-        {{ range $categories }}
-        <a class="tag" href="{{ .Permalink }}">
-          <i class="ph ph-sparkle" aria-hidden="true"></i>
-          {{ .LinkTitle }}
-        </a>
-        {{ end }}
-      </div>
+  <footer class="post-foot">
+    {{ $categories := (.GetTerms "categories") }}
+    {{ if gt (len $categories) 0 }}
+    <div class="post-tags">
+      <div class="pure-g">
+        <div class="pure-u-2-3 tags-column">
+          {{ range $categories }}
+          <a class="tag" href="{{ .Permalink }}">
+            <i class="ph ph-sparkle" aria-hidden="true"></i>
+            {{ .LinkTitle }}
+          </a>
+          {{ end }}
+        </div>
 
-      <div class="pure-u-1-3 response-column">
-        {{ partial "reply-by-email.html" . }}
+        <div class="pure-u-1-3 response-column">
+          {{ partial "reply-by-email.html" . }}
+        </div>
       </div>
     </div>
-  </div>
-  {{ end }}
+    {{ end }}
 
-  <footer class="colophon" aria-hidden="true">
-    {{ partial "ornament/colophon.html" . }}
+    <div class="colophon" aria-hidden="true">
+      {{ partial "ornament/colophon.html" . }}
+    </div>
   </footer>
 
   {{ partial "ornament/corner-mark.html" "bl" }}
@@ -98,7 +100,7 @@
   {{ with .PrevInSection }}
   <a href="{{ .RelPermalink }}" rel="prev" class="post-footnav__step post-footnav__step--back">← Step backward in time</a>
   {{ else }}
-  <span class="post-footnav__step post-footnav__step--placeholder" aria-hidden="true"></span>
+  <span class="post-footnav__step post-footnav__step--back post-footnav__step--placeholder" aria-hidden="true"></span>
   {{ end }}
 
   <a href="{{ "/" | relURL }}" class="post-footnav__home">Return to the chronicle</a>
@@ -106,7 +108,7 @@
   {{ with .NextInSection }}
   <a href="{{ .RelPermalink }}" rel="next" class="post-footnav__step post-footnav__step--forward">Step forward in time →</a>
   {{ else }}
-  <span class="post-footnav__step post-footnav__step--placeholder" aria-hidden="true"></span>
+  <span class="post-footnav__step post-footnav__step--forward post-footnav__step--placeholder" aria-hidden="true"></span>
   {{ end }}
 </nav>
 {{ end }}
