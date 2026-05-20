@@ -417,7 +417,10 @@ footer {
   // drop-cap-anchored visual mass disagreed with the title plate's
   // container-centered axis, and the title plate read as left-shifted.
   max-width: 70ch;
-  margin: space(xxl) auto space(xxxl);
+  // Symmetric vertical air: same space above and below the plate
+  // so the colophon mark at the foot doesn't sit closer to the
+  // last paragraph than it does to the tag row beneath the article.
+  margin: space(xxl) auto space(xxl);
   padding: 0 space(md);
 }
 
@@ -649,8 +652,11 @@ footer {
 // The article's foot — just the colophon close-mark now. Tag row,
 // reply, divider, and chronicle navigation all live outside the
 // article as page-level matter around the inscribed plate.
+// space(xxl) matches the article's outer bottom margin so the
+// colophon sits with equal air on both sides — close to neither
+// the last paragraph above it nor the tag row below it.
 .post-foot {
-  margin-top: space(xl);
+  margin-top: space(xxl);
 }
 
 // Tag row. Base styling serves the listing post-card context
