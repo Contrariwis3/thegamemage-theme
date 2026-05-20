@@ -16,9 +16,6 @@
 */}}
 {{ define "main" }}
 <article class="reading-scroll" lang="{{ .Site.Language.Lang | default "en" }}">
-  {{ partial "ornament/corner-mark.html" "tl" }}
-  {{ partial "ornament/corner-mark.html" "tr" }}
-
   <header class="incipit">
     {{ if .Title }}
     {{/*
@@ -97,9 +94,6 @@
       {{ partial "ornament/colophon.html" . }}
     </div>
   </footer>
-
-  {{ partial "ornament/corner-mark.html" "bl" }}
-  {{ partial "ornament/corner-mark.html" "br" }}
 </article>
 
 {{/*

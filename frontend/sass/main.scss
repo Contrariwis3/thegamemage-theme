@@ -245,8 +245,12 @@ a {
 // ============================================================
 
 .prose {
-  // 65–75ch measure; the reading core's exit bar.
+  // 65–75ch measure; the reading core's exit bar. Auto margins keep
+  // the prose centered inside the wider .reading-scroll container,
+  // so the body's air is symmetrical around the column.
   max-width: 70ch;
+  margin-left: auto;
+  margin-right: auto;
   // Reduce orphans and ragged endings in long prose.
   text-wrap: pretty;
 
@@ -408,31 +412,14 @@ footer {
 
 .reading-scroll {
   position: relative;
-  // The reading column itself; the surrounding grid provides outer
-  // margins. Hold the prose at a comfortable measure.
-  max-width: 70ch;
-  margin: space(xxl) auto space(xxxl);
+  // The article gives the title plate room to breathe — wider than
+  // the body's reading measure so titles at frontispiece scale fit
+  // on one line and the cartouche bars don't read as squeezed.
+  // Body and post-foot constrain themselves back to 70ch for
+  // comfortable reading; the extra width up top is the plate's air.
+  max-width: 90ch;
+  margin: space(xxxl) auto space(xxxl);
   padding: 0 space(md);
-
-  // Edge ornament: corner registration marks. Authored as inline SVG
-  // partials placed inside the article — we just position them.
-  .corner-mark {
-    position: absolute;
-    width: 14px;
-    height: 14px;
-    color: ink(hairline);
-
-    &--tl { top: 0;    left: -22px;  }
-    &--tr { top: 0;    right: -22px; }
-    &--bl { bottom: 0; left: -22px;  }
-    &--br { bottom: 0; right: -22px; }
-
-    @media (max-width: 768px) {
-      // Tuck closer on small screens; ornament density reduces.
-      &--tl, &--bl { left: -4px;  }
-      &--tr, &--br { right: -4px; }
-    }
-  }
 }
 
 // Arcane timestamp — the diegetic "Inscribed on…" line. Used both in
@@ -662,12 +649,12 @@ footer {
 // The article's closing matter — tags above, decorative close-mark
 // below — wrapped in a single <footer> so the inscription's foot
 // reads as one block of closing furniture, not three loose pieces.
-//
-// Tags align left (same axis as the body and the incipit). The
-// colophon mark stays centered as the closing ornament punctuation,
-// giving the page rhythm rather than a centered-stack symmetry.
+// Constrained to 70ch (the body's measure) so the foot composition
+// sits inside the same reading band as the prose, not at the wider
+// title-plate width.
 .post-foot {
-  margin-top: space(xxl);
+  max-width: 70ch;
+  margin: space(xxl) auto 0;
 
   .post-tags {
     margin-top: 0;

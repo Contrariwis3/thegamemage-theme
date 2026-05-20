@@ -6,6 +6,15 @@
 <body>
   <a class="skip-link" href="#main-content">Skip to the inscription</a>
 
+  {{/*
+    The masthead is the chronicle's title page — it names the book.
+    Listings (home, section, taxonomy) carry it; an individual
+    inscribed plate does not. A reader landing on a single scroll
+    opens directly to the plate, as you would to a tipped-in plate
+    in a fine book. The chronicle's name lives on the listing
+    surfaces; the foot-nav "Return to the chronicle" is the door.
+  */}}
+  {{ if ne .Kind "page" }}
   <div class="pure-g">
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
 
@@ -13,6 +22,7 @@
 
     <div class="pure-u-1-24 spacer-column" aria-hidden="true"></div>
   </div>
+  {{ end }}
 
   {{/*
     Single grid row for the main content area.
