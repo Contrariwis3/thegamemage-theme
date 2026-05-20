@@ -348,11 +348,14 @@ pre {
 }
 
 // Masthead. The site title is the one moment the press face goes
-// big at the top of every page. Separated from main by margin
-// alone — depth via space, not a horizontal rule across the page.
+// big at the top of every page. Constrained to the same 70ch column
+// the reading-scroll inhabits so the page reads as a single left
+// axis from top to bottom — masthead, cartouche, title, body, tags,
+// colophon, foot-nav, footer all sit on one column edge.
 header {
-  padding: space(xxl) 0 space(lg);
-  margin-bottom: space(xxl);
+  max-width: 70ch;
+  margin: 0 auto space(xxl);
+  padding: space(xxl) space(md) space(lg);
   text-align: left;
 
   h1 {
@@ -380,8 +383,9 @@ header {
 }
 
 footer {
-  padding: space(xxl) 0;
-  margin-top: space(xxxl);
+  max-width: 70ch;
+  margin: space(xxxl) auto 0;
+  padding: space(xxl) space(md);
   text-align: center;
   color: ink(bone);
   font-size: size(small);
