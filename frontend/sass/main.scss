@@ -53,7 +53,9 @@ $faces: (
 }
 
 $sizes: (
-  base:      16px,
+  base:      1rem,   // body root; 1rem (not 16px) so a reader who set a
+                     // larger browser default actually gets larger reading
+                     // ink — the whole rem-based scale rides on this.
   small:     0.8rem,
   code:      0.9rem,
   large:     1.15rem,
@@ -252,6 +254,11 @@ a {
   max-width: 70ch;
   // Reduce orphans and ragged endings in long prose.
   text-wrap: pretty;
+  // Long URLs and unbreakable strings stay inside the measure
+  // instead of pushing the column edge. `break-word` only intrudes
+  // when there's no other choice, so ordinary prose still breaks
+  // at word boundaries.
+  overflow-wrap: break-word;
 
   p {
     margin: 0 0 space(lg);
@@ -864,8 +871,14 @@ footer {
     padding: 0;
     list-style: none;
 
-    li {
-      padding: 4px 0;
+    // The link is the tap target, not the <li>. The previous rule
+    // padded the <li> 4px above and below the link, leaving the
+    // anchor at text-bbox size — comfortable to read, awkward to
+    // tap. Moving the padding inside the <a> as a block makes the
+    // whole row the affordance.
+    li > a {
+      display: block;
+      padding: space(sm) 0;
     }
   }
 }
@@ -961,6 +974,18 @@ footer {
     // a reader's chronological instinct.
     &.older { text-align: left; }
     &.newer { text-align: right; }
+
+    // The whole slot is the tap target, not just the text bbox.
+    // The active link and the ghost share the same vertical air so
+    // they occupy identical space, and a thumb landing anywhere in
+    // the third-column hits the link instead of falling into the
+    // gap between cells. Written out (`.pagination-link__ghost`
+    // rather than `&__ghost`) so the SCSS nesting resolves cleanly.
+    > a,
+    > .pagination-link__ghost {
+      display: block;
+      padding: space(sm) 0;
+    }
 
     // The ghost: the direction not yet taken. Same words as an
     // active link, same color — just quieter, holding the slot for
