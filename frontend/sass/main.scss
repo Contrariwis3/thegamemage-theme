@@ -4,8 +4,17 @@
 @use "sass:map";
 
 // ============================================================
-// THE PRESS — self-hosted IM Fell English (Regular only)
+// THE FACES — all self-hosted (no third-party font CDN)
 // ============================================================
+//
+// IM Fell English carries the press voice (titles, timestamps,
+// section heads). Atkinson Hyperlegible Next + Mono carry the
+// reading and code voices, designed by the Braille Institute for
+// character distinction. Latin subset only; an English chronicle
+// doesn't need latin-ext, and the body's system-font fallbacks
+// catch any rare overflow gracefully. No 700-weight Atkinson —
+// emphasis is recolor-not-embolden (per DESIGN.md), so a bold cut
+// would never render.
 
 @font-face {
   font-family: "IM Fell English";
@@ -13,6 +22,30 @@
   font-weight: 400;
   font-display: swap;
   src: url("../fonts/IMFellEnglish-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/AtkinsonHyperlegibleNext-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/AtkinsonHyperlegibleNext-Italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Atkinson Hyperlegible Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/AtkinsonHyperlegibleMono-Regular.woff2") format("woff2");
 }
 
 // ============================================================

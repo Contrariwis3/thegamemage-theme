@@ -35,15 +35,16 @@
   <script data-goatcounter="https://thegamemage.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
   {{/*
-    Preload the press face so the incipit doesn't reflow. The font is
-    self-hosted via webpack and lands in /assets/ with a stable name.
+    Preload the two faces the reader sees first: the press face for
+    the incipit/masthead so the title plate doesn't reflow, and the
+    body face for running prose since it's the dominant ink across
+    the page. Italic and Mono are not preloaded — they're loaded
+    only when an `em` or `code` element forces them, which the
+    reader rarely hits above the fold. All faces are self-hosted
+    via webpack and land in /assets/ with stable names.
   */}}
   <link rel="preload" href="{{ "assets/IMFellEnglish-Regular.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
-
-  <!-- Google Fonts: the hyperlegible body voices (Atkinson Next + Mono). -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400&family=Atkinson+Hyperlegible+Mono&display=swap" rel="stylesheet">
+  <link rel="preload" href="{{ "assets/AtkinsonHyperlegibleNext-Regular.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 
   <link rel="stylesheet" href="{{ "styles.css" | relURL }}?{{ .Site.Params.theme_seconds }}">
 
