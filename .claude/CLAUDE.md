@@ -9,7 +9,7 @@ Hugo theme for [thegamemage.com](https://thegamemage.com), hosted on micro.blog.
 
 ## Architecture
 - Hugo theme (layouts + static assets only — no full site here)
-- Frontend built with webpack: SCSS via sass-loader, PureCSS grid, Phosphor Icons
+- Frontend built with webpack: SCSS via sass-loader, PureCSS grid, self-hosted IM Fell English
 - `npm run build` compiles frontend assets into `static/`
 
 ## Testing
