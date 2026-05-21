@@ -27,7 +27,18 @@
   {{- end -}}
   {{- end -}}
 
-  <title>{{ block "title" . }}{{ if .IsHome }}{{ .Site.Title }}{{ else if .Title }}{{ .Title }} | {{ .Site.Title }}{{ else }}{{ delimit (split .Summary " " | first 5) " " }} … | {{ .Site.Title }}{{ end }}{{ end }}</title>
+  {{/*
+    Title fallback for untitled microblog scrolls runs .Summary
+    through `plainify` to strip HTML before splitting on spaces.
+    .Summary returns the rendered summary (which includes the
+    wrapping <p> tag), so a raw `split " "` produces a first token
+    of "<p>A" rather than "A" — the tag then leaks into the
+    <title> element and into any link-card preview that pulls the
+    page title (Mastodon, Slack, Open Graph readers). `plainify`
+    strips tags first, so the five-word truncation operates on
+    five real words.
+  */}}
+  <title>{{ block "title" . }}{{ if .IsHome }}{{ .Site.Title }}{{ else if .Title }}{{ .Title }} | {{ .Site.Title }}{{ else }}{{ delimit (split (plainify .Summary) " " | first 5) " " }} … | {{ .Site.Title }}{{ end }}{{ end }}</title>
 
   <link rel="canonical" href="{{ .Permalink }}">
 

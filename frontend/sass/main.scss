@@ -325,7 +325,14 @@ a {
   }
 
   em {
-    color: ink(hobbit-green);
+    // Emphasis is italic alone — the reading ink keeps its color.
+    // An earlier pass recolored em to Hobbit Green to mirror the
+    // Recolor-Not-Embolden rule, but inside a body paragraph with
+    // a blue link and a red strong, three accent inks turned the
+    // measure into typographic confetti. Strong still recolors
+    // (Smaug Red) because it carries the rare-hot heat the system
+    // asks for; em recedes into italic Bone so dense paragraphs
+    // run on two inks plus the inline code wash, not four.
     font-weight: 400;
     font-style: italic;
   }
@@ -481,6 +488,16 @@ footer {
   color: ink(hobbit-green);
   margin: 0 0 space(lg);
 
+  // The whole phrase stays on one line. "Inscribed on January 15,
+  // 2026" is a press-set caption — a composed line, not a date
+  // with a label — and reads as a layout failure if "Inscribed on"
+  // wraps to its own row above the date. The phrase fits well
+  // under 30 characters even at 1.5rem on iPhone-SE width, so the
+  // nowrap doesn't force horizontal scroll. An earlier pass only
+  // wrapped <time> alone; the prefix could still break, which is
+  // the bug this fix addresses.
+  white-space: nowrap;
+
   .permalink {
     // Quiet the permalink underline — the timestamp itself is the
     // signal, the underline is the affordance.
@@ -526,11 +543,17 @@ footer {
     font-family: face(press);
     font-weight: 400;
     color: ink(hobbit-blue);
-    // Frontispiece scale. Fluid from ~3rem at mobile to ~6rem at
-    // wide desktop — committed wonder-moment, no longer "polite
-    // serif at 3rem." The tuning happens here; back off later if
-    // the keystone audit fails.
-    font-size: clamp(3rem, 5vw + 1rem, 6rem);
+    // Frontispiece scale. Fluid from ~2.4rem at narrow mobile to
+    // ~6rem at wide desktop — the desktop peak is the committed
+    // wonder-moment the brief asks for, and is kept on purpose
+    // even though a 15-word title would wrap to several lines at
+    // that size (the chronicle's titles run short; this is a
+    // content-side discipline, not a type-size limit). The floor
+    // dropped from 3rem to 2.4rem so iPhone-SE-width viewports
+    // get genuinely smaller type for an unusually long title
+    // instead of being forced to wrap a 48px press serif onto
+    // five lines inside a 375px column.
+    font-size: clamp(2.4rem, 5vw + 1rem, 6rem);
     line-height: 1.05;
     letter-spacing: 0.01em;
     text-wrap: balance;
@@ -586,9 +609,16 @@ footer {
 // rare. The :has(> h2) guard means an untitled microblog note as
 // the most-recent post doesn't get a drop cap that has no body to
 // anchor against.
-.reading-body > .prose > p:first-of-type::first-letter,
+//
+// The :first-child guard (rather than :first-of-type) means the cap
+// fires only when the prose actually opens with a paragraph. If a
+// post happens to lead with an <h2>, a hero <img>, a list, or a
+// pull-quote <blockquote>, the cap simply doesn't fire — better to
+// drop the flourish than to land a 5em red letter on a mid-body
+// paragraph that isn't the inscription's opening line.
+.reading-body > .prose > p:first-child::first-letter,
 .chronicle-front main > article.card:first-of-type:has(> h2)
-  > .prose > p:first-of-type::first-letter {
+  > .prose > p:first-child::first-letter {
   font-family: face(press);
   font-weight: 400;
   color: ink(smaug-red);
@@ -602,13 +632,93 @@ footer {
 
 // Short / untitled reading scrolls don't carry the wonder-moment:
 // the template adds .reading-body--untitled to suppress the cap.
-.reading-body--untitled > .prose > p:first-of-type::first-letter {
+.reading-body--untitled > .prose > p:first-child::first-letter {
   font-family: inherit;
   color: inherit;
   float: none;
   font-size: inherit;
   line-height: inherit;
   padding: 0;
+}
+
+// The reading-body wraps just the prose. Position: relative makes
+// it the anchor for the corner registration marks, which bracket
+// the prose specifically — the title plate above and the colophon
+// below stand outside the framed reading area.
+.reading-body {
+  position: relative;
+}
+
+// Corner registration marks: small hairline crosshairs that frame
+// just the prose portion of the inscription. A printer's pre-trim
+// mark — the small registration crosshair that lives outside the
+// crop area of a printed image, not around the whole plate. Sized
+// to belong to the system (slightly smaller than a chip, hairline-
+// colored so they recede into the stock) and positioned at the
+// .reading-body's corners with a generous overhang so they sit
+// clearly outside the prose and read as marginalia, not as
+// borders crowding the text.
+//
+// The 32px offset gives the marks 22px of clear space between
+// their inner edge and the prose — enough breath that the marks
+// feel like they're framing the column from a respectful distance,
+// not pressing in on the lines. Earlier passes at 16px and 24px
+// sat too close; without the title plate buffering the gap (the
+// way it did when the marks bracketed .reading-scroll as a whole),
+// the vertical breath especially needed to be this generous.
+// Eyeballed in devtools at the final value.
+//
+// Suppressed below 768px: on a phone the viewport edge IS the trim,
+// so a mark close to the screen edge is noise rather than craft.
+// The metaphor lives on desktop where the reading column floats
+// inside a wider stock and the marks earn their job marking the
+// printed image area.
+.corner-mark {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  color: ink(hairline);
+  pointer-events: none;
+
+  &--tl {
+    top: -32px;
+    left: -32px;
+  }
+
+  &--tr {
+    top: -32px;
+    right: -32px;
+  }
+
+  &--bl {
+    bottom: -32px;
+    left: -32px;
+  }
+
+  &--br {
+    bottom: -32px;
+    right: -32px;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+// Microblog ceremony suppression. The drop cap, the colophon
+// fleuron, and now the corner registration marks all sit out on
+// untitled scrolls. Each of these details is meant to read as a
+// small intentional flourish inside the rhythm of a full
+// inscription — on a 1,000-word essay they're moments you barely
+// notice as you settle into the reading. On a one-sentence note
+// they pile up: a 5em red drop cap, a 60px fleuron, and four
+// registration marks framing a single line of prose adds up to
+// more apparatus than content, which is the audit failure the
+// keystone forbids ("a delightful detail caught happening is
+// already too loud"). The note is its own register; let it be
+// brief without the chronicle's full apparatus around it.
+.reading-body--untitled .corner-mark {
+  display: none;
 }
 
 // Foot colophon: the decorative close-mark of the inscription.
@@ -623,6 +733,16 @@ footer {
     height: auto;
     display: inline-block;
   }
+}
+
+// Untitled microblog scrolls skip the close-mark entirely. The
+// fleuron is sized for a closing flourish on an inscription; on a
+// one-sentence note it dwarfs the body and inverts the apparatus-
+// to-prose ratio. The bare timestamp at the head plus the prose
+// itself is the right composition for a short note; the close
+// mark would be furniture without an inscription to close.
+.reading-scroll:has(.reading-body--untitled) .colophon {
+  display: none;
 }
 
 // ============================================================
@@ -647,7 +767,11 @@ footer {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: space(lg);
-  align-items: baseline;
+  // Center, not baseline: the side slots carry arrow glyphs that
+  // pull the baseline up by a pixel or two relative to the plain
+  // middle slot. Centering aligns the type optically across the
+  // three slots even when the outer columns wear marks.
+  align-items: center;
 
   font-family: face(body);
   font-style: italic;
@@ -689,8 +813,15 @@ footer {
   // for what will exist when the next plate is inscribed. The
   // chronicle has a continuing tense, and this is its visible
   // form on the page.
+  //
+  // Opacity 0.6 keeps the ghost meaningfully quieter than the live
+  // siblings while still clearing WCAG 2.1 AA against Inkstock
+  // (Hobbit Green at full ink is 9.3:1; the alpha-composited mix
+  // at 0.6 lands comfortably above the 4.5:1 body-text threshold).
+  // The previous 0.4 fell under, which made the printed marginalia
+  // unreadable even as it was being announced to AT via aria-hidden.
   &__step--ghost {
-    opacity: 0.4;
+    opacity: 0.6;
     text-decoration: none;
     cursor: default;
   }
@@ -725,46 +856,59 @@ footer {
   margin-top: space(xxl);
 }
 
-// Tag row. Base styling serves the listing post-card context
-// (left-aligned, modest gap, sits inside .card). The --standalone
-// modifier centers the row below the article on a single post and
-// gives it generous breathing room — a printed catalog entry
-// rather than a cluster of chips.
+// Tag row base. Used in the listing post-card context (left-aligned
+// inside .card), in the side-scroll panel, and in the catalog
+// sigils row on the taxonomy index. Modest gap, no centering — the
+// surface that hosts the row provides the composition. The single
+// reading scroll uses .post-coda below instead of a tag row alone.
 .post-tags {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: space(sm);
-
-  &--standalone {
-    max-width: 70ch;
-    margin: space(xl) auto;
-    padding: 0 space(md);
-    justify-content: center;
-    gap: space(lg);
-  }
 }
 
-// The reply-by-raven chip wrapper. Centers the Smaug Red action
-// stamp between the post-tag row and the section divider on a
-// single scroll, with the same 70ch column the rest of the page
-// matter uses so the chip sits inside the chronicle's spread.
-.reply-chip {
+// The post coda: one composed row of catalog stamps below a single
+// inscription. Tag chips (Hobbit Green) flow from the left as the
+// printed catalog entry — a book's bottom-margin classification
+// row, where indexable terms have always lived. The reply chip
+// (Smaug Red) pushes to the right end of the line as the action
+// counterweight — the marginalia gesture, where a reader's reply
+// would be written into a real book's outer column. The two poles
+// balance the row without collapsing onto a centered axis: a
+// composed line with breath between the catalog and the action,
+// not a cluster.
+//
+// When the inscription carries no tags, the reply chip alone sits
+// on the right where the action always lives — deliberate, not
+// orphaned. Same primitive shape in both cases; only the ink
+// changes per the three-ink rule.
+//
+// Replaces the prior pair of rows (.post-tags--standalone +
+// .reply-chip) and the 40ch hairline divider that used to sit
+// below them. The colophon at the foot of the article is the
+// single closing mark; the post-coda is the catalog line; the
+// foot-nav below is the chronicle's continuation. Three zones,
+// each doing one job.
+.post-coda {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: space(lg);
   max-width: 70ch;
   margin: space(xl) auto;
   padding: 0 space(md);
-  text-align: center;
-}
 
-// The page-level section rule between post metadata and chronicle
-// navigation. Centered, 40ch wide — a short printed line, not a
-// full-width divider.
-.post-divider {
-  max-width: 40ch;
-  margin: space(xl) auto;
-  border: 0;
-  height: 1px;
-  background-color: ink(hairline);
+  // The action counterweight. `margin-left: auto` fills the gap
+  // between the catalog stamps and the reply chip with breath,
+  // pushing the chip to the right end of the row. Both selectors
+  // are listed because the design-system primitive is .response-tag
+  // (DESIGN.md §5) while the live class on production is
+  // .reply-by-email (the Micro.blog plugin's emitted class).
+  .response-tag,
+  .reply-by-email {
+    margin-left: auto;
+  }
 }
 
 // The small printed sigil: a four-point diamond, the same shape
@@ -1115,10 +1259,13 @@ footer {
     // The ghost: the direction not yet taken. Same words as an
     // active link, same color — just quieter, holding the slot for
     // a position that may exist later (or never, if the reader
-    // stands at the end). Mirrors the post-foot-nav ghost.
+    // stands at the end). Mirrors the post-foot-nav ghost, and
+    // shares its AA-safe opacity (0.6 puts Hobbit Blue at full ink
+    // 8.4:1 into the ~5:1 band, well above the 4.5:1 body-text
+    // threshold against Inkstock).
     &__ghost {
       color: ink(hobbit-blue);
-      opacity: 0.4;
+      opacity: 0.6;
     }
   }
 
@@ -1165,7 +1312,19 @@ footer {
   color: ink(hobbit-blue);
   border: 1px solid ink(hobbit-blue);
   border-radius: radius(medium);
-  font-family: face(press);
+  // Body face italic, not the press face. The skip link is an
+  // accessibility-critical control — a keyboard or AT user reaches
+  // it under time pressure and needs to recognize and parse it
+  // instantly. Atkinson Hyperlegible was designed for exactly that
+  // kind of speed-to-comprehension; IM Fell English is a beautiful
+  // press face but slower to scan at small sizes. Italic carries
+  // the diegetic voice (matching the foot-nav's marginalia tone)
+  // so the persona survives without the legibility cost. The
+  // global `a:focus-visible` rule still draws the Hobbit Blue
+  // outline ring when the link is focused, in addition to the
+  // top-repositioning that makes it visible at all.
+  font-family: face(body);
+  font-style: italic;
   font-size: size(large);
   text-decoration: none;
 

@@ -66,40 +66,55 @@
     guard at the CSS layer.
   */}}
   <div class="reading-body{{ if not .Title }} reading-body--untitled{{ end }}">
+    {{/*
+      Corner registration marks frame just the prose portion of
+      the inscription — a printer's pre-trim mark around the
+      printed image area, not around the title plate or the close
+      mark. Title plate (C-incipit wonder-moment) sits above the
+      top marks; colophon close-mark sits below the bottom marks.
+      The marks anchor to .reading-body's relative parent and are
+      decorative only (aria-hidden in the partial). Suppressed
+      below 768px (on a phone the viewport edge IS the trim; an
+      off-screen mark would be noise rather than craft).
+    */}}
+    {{ partial "ornament/corner-mark.html" "tl" }}
+    {{ partial "ornament/corner-mark.html" "tr" }}
+
     <div class="prose">
       {{ .Content }}
     </div>
+
+    {{ partial "ornament/corner-mark.html" "bl" }}
+    {{ partial "ornament/corner-mark.html" "br" }}
   </div>
 
-  <footer class="post-foot">
+  <div class="post-foot">
     <div class="colophon" aria-hidden="true">
       {{ partial "ornament/colophon.html" . }}
     </div>
-  </footer>
+  </div>
 </article>
 
 {{/*
-  Page-level matter below the inscribed plate: catalog tags, the
-  micro.blog reply action, a hairline section rule, and the
-  three-handle chronicle navigation. The article ends at the
-  colophon mark; everything below is the chronicle's apparatus
-  around the plate, not the plate's own closing furniture.
+  Page-level matter below the inscribed plate. The coda gathers
+  every catalog stamp the inscription carries — its category tags
+  in Hobbit Green and the Smaug-Red reply chip — onto one composed
+  row. They are the same primitive (a printed spell-stamp) in
+  different inks, and reading them as one row of marks rather than
+  two stacked centered slabs is the foot subtraction the keystone
+  asks for. The previous arrangement (tags row, then reply row,
+  then a 40ch divider) said the same thing three times; this says
+  it once. The chronicle's three-handle foot nav stands on its own
+  below, separated by margin alone.
 */}}
 
-{{ $categories := (.GetTerms "categories") }}
-{{ if gt (len $categories) 0 }}
-<div class="post-tags post-tags--standalone">
+<div class="post-coda">
+  {{ $categories := (.GetTerms "categories") }}
   {{ range $categories }}
   <a class="tag" href="{{ .Permalink }}">{{ .LinkTitle }}</a>
   {{ end }}
-</div>
-{{ end }}
-
-<div class="reply-chip">
   {{ partial "reply-by-email.html" . }}
 </div>
-
-<hr class="post-divider" aria-hidden="true">
 
 {{/*
   The chronicle's three handles: backward in time, return to the
