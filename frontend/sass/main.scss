@@ -530,8 +530,7 @@ footer {
     letter-spacing: 0.01em;
     text-wrap: balance;
     // Symmetric vertical air by default — the title sits centered
-    // between the cartouches, the way the masthead now reads with
-    // no strapline beneath it.
+    // between the cartouches, balanced above and below.
     margin: space(lg) auto;
 
     // When a timestamp follows directly (the single-scroll title
@@ -704,7 +703,7 @@ footer {
 // POST FURNITURE — tags row, reply column
 // ============================================================
 
-// The article's foot — just the colophon close-mark now. Tag row,
+// The article's foot — just the colophon close-mark. Tag row,
 // reply, divider, and chronicle navigation all live outside the
 // article as page-level matter around the inscribed plate.
 // space(xxl) matches the article's outer bottom margin so the
@@ -831,9 +830,15 @@ footer {
     border-bottom: none;
 
     em {
-      // Inside the rubric, em is the term name. Italic carries the
-      // emphasis; the ink stays in family so the line reads as one
-      // pressed string.
+      // The term name. Body face italic so emphasis renders in a
+      // real italic cut (Atkinson Hyperlegible Next Italic) rather
+      // than the press face's browser-synthesized italic — no italic
+      // IM Fell English is bundled, and synthetic italic on a press
+      // face fails the keystone. The typeface switch (sans italic
+      // inside a serif press line) also gives the term its own
+      // typographic voice, the way a magazine sets a book title
+      // inside a pressed headline.
+      font-family: face(body);
       font-style: italic;
       font-weight: 400;
       color: ink(hobbit-green);

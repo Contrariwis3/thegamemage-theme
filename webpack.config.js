@@ -1,3 +1,6 @@
+// ABOUTME: Webpack build for the theme's frontend assets.
+// ABOUTME: Compiles SCSS + bundles fonts into static/ for Hugo to serve.
+
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
