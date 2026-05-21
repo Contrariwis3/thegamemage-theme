@@ -86,16 +86,21 @@ $faces: (
 }
 
 $sizes: (
-  base:      1rem,   // body root; 1rem (not 16px) so a reader who set a
-                     // larger browser default actually gets larger reading
-                     // ink — the whole rem-based scale rides on this.
+  base:      1.125rem, // body reading size; ~18px at default. A smidge
+                       // bigger than the browser default 16px because
+                       // the chronicle wants to feel comfortable for
+                       // sustained reading. Atkinson Hyperlegible Next
+                       // is designed for character distinction at this
+                       // scale. Expressed in rem so a reader who set a
+                       // larger browser default still scales the whole
+                       // system above this baseline.
   small:     0.8rem,
   code:      0.9rem,
   large:     1.15rem,
   title:     1.5rem,
   headline:  2rem,
   display:   3rem,
-  display-m: 2.4rem, // mobile step-down for display
+  display-m: 2.4rem,   // mobile step-down for display
 );
 
 @function size($name) {
@@ -297,20 +302,19 @@ a {
     margin: 0 0 space(lg);
   }
 
-  // Continuation mark — the quiet typographic signal at the foot of
-  // a truncated summary. Press-face for the printed-book feel,
-  // right-aligned so it tucks against the column edge like a
-  // typesetter's abridgment mark, faded so it reads as a tail not
-  // as another paragraph. No link, no hover — the title link is
-  // the affordance; this is purely the visual cue that more text
-  // sits behind the card.
+  // Continuation mark — the quiet phrase at the foot of a truncated
+  // summary. Body face italic for the prose-aside feel, Hobbit Green
+  // (the same italic-em voice the rest of the chronicle apparatus
+  // uses), right-aligned to tuck against the column edge. The words
+  // do the work: a bare ellipsis read as "this paragraph ends," not
+  // "the post continues." No link — the title link is the affordance;
+  // this is purely the cue that more text sits behind the card.
   &__continues {
     margin: 0;
     text-align: right;
-    color: ink(bone);
-    font-family: face(press);
-    font-size: 1.15em;
-    opacity: 0.55;
+    color: ink(hobbit-green);
+    font-family: face(body);
+    font-style: italic;
   }
 
   // Inline emphasis: ink color carries weight, not stroke weight.
@@ -733,6 +737,17 @@ footer {
   }
 }
 
+// The reply-by-raven chip wrapper. Centers the Smaug Red action
+// stamp between the post-tag row and the section divider on a
+// single scroll, with the same 70ch column the rest of the page
+// matter uses so the chip sits inside the chronicle's spread.
+.reply-chip {
+  max-width: 70ch;
+  margin: space(xl) auto;
+  padding: 0 space(md);
+  text-align: center;
+}
+
 // The page-level section rule between post metadata and chronicle
 // navigation. Centered, 40ch wide — a short printed line, not a
 // full-width divider.
@@ -747,12 +762,14 @@ footer {
 // The small printed sigil: a four-point diamond, the same shape
 // that lives at the center of the cartouche rule and the colophon.
 // Re-using the system's signature mark as a leading sigil keeps
-// the ornament vocabulary tight.
+// the ornament vocabulary tight. No explicit color — the SVG's
+// currentColor follows whatever context it sits in (red inside a
+// .response-tag, green inside a green chip, etc.), so the same
+// glyph belongs to whichever accent role wears it.
 .sigil {
   display: inline-block;
   width: 10px;
   height: 12px;
-  color: ink(hobbit-green);
   flex-shrink: 0;
   margin-right: space(xs);
 }
@@ -786,7 +803,14 @@ footer {
   }
 }
 
-.response-tag {
+// The Smaug Red action chip. .response-tag is the design-system
+// primitive name (DESIGN.md §5); .reply-by-email is the class the
+// Micro.blog reply-by-email plugin actually emits on production
+// (svendahlstrand/plugin-reply-by-email). Both render identically
+// — the chip's shape and ink are the same regardless of which
+// surface puts it there.
+.response-tag,
+.reply-by-email {
   @extend %stamp-base;
   @include ink-in(ink(smaug-red));
 
@@ -995,8 +1019,10 @@ footer {
   }
 
   .status-content {
-    font-size: size(small);
-    line-height: 1.55;
+    // Reads at body size, not a sidebar-shrunk caption. A missive is
+    // a small post, not metadata; the panel chrome (title + emoji +
+    // time) carries the smaller-than-body sizing, and the content
+    // itself stays in the same ink as the main column's prose.
     color: ink(bone);
   }
 

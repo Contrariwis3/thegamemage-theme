@@ -42,7 +42,7 @@
     {{ $summary := replaceRE "\\[\\^.*?\\]" "" $summary }}
     {{ $summary := replaceRE "\\n\\[\\^.*?\\]:.*" "" $summary }}
     <p>{{ $summary | markdownify }}</p>
-    <p class="prose__continues" aria-hidden="true">…</p>
+    <p class="prose__continues" aria-hidden="true">The inscription continues&hellip;</p>
 
     {{ else if .Params.custom_summary }}
     <p>{{ .Summary | safeHTML }}</p>
@@ -52,7 +52,7 @@
 
     {{ else }}
     <p>{{ .Summary }}</p>
-    <p class="prose__continues" aria-hidden="true">…</p>
+    <p class="prose__continues" aria-hidden="true">The inscription continues&hellip;</p>
     {{ end }}
   </div>
 
