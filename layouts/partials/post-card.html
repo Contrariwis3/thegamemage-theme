@@ -27,38 +27,32 @@
 
   <div class="prose">
     {{/*
-      Truncated branches end with a quiet trailing phrase instead of
-      a "Read More" CTA. The title link is the affordance; the phrase
-      is the visual signal that the inscription continues. Skipped
-      on the custom_summary and short branches because those render
-      the entry's complete visible content. aria-hidden because the
-      abrupt summary tail + the title link already convey the same
-      fact to assistive tech; the mark is purely a sighted cue.
+      Hugo's .Truncated flag is the right gate: it's true when the
+      visible summary is shorter than the full content (Hugo's
+      auto-truncation kicked in at the configured summaryLength),
+      and false when the visible summary IS the full content
+      (microblog-style notes, anything shorter than summaryLength).
 
-      Summary HTML is emitted unwrapped — both .Summary and
-      markdownify return paragraph-wrapped output, so a redundant
-      outer <p> would nest invalidly and the browser would auto-
-      close it at the first inner <p>, leaving an empty first
-      paragraph that the drop-cap :first-of-type::first-letter
-      selector would target (and find nothing to colour).
+      Truncated posts get .Summary plus the continuation phrase.
+      Untruncated posts get .Content rendered in full — they're
+      already complete, no marker needed. A custom_summary author
+      override wins over both.
+
+      <!--more--> is intentionally not handled here: it's a
+      micro.blog default-template convention this theme doesn't use,
+      since automated paragraph-aware truncation never requires the
+      author to remember to insert a marker. Hugo's .Summary still
+      respects the marker if a post happens to carry one.
     */}}
-    {{ if in .RawContent "<!--more-->" }}
-    {{ $splitContents := split .RawContent "<!--more-->" }}
-    {{ $summary := index $splitContents 0 }}
-    {{ $summary := replaceRE "\\[\\^.*?\\]" "" $summary }}
-    {{ $summary := replaceRE "\\n\\[\\^.*?\\]:.*" "" $summary }}
-    {{ $summary | markdownify }}
-    <p class="prose__continues" aria-hidden="true">The inscription continues&hellip;</p>
-
-    {{ else if .Params.custom_summary }}
+    {{ if .Params.custom_summary }}
     {{ .Summary | safeHTML }}
 
-    {{ else if le (len .RawContent) 300 }}
-    {{ .Content }}
-
-    {{ else }}
+    {{ else if .Truncated }}
     {{ .Summary }}
     <p class="prose__continues" aria-hidden="true">The inscription continues&hellip;</p>
+
+    {{ else }}
+    {{ .Content }}
     {{ end }}
   </div>
 
