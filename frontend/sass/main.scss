@@ -766,6 +766,14 @@ footer {
     margin: 0;
     text-wrap: balance;
 
+    // The rubric is an <h2>; override the body h2 hairline-under and
+    // its padding-bottom since the .catalog-rubric wrapper already
+    // carries the rule. Without this, two hairlines stack — the
+    // heading's and the wrapper's — and the printed catalog mark
+    // breaks.
+    padding-bottom: 0;
+    border-bottom: none;
+
     em {
       // Inside the rubric, em is the term name. Italic carries the
       // emphasis; the ink stays in family so the line reads as one

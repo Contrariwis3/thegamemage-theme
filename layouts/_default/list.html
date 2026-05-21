@@ -23,7 +23,16 @@
   catalog feel without competing with the title plate.
 */}}
 <div class="catalog-rubric">
-  <p class="catalog-rubric__line">
+  {{/*
+    Rubric is the page's principal heading after the chronicle
+    masthead. Marked up as <h2> so a screen-reader user navigating
+    by headings hears "The Game Mage / Inscribed under the sigil of
+    Gaming" — site, then chapter, then the entries beneath. The
+    visual treatment stays on .catalog-rubric__line; the body h2's
+    hairline-under is overridden in SCSS because the .catalog-rubric
+    wrapper already carries one.
+  */}}
+  <h2 class="catalog-rubric__line">
     {{- if eq .Kind "term" -}}
     Inscribed under the sigil of <em>{{ .Title }}</em>
     {{- else if eq .Kind "taxonomy" -}}
@@ -33,7 +42,7 @@
     {{- else -}}
     {{ .Title }}
     {{- end -}}
-  </p>
+  </h2>
 </div>
 {{ end }}
 
