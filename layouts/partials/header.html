@@ -1,21 +1,18 @@
 <header class="pure-u-1 pure-u-md-22-24">
   {{/*
-    The chronicle's title page. Same engraved title-plate
-    composition as a single post — cartouche bars bracketing a
-    press-face title and a press-face subtitle — so the masthead
-    and the post incipit read as one visual system. On listing
-    surfaces the masthead IS the page's principal heading; on
-    single posts the masthead is absent and the post's own title
-    plate carries the role.
+    The chronicle's title page. Cartouche bars bracketing the
+    press-face title — no strapline. The strapline ("documenting one
+    mage's…") used to live here, but on listing surfaces it sat one
+    cartouche above the rubric ("Inscribed under the sigil of…")
+    and they fought for the same press-face green voice. The
+    masthead names the chronicle; the rubric names the chapter.
+    The strapline doubled the first role and undermined the second.
   */}}
   <div class="title-plate">
     {{ partial "ornament/cartouche-rule.html" . }}
     <h1 class="incipit-title">
       <a href="/">{{ .Site.Title }}</a>
     </h1>
-    <div class="arcane-timestamp">
-      Documenting one mage's journey to follow his dream and die trying
-    </div>
     {{ partial "ornament/cartouche-rule.html" . }}
   </div>
 </header>

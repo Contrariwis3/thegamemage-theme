@@ -473,7 +473,17 @@ footer {
     line-height: 1.05;
     letter-spacing: 0.01em;
     text-wrap: balance;
-    margin: space(lg) auto space(md);
+    // Symmetric vertical air by default — the title sits centered
+    // between the cartouches, the way the masthead now reads with
+    // no strapline beneath it.
+    margin: space(lg) auto;
+
+    // When a timestamp follows directly (the single-scroll title
+    // plate), pull the bottom margin in so title + timestamp read
+    // as one composed plate rather than two separately-set lines.
+    &:has(+ .arcane-timestamp) {
+      margin-bottom: space(md);
+    }
   }
 
   .arcane-timestamp {
@@ -721,8 +731,7 @@ footer {
   }
 }
 
-.response-tag,
-.status-link {
+.response-tag {
   @extend %stamp-base;
   @include ink-in(ink(smaug-red));
 
@@ -872,13 +881,24 @@ footer {
     padding: space(sm) 0;
     border-bottom: 1px solid ink(hairline);
 
-    &:first-of-type {
-      padding-top: 0;
-    }
-
-    &:last-of-type {
+    // The entry immediately preceding the footer drops its bottom
+    // rule. The footer's top rule serves the boundary; doubling
+    // the line is the regression an earlier theme had already
+    // solved and this rebuild reintroduced (`:last-of-type` on a
+    // sibling set of mixed-class <div>s matches the footer, not the
+    // last entry — silently doing nothing).
+    &:has(+ .status-footer) {
       border-bottom: none;
     }
+  }
+
+  // The first entry sits directly under .side-title — drop the top
+  // padding so its content tracks against the title's own bottom
+  // margin. Written at this level (not nested under .status-entry)
+  // because SCSS resolves `.side-title + &` inside the nest by
+  // dropping the prefix, silently widening the rule to every entry.
+  .side-title + .status-entry {
+    padding-top: 0;
   }
 
   .status-header {
@@ -905,11 +925,15 @@ footer {
     color: ink(bone);
   }
 
+  // The footer holds the link to the full status archive. A plain
+  // link in the side-scroll's left-aligned voice — no Smaug Red, no
+  // pill. Red is the rarest hot ink, reserved for emphasis and the
+  // current pagination position; routing every reader through it on
+  // a static action chip taught the red the wrong job.
   .status-footer {
     margin-top: space(md);
     padding-top: space(sm);
     border-top: 1px solid ink(hairline);
-    text-align: right;
   }
 }
 
@@ -924,8 +948,20 @@ footer {
   border-bottom: 1px solid ink(hairline);
 
   &-link {
-    &.previous { text-align: left; }
-    &.next     { text-align: right; }
+    // Older inscriptions on the left, newer on the right — time
+    // flows left-to-right, matching the single-scroll foot-nav and
+    // a reader's chronological instinct.
+    &.older { text-align: left; }
+    &.newer { text-align: right; }
+
+    // The ghost: the direction not yet taken. Same words as an
+    // active link, same color — just quieter, holding the slot for
+    // a position that may exist later (or never, if the reader
+    // stands at the end). Mirrors the post-foot-nav ghost.
+    &__ghost {
+      color: ink(hobbit-blue);
+      opacity: 0.4;
+    }
   }
 
   &-icon {
