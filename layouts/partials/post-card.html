@@ -26,13 +26,23 @@
   </div>
 
   <div class="prose">
+    {{/*
+      Truncated branches end with a quiet trailing ellipsis instead
+      of a "Read More" CTA. The title link is the affordance; the
+      ellipsis is the visual signal that the inscription continues.
+      Skipped on the custom_summary and short branches because
+      those render the entry's complete visible content — no cut.
+      aria-hidden because the abrupt summary tail + the title link
+      already convey the same fact to an assistive-tech reader; the
+      mark is purely a sighted-reader cue.
+    */}}
     {{ if in .RawContent "<!--more-->" }}
     {{ $splitContents := split .RawContent "<!--more-->" }}
     {{ $summary := index $splitContents 0 }}
     {{ $summary := replaceRE "\\[\\^.*?\\]" "" $summary }}
     {{ $summary := replaceRE "\\n\\[\\^.*?\\]:.*" "" $summary }}
     <p>{{ $summary | markdownify }}</p>
-    <p><a href="{{ .Permalink }}">Read More</a></p>
+    <p class="prose__continues" aria-hidden="true">…</p>
 
     {{ else if .Params.custom_summary }}
     <p>{{ .Summary | safeHTML }}</p>
@@ -42,7 +52,7 @@
 
     {{ else }}
     <p>{{ .Summary }}</p>
-    <p><a href="{{ .Permalink }}">Read More</a></p>
+    <p class="prose__continues" aria-hidden="true">…</p>
     {{ end }}
   </div>
 

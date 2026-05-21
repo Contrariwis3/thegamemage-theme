@@ -264,6 +264,22 @@ a {
     margin: 0 0 space(lg);
   }
 
+  // Continuation mark — the quiet typographic signal at the foot of
+  // a truncated summary. Press-face for the printed-book feel,
+  // right-aligned so it tucks against the column edge like a
+  // typesetter's abridgment mark, faded so it reads as a tail not
+  // as another paragraph. No link, no hover — the title link is
+  // the affordance; this is purely the visual cue that more text
+  // sits behind the card.
+  &__continues {
+    margin: 0;
+    text-align: right;
+    color: ink(bone);
+    font-family: face(press);
+    font-size: 1.15em;
+    opacity: 0.55;
+  }
+
   // Inline emphasis: ink color carries weight, not stroke weight.
   strong {
     color: ink(smaug-red);
