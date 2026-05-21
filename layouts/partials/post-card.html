@@ -57,15 +57,19 @@
   </div>
 
   {{/*
-    Foot colophon — the same printer's flourish that closes a single
-    reading scroll, sized down via .card-colophon styling and tucked
-    between the prose zone and the catalog tags below. Closes the
-    inscription's visible portion as a printed mark, separating the
-    body from the entry's mechanics without using a bare hairline.
+    Foot hairline — separates the prose zone from the catalog tags
+    below it. The original fix for "prose and tags bunched up
+    against each other" was a fleuron colophon partial; that mark
+    is the *closing* signal of a single inscription, and repeating
+    it once per card in a listing flattened its meaning (one
+    inscription should close once; a catalog of five shouldn't
+    close five times). A short centered hairline does the
+    separation job the colophon was actually being asked to do,
+    without claiming "this inscription is closing" five entries
+    in a row. The colophon stays exclusive to the single reading
+    scroll, where its close-mark meaning is preserved.
   */}}
-  <div class="card-colophon" aria-hidden="true">
-    {{ partial "ornament/colophon.html" . }}
-  </div>
+  <hr class="card-rule" aria-hidden="true">
 
   {{ $categories := (.GetTerms "categories") }}
   {{ if gt (len $categories) 0 }}

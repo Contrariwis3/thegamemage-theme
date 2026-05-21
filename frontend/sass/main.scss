@@ -1073,42 +1073,34 @@ footer {
     max-width: none;
   }
 
-  // Foot colophon — the same printer's flourish that closes a
-  // single reading scroll, scaled down and tucked between the prose
-  // zone and the catalog tags. Hairline-colored so it reads as a
-  // printed close mark rather than as content. Symmetric vertical
-  // margins so it sits with equal air above (the prose's last
-  // paragraph) and below (the catalog mechanics).
-  .card-colophon {
+  // Foot hairline rule — a short centered hairline that separates
+  // the prose zone from the catalog tags. Replaces the earlier
+  // fleuron colophon, which (in a five-card listing) repeated the
+  // "this inscription is closing" mark five times and flattened
+  // its meaning. The rule does the separation job the colophon
+  // was actually solving, without claiming the close meaning the
+  // colophon should reserve for a single reading scroll.
+  //
+  // 40% width matches the .prose hr convention so the catalog
+  // separator and an in-prose separator read as the same
+  // typographic primitive. Symmetric vertical margins keep the
+  // rule centered in its own air.
+  .card-rule {
+    border: 0;
+    height: 1px;
+    width: 40%;
+    background-color: ink(hairline);
     margin: space(xl) auto;
-    text-align: center;
-    color: ink(hairline);
-
-    svg {
-      width: 60px;
-      height: auto;
-      display: inline-block;
-    }
   }
 
-  // Tag row inside cards mirrors the reading scroll's
-  // .post-tags--standalone treatment: centered with a generous gap
-  // so the catalog stamps read as a deliberate footer row rather
-  // than a left-aligned label strip. Pairs with the colophon above
-  // to give the card's bottom matter the same composition the
-  // reading page uses.
+  // Tag row inside cards: centered, generous gap, reads as a
+  // deliberate catalog row rather than a left-aligned label
+  // strip. Margin-top is zero because the .card-rule above it
+  // already carries the gap to the prose; the rule's own bottom
+  // margin spans the air below the rule down to the tag chips.
   .post-tags {
     justify-content: center;
     gap: space(lg);
-    margin-top: space(xl);
-  }
-
-  // When the colophon precedes the tag row (every card now carries
-  // a colophon), drop the tag row's top margin — the colophon's
-  // own bottom margin already provides the gap, and keeping the
-  // colophon centered in its own air requires the row below to not
-  // double-pad above it.
-  .card-colophon + .post-tags {
     margin-top: 0;
   }
 }
@@ -1121,12 +1113,29 @@ footer {
 // The reading page is the inscription alone — the chronicle
 // apparatus is deferred to its own pass on the non-reading surfaces.
 
+// The side scroll is unboxed marginalia. The earlier plated-panel
+// treatment collapsed the page into a stack of similar rectangles
+// and undercut the brief's "chronicle on the left, apparatus in
+// the margin" hierarchy claim. Removing the plate fill and border
+// leaves the apparatus sitting directly on the stock; the title
+// itself is the section-start marker, with a hairline rule below
+// it dividing the title from the section's content. A 52px gap
+// between panels gives sections clear breath without restating
+// the boundary as another rule.
+//
+// An earlier iteration tried a hairline ABOVE the title; the
+// headings read as weak section starts because they sat below
+// the rule, presented as content under a divider rather than as
+// the divider's own pressed name. Putting the title above its
+// own rule restores the printed-page convention (a heading with
+// an underline beneath it) and makes the green press-face title
+// the dominant section signal.
+//
+// Horizontal padding matches the reading column's gutter so the
+// side text inset reads as the same printed margin throughout.
 .side-content {
-  background-color: ink(plate);
-  border: 1px solid ink(hairline);
-  border-radius: radius(medium);
-  padding: space(lg);
-  margin-bottom: space(xl);
+  padding: 0 space(md);
+  margin-bottom: space(xxl);
 
   ul {
     margin: 0;
@@ -1145,6 +1154,10 @@ footer {
   }
 }
 
+// The side-title sits at the top of its section as the section
+// signal; the hairline beneath it divides the title from the
+// section's content. Title-then-underline is the printed-page
+// convention for section heads in a margin column.
 .side-title {
   font-family: face(press);
   font-size: size(title);
@@ -1159,40 +1172,51 @@ footer {
 // MYSTIC MISSIVES — omg.lol status stream
 // ============================================================
 
+// Mystic Missives reads as a stack of margin notes inside the
+// marginalia column. Each entry is a single italic paragraph with
+// the author's mood emoji floated into the left margin as a
+// leading pictograph, the missive text wrapping past it, and the
+// date as a quiet italic-green signature trailing inline.
+//
+// An earlier pass rendered each entry as a feed item — emoji and
+// date in a flex-justify header above bone-roman content, internal
+// hairlines between entries — which read as a stacked feed
+// embedded in the aside. Wrong register for what is supposed to
+// be marginalia. The current treatment leans into the margin-note
+// reading: emoji as drawn pictograph, content as the noted thought,
+// date as the dated signature. The "View older missives" footer keeps
+// its rule above as the boundary between the in-line missives and
+// the off-ramp link.
 .status-scroll {
   .status-entry {
-    padding: space(sm) 0;
-    border-bottom: 1px solid ink(hairline);
+    margin: 0 0 space(lg);
 
-    // The entry immediately preceding the footer drops its bottom
-    // rule. The footer's top rule serves the boundary; doubling
-    // the line is the regression an earlier theme had already
-    // solved and this rebuild reintroduced (`:last-of-type` on a
-    // sibling set of mixed-class <div>s matches the footer, not the
-    // last entry — silently doing nothing).
     &:has(+ .status-footer) {
-      border-bottom: none;
+      margin-bottom: 0;
     }
   }
 
-  // The first entry sits directly under .side-title — drop the top
-  // padding so its content tracks against the title's own bottom
-  // margin. Written at this level (not nested under .status-entry)
-  // because SCSS resolves `.side-title + &` inside the nest by
-  // dropping the prefix, silently widening the rule to every entry.
-  .side-title + .status-entry {
-    padding-top: 0;
-  }
-
-  .status-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: space(xs);
-  }
-
   .status-emoji {
+    // Leading pictograph: a single inline glyph at the start of
+    // the note, flowing with the text rather than holding its
+    // own column. An earlier pass floated the emoji left, which
+    // created a hanging indent on wrapped lines and gave the
+    // glyph more visual weight than the marginalia register
+    // wants. Inline keeps the emoji as a small leading mark
+    // that the content moves past on the same line.
+    display: inline;
+    margin-right: space(xs);
     font-size: size(large);
+  }
+
+  .status-content {
+    // Inline so the content text flows after the leading emoji
+    // and trails seamlessly into the date signature. A missive
+    // is a small post but visually a single paragraph, not a
+    // captioned block.
+    display: inline;
+    font-style: italic;
+    color: ink(bone);
   }
 
   .status-time {
@@ -1200,29 +1224,23 @@ footer {
     font-style: italic;
     font-size: size(small);
     color: ink(hobbit-green);
-  }
 
-  .status-content {
-    // Reads at body size, not a sidebar-shrunk caption. A missive is
-    // a small post, not metadata; the panel chrome (title + emoji +
-    // time) carries the smaller-than-body sizing, and the content
-    // itself stays in the same ink as the main column's prose.
-    color: ink(bone);
+    // Signature dash before the date: how a handwritten note
+    // closes ("- Mar 5"). Plain hyphen with spaces, not an
+    // em-dash; em-dashes have become a tell for AI-generated
+    // text and pull the page out of its authored register.
+    &::before {
+      content: " - ";
+    }
   }
 
   // The footer holds the link to the full status archive, marked
   // up as a single-item <ul> so the link inherits the same block-
   // and-padded tap behavior every other side-scroll link gets via
-  // .side-content ul li > a. Without that, the link sat as inline
-  // text inside a <div>: hover lit only the text bbox while every
-  // other panel's links lit their whole row. The <ul> structure
-  // unifies the visuals.
-  //
-  // Only margin-top + border-top here; padding-top isn't needed
-  // because the link inside the <li> brings its own space(sm)
-  // padding from the shared side-content rule.
+  // .side-content ul li > a.
   .status-footer {
     margin-top: space(md);
+    padding-top: space(sm);
     border-top: 1px solid ink(hairline);
   }
 }

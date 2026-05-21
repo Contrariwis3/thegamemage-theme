@@ -32,19 +32,26 @@
 <div class="side-content status-scroll">
   <div class="side-title">Mystic Missives</div>
   {{ range first 3 . }}
+  {{/*
+    Each missive renders as a single margin-note paragraph: the
+    author's mood emoji as a leading pictograph (floated into the
+    margin by CSS), the missive text wrapping past it, and the
+    date as a quiet italic-green signature trailing inline. The
+    earlier feed-style header (emoji-and-date in a flex-justify
+    row above the content) read as "stacked feed entries" — wrong
+    register for the marginalia column the side scroll has become.
+  */}}
   <div class="status-entry">
-    <div class="status-header">
-      <span class="status-emoji">{{ .emoji }}</span>
-      {{ $created := .created | int }}
-      <time class="status-time" datetime="{{ $created | dateFormat "2006-01-02" }}">
-        {{ $created | dateFormat "Jan 2" }}
-      </time>
-    </div>
+    <span class="status-emoji">{{ .emoji }}</span>
     <div class="status-content">{{ .content | safeHTML }}</div>
+    {{ $created := .created | int }}
+    <time class="status-time" datetime="{{ $created | dateFormat "2006-01-02" }}">
+      {{ $created | dateFormat "Jan 2" }}
+    </time>
   </div>
   {{ end }}
   <ul class="status-footer">
-    <li><a href="https://contrariwise.status.lol">View all scrolls</a></li>
+    <li><a href="https://contrariwise.status.lol">View older missives</a></li>
   </ul>
 </div>
     {{ end }}
@@ -80,7 +87,7 @@
 {{ $list := ($.Site.GetPage "taxonomy" "categories").Pages }}
 {{ if gt (len $list) 0 }}
 <div class="side-content">
-  <div class="side-title">Arcane Tags</div>
+  <div class="side-title">Arcane Symbols</div>
   <div class="post-tags">
     {{ range first 12 $list }}
     <a class="tag" href="{{ .Permalink }}">{{ .Title }}</a>

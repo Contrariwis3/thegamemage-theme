@@ -312,13 +312,22 @@ press (inversion or value shift), never illumination.
   breakpoint).
 
 ### Signature Component: The Side Scroll
-The `aside` is a stack of titled opaque plates — Teleportation Circle (nav),
-Mystic Missives (live omg.lol statuses), Random Incantations (shuffled posts),
-Allied Mages (blogroll), Arcane Tags. Each plate: IM Fell English title, a 1px
-Hairline rule under the title, body content in Bone. Mystic Missives renders
-remote status data with its emoji, italic Hobbit Green timestamps, and a Smaug
-Red "View all scrolls" stamp footer. This stack is the strongest expression of
-the diegetic-naming principle and stays fully in character.
+The `aside` is a stack of titled marginalia sections — Teleportation Circle
+(nav), Mystic Missives (live omg.lol statuses), Random Incantations (shuffled
+posts), Allied Mages (blogroll), Arcane Symbols (taxonomy). Each section: IM
+Fell English title, a 1px Hairline rule under the title, body content in
+Bone. The marginalia sit directly on the Inkstock with no plate fill or
+border — unboxed apparatus running alongside the catalog so the bordered
+post-card plates remain the page's visual primary.
+
+Mystic Missives renders as a stack of margin notes: the author's mood emoji
+as a leading inline pictograph, the missive text in italic Bone wrapping
+past it, and the date as a small italic Hobbit Green signature preceded by
+a plain hyphen ("- Mar 5") trailing inline. A "View older missives" link
+in the footer is the off-ramp to the full omg.lol archive.
+
+This stack is the strongest expression of the diegetic-naming principle and
+stays fully in character.
 
 ## 6. Inherited Craft (carried forward, not re-derived)
 
