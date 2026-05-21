@@ -3,7 +3,19 @@
 
 {{ partial "head.html" . }}
 
-<body>
+{{/*
+  .chronicle-front marks the literal front of the chronicle —
+  the home page's first paginator page, the surface where the
+  most-recent inscription sits as the top card. Used to scope the
+  decorated-initial drop cap so it only fires on the absolutely
+  newest post; deeper pagination, sections, and taxonomies are
+  catalogs of past entries and skip the wonder-moment. The check
+  uses .Paginator.PageNumber rather than .RelPermalink because
+  Hugo's page object shares the same canonical URL across paginator
+  pages — / and /page/2/ both have RelPermalink "/", so the URL
+  check alone can't distinguish them.
+*/}}
+<body{{ if and .IsHome (eq .Paginator.PageNumber 1) }} class="chronicle-front"{{ end }}>
   <a class="skip-link" href="#main-content">Skip to the inscription</a>
 
   {{/*

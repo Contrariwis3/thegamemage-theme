@@ -27,14 +27,13 @@
 
   <div class="prose">
     {{/*
-      Truncated branches end with a quiet trailing ellipsis instead
-      of a "Read More" CTA. The title link is the affordance; the
-      ellipsis is the visual signal that the inscription continues.
-      Skipped on the custom_summary and short branches because
-      those render the entry's complete visible content — no cut.
-      aria-hidden because the abrupt summary tail + the title link
-      already convey the same fact to an assistive-tech reader; the
-      mark is purely a sighted-reader cue.
+      Truncated branches end with a quiet trailing phrase instead of
+      a "Read More" CTA. The title link is the affordance; the phrase
+      is the visual signal that the inscription continues. Skipped
+      on the custom_summary and short branches because those render
+      the entry's complete visible content. aria-hidden because the
+      abrupt summary tail + the title link already convey the same
+      fact to assistive tech; the mark is purely a sighted cue.
     */}}
     {{ if in .RawContent "<!--more-->" }}
     {{ $splitContents := split .RawContent "<!--more-->" }}
@@ -54,6 +53,17 @@
     <p>{{ .Summary }}</p>
     <p class="prose__continues" aria-hidden="true">The inscription continues&hellip;</p>
     {{ end }}
+  </div>
+
+  {{/*
+    Foot colophon — the same printer's flourish that closes a single
+    reading scroll, sized down via .card-colophon styling and tucked
+    between the prose zone and the catalog tags below. Closes the
+    inscription's visible portion as a printed mark, separating the
+    body from the entry's mechanics without using a bare hairline.
+  */}}
+  <div class="card-colophon" aria-hidden="true">
+    {{ partial "ornament/colophon.html" . }}
   </div>
 
   {{ $categories := (.GetTerms "categories") }}

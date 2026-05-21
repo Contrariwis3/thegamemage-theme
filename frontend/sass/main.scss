@@ -573,35 +573,42 @@ footer {
   text-align: center;
 }
 
-// The decorated initial: first letter of the first paragraph of the
-// reading core, set in IM Fell English Smaug Red, floated. This is
-// the one Smaug-Red moment on the surface — high-energy punctuation,
-// per DESIGN.md's "rare and hot" rule.
-.reading-body {
+// The decorated initial: first letter of the first paragraph of an
+// inscription's body, set in IM Fell English Smaug Red, floated. It
+// fires on two surfaces — the single reading scroll (every titled
+// post) and the chronicle's literal front page (the first titled
+// card on home page 1, the most-recent inscription). Both contexts
+// share "this is the wonder-moment opening of an inscription"; the
+// reading surface gets it always, the front-page card gets it once
+// per page load (the .chronicle-front body class + :first-of-type
+// scoping holds it to the actually-newest post). Smaug Red is the
+// rarest hot ink, and one decorated initial per surface keeps it
+// rare. The :has(> h2) guard means an untitled microblog note as
+// the most-recent post doesn't get a drop cap that has no body to
+// anchor against.
+.reading-body > .prose > p:first-of-type::first-letter,
+.chronicle-front main > article.card:first-of-type:has(> h2)
   > .prose > p:first-of-type::first-letter {
-    font-family: face(press);
-    font-weight: 400;
-    color: ink(smaug-red);
-    float: left;
-    // Decorated initial — the one Smaug-Red moment on the surface,
-    // the bridge between the loud incipit and the calm body.
-    // Sized one notch down from peak so the body returns to full
-    // measure sooner and the cap doesn't out-shout the title above.
-    font-size: 5em;
-    line-height: 0.85;
-    padding: 0.04em space(md) 0 0;
-  }
+  font-family: face(press);
+  font-weight: 400;
+  color: ink(smaug-red);
+  float: left;
+  // Sized one notch down from peak so the body returns to full
+  // measure sooner and the cap doesn't out-shout the title above.
+  font-size: 5em;
+  line-height: 0.85;
+  padding: 0.04em space(md) 0 0;
+}
 
-  // Short / untitled notes don't carry the wonder-moment: the
-  // template adds .reading-body--untitled to suppress the cap.
-  &--untitled > .prose > p:first-of-type::first-letter {
-    font-family: inherit;
-    color: inherit;
-    float: none;
-    font-size: inherit;
-    line-height: inherit;
-    padding: 0;
-  }
+// Short / untitled reading scrolls don't carry the wonder-moment:
+// the template adds .reading-body--untitled to suppress the cap.
+.reading-body--untitled > .prose > p:first-of-type::first-letter {
+  font-family: inherit;
+  color: inherit;
+  float: none;
+  font-size: inherit;
+  line-height: inherit;
+  padding: 0;
 }
 
 // Foot colophon: the decorative close-mark of the inscription.
@@ -922,11 +929,38 @@ footer {
     max-width: none;
   }
 
-  // Spacer between the body/Read More and the tag row, so the
-  // tags read as a separate section of the card rather than
-  // butting against the previous paragraph.
+  // Foot colophon — the same printer's flourish that closes a
+  // single reading scroll, scaled down and tucked between the prose
+  // zone and the catalog tags. Hairline-colored so it reads as a
+  // printed close mark rather than as content. Symmetric vertical
+  // margins so it sits with equal air above (the prose's last
+  // paragraph) and below (the catalog mechanics).
+  .card-colophon {
+    margin: space(lg) auto;
+    text-align: center;
+    color: ink(hairline);
+
+    svg {
+      width: 60px;
+      height: auto;
+      display: inline-block;
+    }
+  }
+
+  // Spacer between the body and the tag row, so the tags read as
+  // a separate section of the card rather than butting against the
+  // previous paragraph.
   .post-tags {
     margin-top: space(xl);
+  }
+
+  // When the colophon precedes the tag row (every card now carries
+  // a colophon), drop the tag row's top margin — the colophon's
+  // own bottom margin already provides the gap, and keeping the
+  // colophon centered in its own air requires the row below to not
+  // double-pad above it.
+  .card-colophon + .post-tags {
+    margin-top: 0;
   }
 }
 
