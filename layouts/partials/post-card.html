@@ -34,23 +34,30 @@
       the entry's complete visible content. aria-hidden because the
       abrupt summary tail + the title link already convey the same
       fact to assistive tech; the mark is purely a sighted cue.
+
+      Summary HTML is emitted unwrapped — both .Summary and
+      markdownify return paragraph-wrapped output, so a redundant
+      outer <p> would nest invalidly and the browser would auto-
+      close it at the first inner <p>, leaving an empty first
+      paragraph that the drop-cap :first-of-type::first-letter
+      selector would target (and find nothing to colour).
     */}}
     {{ if in .RawContent "<!--more-->" }}
     {{ $splitContents := split .RawContent "<!--more-->" }}
     {{ $summary := index $splitContents 0 }}
     {{ $summary := replaceRE "\\[\\^.*?\\]" "" $summary }}
     {{ $summary := replaceRE "\\n\\[\\^.*?\\]:.*" "" $summary }}
-    <p>{{ $summary | markdownify }}</p>
+    {{ $summary | markdownify }}
     <p class="prose__continues" aria-hidden="true">The inscription continues&hellip;</p>
 
     {{ else if .Params.custom_summary }}
-    <p>{{ .Summary | safeHTML }}</p>
+    {{ .Summary | safeHTML }}
 
     {{ else if le (len .RawContent) 300 }}
     {{ .Content }}
 
     {{ else }}
-    <p>{{ .Summary }}</p>
+    {{ .Summary }}
     <p class="prose__continues" aria-hidden="true">The inscription continues&hellip;</p>
     {{ end }}
   </div>

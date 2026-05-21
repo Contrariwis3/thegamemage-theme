@@ -936,7 +936,7 @@ footer {
   // margins so it sits with equal air above (the prose's last
   // paragraph) and below (the catalog mechanics).
   .card-colophon {
-    margin: space(lg) auto;
+    margin: space(xl) auto;
     text-align: center;
     color: ink(hairline);
 
@@ -947,10 +947,15 @@ footer {
     }
   }
 
-  // Spacer between the body and the tag row, so the tags read as
-  // a separate section of the card rather than butting against the
-  // previous paragraph.
+  // Tag row inside cards mirrors the reading scroll's
+  // .post-tags--standalone treatment: centered with a generous gap
+  // so the catalog stamps read as a deliberate footer row rather
+  // than a left-aligned label strip. Pairs with the colophon above
+  // to give the card's bottom matter the same composition the
+  // reading page uses.
   .post-tags {
+    justify-content: center;
+    gap: space(lg);
     margin-top: space(xl);
   }
 
@@ -1061,14 +1066,19 @@ footer {
     color: ink(bone);
   }
 
-  // The footer holds the link to the full status archive. A plain
-  // link in the side-scroll's left-aligned voice — no Smaug Red, no
-  // pill. Red is the rarest hot ink, reserved for emphasis and the
-  // current pagination position; routing every reader through it on
-  // a static action chip taught the red the wrong job.
+  // The footer holds the link to the full status archive, marked
+  // up as a single-item <ul> so the link inherits the same block-
+  // and-padded tap behavior every other side-scroll link gets via
+  // .side-content ul li > a. Without that, the link sat as inline
+  // text inside a <div>: hover lit only the text bbox while every
+  // other panel's links lit their whole row. The <ul> structure
+  // unifies the visuals.
+  //
+  // Only margin-top + border-top here; padding-top isn't needed
+  // because the link inside the <li> brings its own space(sm)
+  // padding from the shared side-content rule.
   .status-footer {
     margin-top: space(md);
-    padding-top: space(sm);
     border-top: 1px solid ink(hairline);
   }
 }
