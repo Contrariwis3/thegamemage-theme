@@ -302,16 +302,17 @@ a {
     margin: 0 0 space(lg);
   }
 
-  // Continuation mark — the quiet phrase at the foot of a truncated
-  // summary. Body face italic for the prose-aside feel, Hobbit Green
-  // (the same italic-em voice the rest of the chronicle apparatus
-  // uses), right-aligned to tuck against the column edge. The words
-  // do the work: a bare ellipsis read as "this paragraph ends," not
-  // "the post continues." No link — the title link is the affordance;
-  // this is purely the cue that more text sits behind the card.
+  // Continuation phrase — the quiet aside at the foot of a truncated
+  // summary. Body face italic, Hobbit Green (the same italic-em voice
+  // the rest of the chronicle apparatus uses). Left-aligned so it
+  // sits on the card's reading axis: an earlier pass right-aligned
+  // this as a "typesetter's column-edge mark," but the resulting
+  // zigzag (left prose, right marker, left tags) fought the card's
+  // grammar. The italic green carries the distinction; the words do
+  // the work. No link — the title link is the affordance; this is
+  // purely the cue that more text sits behind the card.
   &__continues {
     margin: 0;
-    text-align: right;
     color: ink(hobbit-green);
     font-family: face(body);
     font-style: italic;
