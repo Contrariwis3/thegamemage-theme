@@ -14,6 +14,14 @@
     {{ range .Site.Menus.main }}
     {{ if and .Page (.Page.Params.redirect_url) }}
     <li><a href="{{ .Page.Params.redirect_url }}">{{ .Name }}</a></li>
+    {{ else if eq $.RelPermalink (.URL | relURL) }}
+    {{/* Current page: a Smaug-Red sigil hangs in the margin (DESIGN.md §5,
+         a printed mark, never a fill or stripe); aria-current carries the
+         state for assistive tech, so the sigil itself stays decorative.
+         The match compares the page's permalink against the same resolved
+         URL the href is built from — IsMenuCurrent is unreliable for the
+         URL-only menu entries this theme defines. */}}
+    <li class="is-current">{{ partial "ornament/sigil.html" . }}<a href="{{ .URL | relURL | safeURL }}" aria-current="page">{{ .Name }}</a></li>
     {{ else }}
     <li><a href="{{ .URL | relURL | safeURL }}">{{ .Name }}</a></li>
     {{ end }}
@@ -23,27 +31,31 @@
 
 {{ $statusURL := "https://api.omg.lol/address/contrariwise/statuses/" }}
 {{ $result := try (resources.GetRemote $statusURL) }}
+{{ $statuses := slice }}
 {{ with $result.Err }}
   {{ warnf "Failed to fetch omg.lol statuses: %s" . }}
-{{ else }}
-  {{ with $result.Value }}
-    {{ $data := . | transform.Unmarshal }}
-    {{ with $data.response.statuses }}
+{{ else with $result.Value }}
+  {{ $data := . | transform.Unmarshal }}
+  {{ with $data.response.statuses }}
+    {{ $statuses = . }}
+  {{ end }}
+{{ end }}
 <div class="side-content status-scroll">
   <div class="side-title">Mystic Missives</div>
-  {{ range first 3 . }}
+  {{ if gt (len $statuses) 0 }}
+  {{ range first 3 $statuses }}
   {{/*
     Each missive renders as a single margin-note paragraph: the
-    author's mood emoji as a leading pictograph (floated into the
-    margin by CSS), the missive text wrapping past it, and the
-    date as a quiet italic-green signature trailing inline. The
-    earlier feed-style header (emoji-and-date in a flex-justify
-    row above the content) read as "stacked feed entries" — wrong
-    register for the marginalia column the side scroll has become.
+    author's mood emoji as a leading pictograph, the missive text
+    in an inline span wrapping past it, and the date as a quiet
+    italic-green signature trailing inline. The text is a real
+    inline <span>, not a block <div> coerced inline, so the
+    margin-note flow is structural and can't re-block under a
+    future cascade change.
   */}}
   <div class="status-entry">
     <span class="status-emoji">{{ .emoji }}</span>
-    <div class="status-content">{{ .content | safeHTML }}</div>
+    <span class="status-content">{{ .content | safeHTML }}</span>
     {{ $created := .created | int }}
     <time class="status-time" datetime="{{ $created | dateFormat "2006-01-02" }}">
       {{ $created | dateFormat "Jan 2" }}
@@ -53,10 +65,17 @@
   <ul class="status-footer">
     <li><a href="https://contrariwise.status.lol">View older missives</a></li>
   </ul>
-</div>
-    {{ end }}
+  {{ else }}
+  {{/*
+    The fetch failed or omg.lol returned nothing. The panel still
+    stands, keeping its title so a returning reader finds its
+    familiar place; a quiet in-voice line holds it rather than the
+    whole panel silently vanishing (which would break the "lived-in,
+    continuous" chronicle).
+  */}}
+  <p class="status-resting">The missives are resting.</p>
   {{ end }}
-{{ end }}
+</div>
 
 {{ $today := now.Format "2006-01-02" }}
 {{ $pool := where (where (where .Site.RegularPages "Type" "post") "Permalink" "!=" .Permalink) "Title" "!=" "" }}
@@ -65,7 +84,7 @@
 {{ $keyed = $keyed | append (dict "p" . "k" (md5 (printf "%s|%s" .Permalink $today))) }}
 {{ end }}
 {{ if gt (len $keyed) 0 }}
-<div class="side-content">
+<div class="side-content side-content--incantations">
   <div class="side-title">Random Incantations</div>
   <ul>
     {{ range first 3 (sort $keyed "k") }}
@@ -75,7 +94,7 @@
 </div>
 {{ end }}
 
-<div class="side-content">
+<div class="side-content side-content--reference">
   <div class="side-title">Allied Mages</div>
   <ul>
     {{ range first 8 hugo.Data.blogrolls.recommendations }}
@@ -95,7 +114,7 @@
 {{ if ne .Kind "taxonomy" }}
 {{ $list := ($.Site.GetPage "taxonomy" "categories").Pages }}
 {{ if gt (len $list) 0 }}
-<div class="side-content">
+<div class="side-content side-content--reference">
   <div class="side-title">Arcane Symbols</div>
   <div class="post-tags">
     {{ range first 12 $list }}

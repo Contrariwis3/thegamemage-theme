@@ -1186,6 +1186,35 @@ footer {
   border-bottom: 1px solid ink(hairline);
 }
 
+// The side-scroll panels stay one uniform size — a single marginal hand
+// running down the column, the way notes sit in a real book's margin.
+// A weight gradient (shrinking the reference panels) was tried and read
+// as "shrunken," not "quieter": a smaller heading over its content looks
+// diminished rather than secondary. Density is managed by the phone
+// breadth-trim below, not by desktop type hierarchy. The .side-content--
+// reference class is retained purely as that trim's hook; it carries no
+// desktop size of its own.
+
+// Current-page mark in the Teleportation Circle: a Smaug-Red sigil set in
+// the panel's left gutter beside the current entry (DESIGN.md §5 — a
+// printed mark in the margin, never a fill, never a stripe). It sits
+// OUTSIDE the <a> and is absolutely positioned, so the link's underline
+// never runs under it or strays into the gutter; aria-current on the link
+// carries the state for assistive tech, leaving the sigil decorative.
+// Centered on the link row so it reads as set beside the word, not
+// floating above it.
+.side-content ul li.is-current {
+  position: relative;
+
+  > .sigil {
+    position: absolute;
+    left: calc(-1 * (space(sm) + space(xs)));
+    top: 50%;
+    transform: translateY(-50%);
+    color: ink(smaug-red);
+  }
+}
+
 // ============================================================
 // MYSTIC MISSIVES — omg.lol status stream
 // ============================================================
@@ -1208,6 +1237,10 @@ footer {
 .status-scroll {
   .status-entry {
     margin: 0 0 space(lg);
+    // Guard the narrow margin column: a status passed through safeHTML can
+    // carry an unbroken URL or @-mention, and the column is only 7/24 wide.
+    // Long tokens break rather than pushing the column edge past the gutter.
+    overflow-wrap: break-word;
 
     &:has(+ .status-footer) {
       margin-bottom: 0;
@@ -1261,6 +1294,35 @@ footer {
     padding-top: space(sm);
     border-top: 1px solid ink(hairline);
   }
+
+  // The missives at rest: when the omg.lol fetch fails or returns
+  // nothing, the panel keeps its title and stands in with one quiet
+  // line rather than vanishing. The italic-green marginalia voice
+  // matches the foot-nav and the post-card continuation phrase;
+  // left-aligned and tight, it reads as a note in the margin, not a
+  // centered empty-state banner.
+  .status-resting {
+    margin: 0;
+    font-style: italic;
+    color: ink(hobbit-green);
+  }
+}
+
+// Phone breadth trim: the margin shows a taste, not the full apparatus.
+// A reader on a narrow screen already faces long inscriptions, and the
+// aside stacks below the whole catalog there, so surplus rendered items
+// are hidden below 768px. This trims what shows; it is NOT a reveal
+// affordance (there is no tap-to-expand) — the reader simply sees fewer
+// notes, with no mechanism that would let the system show itself.
+@media (max-width: 768px) {
+  // One missive, one incantation.
+  .status-scroll .status-entry ~ .status-entry { display: none; }
+  .side-content--incantations li:nth-child(n + 2) { display: none; }
+
+  // The reference panels (blogroll, sigil catalog) trim to a taste:
+  // Allied Mages to four entries, Arcane Symbols to six stamps.
+  .side-content--reference ul li:nth-child(n + 5) { display: none; }
+  .side-content--reference .post-tags a:nth-child(n + 7) { display: none; }
 }
 
 // ============================================================
