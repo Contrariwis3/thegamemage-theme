@@ -1,10 +1,16 @@
 {{ define "main" }}
 
 {{ $paginator := .Paginate (where .Site.RegularPages.ByDate.Reverse "Type" "post") }}
+{{ if gt (len $paginator.Pages) 0 }}
 {{ range $paginator.Pages }}
 {{ partial "post-card.html" . }}
 {{ end }}
 
 {{ partial "pagination.html" $paginator }}
+{{ else }}
+{{/* A chronicle before its first inscription: the front door stays in
+     character rather than rendering a blank page below the masthead. */}}
+<p class="empty-scroll">The chronicle awaits its first inscription.</p>
+{{ end }}
 
 {{ end }}

@@ -1038,6 +1038,24 @@ footer {
   gap: space(md);
 }
 
+// The empty scroll: the diegetic stand-in when a listing surface has
+// nothing to show yet — an empty section, a sigil no inscription bears,
+// or a chronicle before its first inscription. A chronicle is "lived-in
+// and continuous," so a bare column reads as broken; this quiet centered
+// line keeps the surface composed and in character. It speaks in the
+// same italic-green marginalia voice the foot-nav and the post-card
+// continuation phrase use — a custodial aside, not a heading — set with
+// generous vertical air so the absence feels intentional, not omitted.
+.empty-scroll {
+  max-width: 70ch;
+  margin: space(xxxl) auto;
+  padding: 0 space(md);
+  text-align: center;
+  font-family: face(body);
+  font-style: italic;
+  color: ink(hobbit-green);
+}
+
 // ============================================================
 // LIST/INDEX POST CARDS — plates separated by air + ink-value step
 // ============================================================

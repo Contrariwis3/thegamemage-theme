@@ -84,6 +84,15 @@
   </ul>
 </div>
 
+{{/*
+  Arcane Symbols — the sigil catalog in the margin. Suppressed on the
+  taxonomy index (Kind "taxonomy"), where the page body already IS the
+  catalog of every sigil; repeating it in the aside duplicated the
+  surface's own content and turned the margin into a second copy of the
+  page. Term pages keep it: there the body is the posts under one sigil,
+  so the full list reads as sibling-sigil navigation, not duplication.
+*/}}
+{{ if ne .Kind "taxonomy" }}
 {{ $list := ($.Site.GetPage "taxonomy" "categories").Pages }}
 {{ if gt (len $list) 0 }}
 <div class="side-content">
@@ -94,4 +103,5 @@
     {{ end }}
   </div>
 </div>
+{{ end }}
 {{ end }}

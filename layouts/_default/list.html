@@ -61,14 +61,29 @@
   <a class="tag" href="{{ .Permalink }}">{{ .LinkTitle }}</a>
   {{ end }}
 </div>
+{{ else }}
+<p class="empty-scroll">No sigils have been drawn yet.</p>
 {{ end }}
 {{ else }}
+{{/*
+  Section / taxonomy-term post list. When the surface has nothing
+  inscribed yet — an empty section, or a sigil no inscription bears —
+  a chronicle that is "lived-in and continuous" must not present a
+  blank column. A quiet diegetic line stands in for the missing
+  catalog, in voice and composed, rather than dead space. The copy
+  branches on .Kind so a term names its sigil and a section names its
+  chapter.
+*/}}
 {{ $paginator := .Paginate (where .Pages.ByDate.Reverse "Type" "post") }}
+{{ if gt (len $paginator.Pages) 0 }}
 {{ range $paginator.Pages }}
 {{ partial "post-card.html" . }}
 {{ end }}
 
 {{ partial "pagination.html" $paginator }}
+{{ else }}
+<p class="empty-scroll">{{ if eq .Kind "term" }}No inscriptions yet bear this sigil.{{ else }}No inscriptions are gathered here yet.{{ end }}</p>
+{{ end }}
 {{ end }}
 
 {{ end }}
