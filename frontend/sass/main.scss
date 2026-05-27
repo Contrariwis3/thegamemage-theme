@@ -1057,6 +1057,98 @@ footer {
 }
 
 // ============================================================
+// THE INDEX OF INSCRIPTIONS — the chronicle's printed catalog
+// ============================================================
+//
+// The archive surface, set as a printed index rather than a stack of
+// post-cards: a back-of-book index, a chronicle's annals. Entries are
+// grouped by year; each is one ruled line — a pressed date as the
+// leading reference mark, the title as the link. It sits directly on
+// the Inkstock (no plate) the way the rubric and the side scroll do.
+// Atmosphere is built from pressed type, hairline rule, alignment, and
+// margin alone — no new ink, no ornament, no imagery.
+
+.inscription-index {
+  max-width: 70ch;
+  margin: 0 auto;
+  padding: 0 space(md);
+}
+
+// A year group: a pressed year header over its entries. Groups are
+// separated by generous air, and the header wears a hairline-under as
+// its catalog-section divider — the same title-then-rule convention
+// the side-titles and the catalog rubric already use.
+.index-year {
+  & + & {
+    margin-top: space(xxl);
+  }
+
+  &__head {
+    // The h3 base already sets the green press face at title size;
+    // zero its inherited top margin (the group gap above carries the
+    // separation) and add the section-divider hairline beneath.
+    margin: 0 0 space(lg);
+    padding-bottom: space(xs);
+    border-bottom: 1px solid ink(hairline);
+  }
+}
+
+// The entries within a year — a plain list re-set as index lines:
+// no bullets, comfortable rhythm so the titles scan as a column.
+.index-entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// One ruled line of the index: a fixed-width date cell and the title.
+// Baseline-aligned so the press-face date and the body-face title sit
+// on a shared line; a title that wraps hangs under itself while the
+// date holds at the top of the entry like a date written in the
+// margin. The vertical padding gives the row a comfortable reading
+// rhythm and a tap target that clears a thumb.
+.index-entry {
+  display: flex;
+  align-items: baseline;
+  gap: space(md);
+  padding: space(sm) 0;
+
+  // The pressed date: the leading reference mark. Press face in the
+  // timestamp's Hobbit Green, held at a fixed basis so every title in
+  // the year starts on the same left edge. The basis is sized to the
+  // widest "Jan 2" form (~"Nov 11" at this face and size) plus a hair
+  // of slack, so the date↔title coupling stays tight rather than
+  // floating a wide empty column. The year lives in the header above,
+  // matching the side-scroll missive signatures.
+  &__date {
+    flex: 0 0 3.5rem;
+    font-family: face(press);
+    font-size: size(large);
+    line-height: 1.3;
+    color: ink(hobbit-green);
+    white-space: nowrap;
+  }
+
+  // The title link: the entry itself. It carries the standard link
+  // treatment (Hobbit Blue, printed underline, ink-invert on hover)
+  // from the global `a` rule. flex 0 1 auto hugs the text so the
+  // hover press marks the title itself, not the full width of a wide
+  // catalog column; shrink stays on so a long title still wraps within
+  // the room the date leaves it. Only the title presses on hover; the
+  // date holds as a quiet fixed reference beside it.
+  &__title {
+    flex: 0 1 auto;
+  }
+
+  // Untitled microblog notes have no title; their snippet stands in,
+  // set in the italic marginalia voice so it reads as a noted line
+  // rather than a pressed title. It is still the link.
+  &__title--note {
+    font-style: italic;
+  }
+}
+
+// ============================================================
 // LIST/INDEX POST CARDS — plates separated by air + ink-value step
 // ============================================================
 //

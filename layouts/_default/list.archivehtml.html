@@ -1,15 +1,72 @@
+{{/*
+  The Index of Inscriptions — the chronicle's complete catalog.
+
+  This is the one surface that is a flat index rather than a stack of
+  post-cards: a printed back-of-book index, a chronicle's annals,
+  grouped by year. Each entry is one ruled line — a pressed date as the
+  leading reference mark and the inscription's title as the link. An
+  index lists titles, not summaries, so the per-entry blurb is dropped;
+  untitled microblog notes carry a short snippet in its place, since
+  that is their only identifier. There is no pagination: an index is
+  complete by definition, and the year groups give the eye its anchors
+  across a long chronicle.
+
+  The surface sits directly on the Inkstock with no plate wrap, the way
+  the catalog rubric and the side scroll do — the catalog page IS the
+  page, not a panel on it.
+
+  Microformat hooks (u-url, dt-published, p-name) are functional
+  metadata for micro.blog / IndieWeb parsing and stay on the link and
+  the date.
+
+  Renders as the home page's ArchiveHTML output, which micro.blog emits
+  to /archive/; honor the host-side file name list.archivehtml.html.
+*/}}
 {{ define "main" }}
-<div class="card">
-	<h2>Archive</h2>
-	{{ $list := (where .Site.Pages "Type" "post") }}
-	{{ range $list }}
-	<p>
-		<a href="{{ .Permalink }}" class="u-url"><span class="dt-published" datetime="{{ .Date.Format "2006-01-02T15:04:05-0700" }}">{{ partial "dateformat/short" . }}</span></a>:
-		{{ if .Title }}
-		<span class="p-name"><b>{{ .Title }}</b></span>
-		{{ end }}
-		<span class="p-summary">{{ .Content | plainify | htmlUnescape | truncate 150 }}</span>
-	</p>
-	{{ end }}
+<div class="catalog-rubric">
+  {{/*
+    The surface's principal heading after the chronicle masthead.
+    Marked up as <h2> so a reader navigating by headings hears
+    "The Game Mage / The Index of Inscriptions / 2026 / 2025…" —
+    book, then index, then each year-section beneath.
+  */}}
+  <h2 class="catalog-rubric__line">The Index of Inscriptions</h2>
 </div>
+
+{{ $inscriptions := where .Site.RegularPages "Type" "post" }}
+{{ if gt (len $inscriptions) 0 }}
+<div class="inscription-index">
+  {{/*
+    GroupByDate "2006" buckets the inscriptions by year and orders both
+    the groups and the entries within them newest-first, so the index
+    reads downward from the most recent year.
+  */}}
+  {{ range $inscriptions.GroupByDate "2006" }}
+  <section class="index-year">
+    <h3 class="index-year__head">{{ .Key }}</h3>
+    <ul class="index-entries">
+      {{ range .Pages }}
+      <li class="index-entry">
+        {{/*
+          The pressed date drops the year (it lives in the header
+          above) to read as a marginal reference. dt-published carries
+          the full machine date for parsers.
+        */}}
+        <span class="index-entry__date dt-published" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "Jan 2" }}</span>
+        {{ if .Title }}
+        <a href="{{ .Permalink }}" class="index-entry__title u-url p-name">{{ .Title }}</a>
+        {{ else }}
+        <a href="{{ .Permalink }}" class="index-entry__title index-entry__title--note u-url p-name">{{ .Content | plainify | htmlUnescape | chomp | truncate 80 }}</a>
+        {{ end }}
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
+</div>
+{{ else }}
+{{/* A chronicle with nothing yet indexed keeps its catalog page in
+     character rather than rendering a bare column under the rubric. */}}
+<p class="empty-scroll">No inscriptions have been indexed yet.</p>
+{{ end }}
 {{ end }}
