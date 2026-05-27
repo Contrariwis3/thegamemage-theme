@@ -94,14 +94,23 @@
 </div>
 {{ end }}
 
+{{/*
+  Allied Mages — the blogroll. micro.blog only exposes
+  hugo.Data.blogrolls when a blogroll is configured for the site, so the
+  access is nil where there is none. Guard the whole panel with `with`:
+  no blogroll data means the panel is simply omitted, rather than calling
+  `first` on a nil seq (which fails the entire site build).
+*/}}
+{{ with hugo.Data.blogrolls.recommendations }}
 <div class="side-content side-content--reference">
   <h2 class="side-title">Allied Mages</h2>
   <ul>
-    {{ range first 8 hugo.Data.blogrolls.recommendations }}
+    {{ range first 8 . }}
     <li><a href="{{ .url }}">{{ .name }}</a></li>
     {{ end }}
   </ul>
 </div>
+{{ end }}
 
 {{/*
   Arcane Symbols — the sigil catalog in the margin. Suppressed on the
