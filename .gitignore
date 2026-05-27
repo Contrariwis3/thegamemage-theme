@@ -32,6 +32,9 @@ npm-debug.log*
 .env.local
 .env.*.local
 
+# Deploy leak-gate patterns (real-identity strings; never published)
+.deploy-guard/
+
 # macOS
 .DS_Store
 ._*
