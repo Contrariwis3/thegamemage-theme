@@ -10,6 +10,13 @@ module.exports = {
     output: {
         //path: path.resolve(__dirname, 'frontend/build'),
         path: path.resolve(__dirname, 'static'),
+        // bundle.js is webpack's inherent JS output for the entry. The theme
+        // ships no client-side JS — index.js exists only to pull SCSS and
+        // PureCSS through the loaders into styles.css — so this bundle is
+        // near-empty and is intentionally referenced by no template. It is
+        // still committed because micro.blog serves static/ as-is; suppressing
+        // it would mean adding a plugin dependency to delete a file that is
+        // never fetched, which isn't worth the dependency.
         filename: 'bundle.js',
         clean: true, // Cleans the output directory before build
     },

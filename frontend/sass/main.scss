@@ -54,7 +54,10 @@
 //
 // Inkstock is the stock; everything else is an ink set onto it.
 // All values authored from the DESIGN.md token block; AA verified
-// against Inkstock (Bone 17:1, Blue 8.4:1, Green 9.3:1, Red 6.4:1).
+// against Inkstock (Bone 16:1, Blue 7.2:1, Green 8.0:1, Red 5.9:1)
+// and against Plate (Bone 14:1, Blue 6.4:1, Green 7.2:1, Red 5.2:1) —
+// all clear the 4.5:1 body-text bar on both surfaces. Measured against
+// these actual inks, never against #000 (which the system bans).
 
 $inks: (
   inkstock:    #0d1310, // the stock
@@ -827,14 +830,18 @@ footer {
   // chronicle has a continuing tense, and this is its visible
   // form on the page.
   //
-  // Opacity 0.6 keeps the ghost meaningfully quieter than the live
-  // siblings while still clearing WCAG 2.1 AA against Inkstock
-  // (Hobbit Green at full ink is 9.3:1; the alpha-composited mix
-  // at 0.6 lands comfortably above the 4.5:1 body-text threshold).
-  // The previous 0.4 fell under, which made the printed marginalia
-  // unreadable even as it was being announced to AT via aria-hidden.
+  // The ghost is deliberately dim, and the dimness IS the signal: at
+  // 0.5 it sits ~2.9:1 against Inkstock while the live sibling (Hobbit
+  // Green, full ink) sits at 8.0:1, and that contrast gap is what reads
+  // as "not a destination, not clickable." Being below the 4.5:1
+  // body-text bar is correct here, not an oversight: the ghost names a
+  // navigation step that does not exist, so it is an inactive UI
+  // component, which WCAG 2.1 SC 1.4.3 exempts from contrast — and it
+  // is aria-hidden, so automated contrast checks skip it too. Do not
+  // raise this toward AA; that erases the ghost. The words match the
+  // live step, so they stay guessable from context.
   &__step--ghost {
-    opacity: 0.6;
+    opacity: 0.5;
     text-decoration: none;
     cursor: default;
   }
@@ -954,7 +961,9 @@ footer {
   text-decoration: none;
 
   @media (pointer: coarse) {
-    min-height: 36px;
+    // Touch pointers get a 44px minimum tap target — the size a
+    // fingertip lands reliably, above the WCAG 2.2 24px floor.
+    min-height: 44px;
     padding: 8px 16px;
   }
 }
@@ -1456,16 +1465,19 @@ footer {
       padding: space(sm) 0;
     }
 
-    // The ghost: the direction not yet taken. Same words as an
-    // active link, same color — just quieter, holding the slot for
-    // a position that may exist later (or never, if the reader
-    // stands at the end). Mirrors the post-foot-nav ghost, and
-    // shares its AA-safe opacity (0.6 puts Hobbit Blue at full ink
-    // 8.4:1 into the ~5:1 band, well above the 4.5:1 body-text
-    // threshold against Inkstock).
+    // The ghost: the direction not yet taken. Same words as an active
+    // link, same color — just quieter, holding the slot for a position
+    // that may exist later (or never, if the reader stands at the end).
+    // Mirrors the post-foot-nav ghost, including its deliberately
+    // sub-AA dimness: at 0.5 it sits ~2.7:1 against Inkstock versus the
+    // live link's 7.2:1, and that gap is the "not clickable" cue. Below
+    // 4.5:1 is correct — the ghost is an inactive component (no such
+    // page) and is aria-hidden, so WCAG 2.1 SC 1.4.3 exempts it and
+    // automated checks skip it. Do not raise toward AA; that erases the
+    // ghost.
     &__ghost {
       color: ink(hobbit-blue);
-      opacity: 0.6;
+      opacity: 0.5;
     }
   }
 

@@ -28,7 +28,7 @@
     <ul class="index-entries">
       {{ range .Pages }}
       <li class="index-entry">
-        <span class="index-entry__date dt-published" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "Jan 2" }}</span>
+        <time class="index-entry__date dt-published" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "Jan 2" }}</time>
         {{ if .Title }}
         <a href="{{ .Permalink }}" class="index-entry__title u-url p-name">{{ .Title }}</a>
         {{ else }}

@@ -1,0 +1,12 @@
+{{/*
+  Image render hook: markdown images in content render with lazy loading
+  and async decode, so an image-heavy inscription never blocks the read,
+  and carry the author's alt text. Sizing lives in the `.prose img` rule;
+  this hook only adds the loading semantics and preserves alt/title.
+
+  Lazy-loading every content image costs no LCP here: the chronicle's
+  above-the-fold hero is always the pressed title plate (text), never an
+  image. An <img> written as raw HTML in a post is untouched — render
+  hooks fire only for markdown image syntax.
+*/}}
+<img src="{{ .Destination | safeURL }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy" decoding="async">

@@ -75,11 +75,11 @@ components:
   tag:
     textColor: "{colors.hobbit-green}"
     rounded: "{rounded.stamp}"
-    padding: "3px 9px"
+    padding: "6px 14px"
   response-tag:
     textColor: "{colors.smaug-red}"
     rounded: "{rounded.stamp}"
-    padding: "3px 9px"
+    padding: "6px 14px"
   code-inline:
     backgroundColor: "{colors.glyph-well}"
     textColor: "{colors.bone}"
@@ -241,10 +241,15 @@ substitutes here without disturbing the rest of the system.)
 headers, timestamps — never for reading. It must never set a sentence, a
 paragraph, or a button. Running text is always Atkinson Hyperlegible.
 
-**The Recolor-Not-Embolden Rule.** Emphasis is carried by ink color at normal
-weight, not by heavier strokes. `strong` is Smaug Red at normal weight; `em`
-is Hobbit Green at normal weight, italicized. The ink changes color the way a
-second pass of the press would, rather than getting heavier.
+**The Recolor-Not-Embolden Rule.** Emphasis is carried by ink color or italic
+at normal weight, not by heavier strokes. `strong` is Smaug Red at normal
+weight — the ink changes color the way a second pass of the press would, rather
+than getting heavier. `em` is italic at normal weight in the reading ink
+(Bone): inside a paragraph that already carries a blue link and a Smaug-Red
+`strong`, a third accent ink on `em` turns the measure into typographic
+confetti, so the italic alone carries the emphasis and the ink holds. The one
+place `em` recolors is the catalog rubric's term name (Hobbit Green italic),
+where it stands alone on a composed press line with no competing inks.
 
 ## 4. Elevation
 
@@ -314,8 +319,9 @@ press (inversion or value shift), never illumination.
 ### Signature Component: The Side Scroll
 The `aside` is a stack of titled marginalia sections — Teleportation Circle
 (nav), Mystic Missives (live omg.lol statuses), Random Incantations (shuffled
-posts), Allied Mages (blogroll), Arcane Symbols (taxonomy). Each section: IM
-Fell English title, a 1px Hairline rule under the title, body content in
+posts), Allied Mages (blogroll), Arcane Symbols (taxonomy). Each section: an IM
+Fell English title set as a real heading (programmatic structure, not a styled
+div) at Title scale, a 1px Hairline rule under the title, body content in
 Bone. The marginalia sit directly on the Inkstock with no plate fill or
 border — unboxed apparatus running alongside the catalog so the bordered
 post-card plates remain the page's visual primary.
@@ -362,8 +368,9 @@ the first commit; do not rebuild them from zero during craft.
   only. The magic lives in the print, never in imagery, texture, or light.
 - **Do** keep IM Fell English for the pressed line and Atkinson Hyperlegible
   for everything readable.
-- **Do** carry emphasis with ink color at normal weight: Smaug Red `strong`,
-  Hobbit Green italic `em`.
+- **Do** carry emphasis at normal weight: Smaug Red `strong`, and italic in the
+  reading ink for `em` (Hobbit Green italic is reserved for the rubric term, per
+  the Recolor-Not-Embolden Rule).
 - **Do** convey depth with Hairline rule, ink-value step, and margin — never a
   shadow, blur, or lift.
 - **Do** keep every accent within its lane per the Three-Ink Rule, and verify

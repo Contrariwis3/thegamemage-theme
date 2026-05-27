@@ -8,8 +8,8 @@
   md5 of each scroll's permalink. Same-day returnees see the same
   three; the morning brings a fresh shuffle.
 */}}
-<nav class="side-content" aria-label="Teleportation Circle">
-  <div class="side-title">Teleportation Circle</div>
+<nav class="side-content" aria-labelledby="side-title-teleportation">
+  <h2 class="side-title" id="side-title-teleportation">Teleportation Circle</h2>
   <ul>
     {{ range .Site.Menus.main }}
     {{ if and .Page (.Page.Params.redirect_url) }}
@@ -41,7 +41,7 @@
   {{ end }}
 {{ end }}
 <div class="side-content status-scroll">
-  <div class="side-title">Mystic Missives</div>
+  <h2 class="side-title">Mystic Missives</h2>
   {{ if gt (len $statuses) 0 }}
   {{ range first 3 $statuses }}
   {{/*
@@ -85,7 +85,7 @@
 {{ end }}
 {{ if gt (len $keyed) 0 }}
 <div class="side-content side-content--incantations">
-  <div class="side-title">Random Incantations</div>
+  <h2 class="side-title">Random Incantations</h2>
   <ul>
     {{ range first 3 (sort $keyed "k") }}
     <li><a href="{{ .p.RelPermalink }}">{{ .p.LinkTitle }}</a></li>
@@ -95,7 +95,7 @@
 {{ end }}
 
 <div class="side-content side-content--reference">
-  <div class="side-title">Allied Mages</div>
+  <h2 class="side-title">Allied Mages</h2>
   <ul>
     {{ range first 8 hugo.Data.blogrolls.recommendations }}
     <li><a href="{{ .url }}">{{ .name }}</a></li>
@@ -115,7 +115,7 @@
 {{ $list := ($.Site.GetPage "taxonomy" "categories").Pages }}
 {{ if gt (len $list) 0 }}
 <div class="side-content side-content--reference">
-  <div class="side-title">Arcane Symbols</div>
+  <h2 class="side-title">Arcane Symbols</h2>
   <div class="post-tags">
     {{ range first 12 $list }}
     <a class="tag" href="{{ .Permalink }}">{{ .Title }}</a>
