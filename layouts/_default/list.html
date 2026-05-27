@@ -10,8 +10,12 @@
   is gone.
 
   Taxonomy index pages render the chronicle's sigils as a stamped
-  catalog of terms; section and term pages render their post list
-  with the rubric naming what's being inscribed beneath.
+  catalog of terms. A term page renders the year-grouped inscription
+  index (the same printed index the archive uses, shared via the
+  inscription-index partial) — a topical catalog you scan to find. A
+  section page renders the paginated post-card feed — the reading
+  surface you browse forward. Both sit beneath the rubric naming what
+  is being inscribed.
 */}}
 
 {{ if not .IsHome }}
@@ -64,15 +68,28 @@
 {{ else }}
 <p class="empty-scroll">No sigils have been drawn yet.</p>
 {{ end }}
+{{ else if eq .Kind "term" }}
+{{/*
+  A sigil's index: every inscription that bears this term, set as the
+  same year-grouped index the archive uses (shared partial). A term
+  page is a topical catalog read to find a specific inscription, not a
+  feed read forward — so it carries no pagination and no summaries,
+  the whole catalog under the sigil at once. When no inscription yet
+  bears the sigil, a quiet diegetic line stands in rather than a blank
+  column (the chronicle stays lived-in and continuous).
+*/}}
+{{ $inscriptions := where .Pages "Type" "post" }}
+{{ if gt (len $inscriptions) 0 }}
+{{ partial "inscription-index.html" $inscriptions }}
+{{ else }}
+<p class="empty-scroll">No inscriptions yet bear this sigil.</p>
+{{ end }}
 {{ else }}
 {{/*
-  Section / taxonomy-term post list. When the surface has nothing
-  inscribed yet — an empty section, or a sigil no inscription bears —
-  a chronicle that is "lived-in and continuous" must not present a
-  blank column. A quiet diegetic line stands in for the missing
-  catalog, in voice and composed, rather than dead space. The copy
-  branches on .Kind so a term names its sigil and a section names its
-  chapter.
+  Section post feed: the paginated post-card stack — the reading
+  surface a visitor browses forward, where the card's summary helps
+  them choose what to read. When the section is empty, the same quiet
+  diegetic stand-in keeps the surface composed.
 */}}
 {{ $paginator := .Paginate (where .Pages.ByDate.Reverse "Type" "post") }}
 {{ if gt (len $paginator.Pages) 0 }}
@@ -82,7 +99,7 @@
 
 {{ partial "pagination.html" $paginator }}
 {{ else }}
-<p class="empty-scroll">{{ if eq .Kind "term" }}No inscriptions yet bear this sigil.{{ else }}No inscriptions are gathered here yet.{{ end }}</p>
+<p class="empty-scroll">No inscriptions are gathered here yet.</p>
 {{ end }}
 {{ end }}
 

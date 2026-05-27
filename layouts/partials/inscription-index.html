@@ -1,0 +1,42 @@
+{{/*
+  The chronicle's typographic index: inscriptions grouped by year as
+  ruled date-title rows. The shared body of both the archive (the
+  complete index of everything inscribed) and a category term page
+  (the index of everything under one sigil) — one source of truth for
+  the index primitive, the way post-card.html is for the listing feed.
+
+  Context: a Pages collection, already filtered to posts and to the
+  surface's scope. The caller owns the surrounding rubric and the empty
+  state, so this partial assumes a non-empty collection and renders
+  only the grouped index.
+
+  GroupByDate "2006" buckets the inscriptions by year and orders both
+  the groups and the entries within them newest-first, so the index
+  reads downward from the most recent year.
+
+  Microformat hooks (u-url, dt-published, p-name) are functional
+  metadata for micro.blog / IndieWeb parsing and stay on the link and
+  the date. The pressed date drops the year (it lives in the header
+  above) to read as a marginal reference; dt-published carries the full
+  machine date for parsers. An untitled microblog note has no title, so
+  a short snippet stands in as its identifier.
+*/}}
+<div class="inscription-index">
+  {{ range .GroupByDate "2006" }}
+  <section class="index-year">
+    <h3 class="index-year__head">{{ .Key }}</h3>
+    <ul class="index-entries">
+      {{ range .Pages }}
+      <li class="index-entry">
+        <span class="index-entry__date dt-published" datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "Jan 2" }}</span>
+        {{ if .Title }}
+        <a href="{{ .Permalink }}" class="index-entry__title u-url p-name">{{ .Title }}</a>
+        {{ else }}
+        <a href="{{ .Permalink }}" class="index-entry__title index-entry__title--note u-url p-name">{{ .Content | plainify | htmlUnescape | chomp | truncate 80 }}</a>
+        {{ end }}
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
+</div>
