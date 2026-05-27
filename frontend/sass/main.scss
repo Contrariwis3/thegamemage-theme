@@ -1111,7 +1111,13 @@ footer {
 
 .inscription-index {
   max-width: 70ch;
-  margin: 0 auto;
+  // Bottom margin so the index doesn't butt against whatever follows.
+  // It matters most below 768px, where the aside stacks directly under
+  // main and the last index entry would otherwise touch the
+  // Teleportation Circle title with no breath between catalog and
+  // apparatus. Post-card and pagination surfaces already carry this
+  // bottom air; the index was the one listing surface without it.
+  margin: 0 auto space(xxl);
   padding: 0 space(md);
 }
 
