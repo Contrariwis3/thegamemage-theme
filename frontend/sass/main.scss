@@ -929,6 +929,25 @@ footer {
   .reply-by-email {
     margin-left: auto;
   }
+
+  // At narrow widths the row stacks into a single centered column —
+  // the same columnar treatment the post-foot-nav handles take below
+  // 768px, so the two stacked blocks read as one system on the page.
+  // In a horizontal row the reply chip's `margin-left: auto` is a
+  // counterweight that pushes it to the right end opposite the tags;
+  // once the chips stack it has nothing to balance against and would
+  // strand the reply at the column edge, so it resets to 0 and every
+  // chip centers on its own line.
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    gap: space(md);
+
+    .response-tag,
+    .reply-by-email {
+      margin-left: 0;
+    }
+  }
 }
 
 // The small printed sigil: a four-point diamond, the same shape
