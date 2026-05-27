@@ -4,31 +4,26 @@
 {{ partial "head.html" . }}
 
 {{/*
-  .chronicle-front marks the literal front of the chronicle — the home
-  page's first paginator page, where the most-recent inscription sits as
-  the top card. It scopes the decorated-initial drop cap so it fires only
-  on the absolutely newest post; deeper pagination, sections, and
-  taxonomies skip the wonder-moment. PageNumber (not .RelPermalink) is the
-  signal because / and /page/2/ share the same canonical URL.
+  .chronicle-front marks a home listing page so the decorated-initial drop
+  cap fires on its first inscription's card; sections and taxonomies skip
+  the wonder-moment. It keys on .IsHome alone — deliberately NO paginator
+  here.
 
-  Hugo allows ONE paginator per page, set by the first .Paginate call, and
-  baseof renders before the main block — so this call wins over
-  index.html's. The bare .Paginator would paginate the unfiltered default
-  (every RegularPage, pages and newsletters included), and that collection
-  would then leak into index.html's list. So Paginate the SAME post-only
-  collection index.html uses; Hugo hands index.html the identical cached
-  paginator and the home page lists posts only. Keep this `where` in sync
-  with layouts/index.html. The nested `if` (not `and`, which does not
-  short-circuit) keeps non-home pages from creating a paginator here and
-  clobbering their own list templates.
+  micro.blog renders the home page in many output formats, and baseof
+  wraps every isHTML one (the page at /, the archive at /archive/, the
+  photos grid at /photos/, …). Calling .Paginate in baseof therefore runs
+  during those secondary renders too, and pagination invoked across a
+  page's multiple output formats makes the secondary ones render the
+  paginated front page instead of their own template — which is exactly
+  how /archive/ and /photos/ broke. The reference micro.blog themes
+  (theme-blank, thewizardly) keep baseof a bare <body> for this reason.
+  The home's post list and its single paginator live in index.html alone.
+
+  The drop cap is scoped to the first card of any home page; it resolves
+  to ::first-letter only where a post-card exists, so this class is inert
+  on /archive/ (an index) and /photos/ (a grid).
 */}}
-{{ $chronicleFront := false }}
-{{- if .IsHome }}
-  {{- if eq (.Paginate (where .Site.RegularPages.ByDate.Reverse "Type" "post")).PageNumber 1 }}
-    {{- $chronicleFront = true }}
-  {{- end }}
-{{- end }}
-<body{{ if $chronicleFront }} class="chronicle-front"{{ end }}>
+<body{{ if .IsHome }} class="chronicle-front"{{ end }}>
   <a class="skip-link" href="#main-content">Skip to the inscription</a>
 
   {{/*

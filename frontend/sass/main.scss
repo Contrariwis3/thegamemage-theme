@@ -1097,6 +1097,36 @@ footer {
   color: ink(hobbit-green);
 }
 
+// The /photos/ surface: a grid of plates, each a square-cropped tipped-in
+// image bounded by the registration hairline. Sits in the reading column's
+// width like the other catalog surfaces. Three across on desktop, two on
+// the phone.
+.plate-grid {
+  max-width: 70ch;
+  margin: 0 auto space(xxxl);
+  padding: 0 space(md);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: space(sm);
+
+  &__plate {
+    display: block;
+    text-decoration: none;
+
+    img {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border: 1px solid ink(hairline);
+      border-radius: radius(small);
+    }
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 // ============================================================
 // THE INDEX OF INSCRIPTIONS — the chronicle's printed catalog
 // ============================================================
