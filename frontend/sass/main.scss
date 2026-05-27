@@ -735,14 +735,27 @@ footer {
   }
 }
 
-// Untitled microblog scrolls skip the close-mark entirely. The
-// fleuron is sized for a closing flourish on an inscription; on a
-// one-sentence note it dwarfs the body and inverts the apparatus-
-// to-prose ratio. The bare timestamp at the head plus the prose
-// itself is the right composition for a short note; the close
-// mark would be furniture without an inscription to close.
-.reading-scroll:has(.reading-body--untitled) .colophon {
-  display: none;
+// The short rule: a centered hairline that parts a prose zone from
+// the foot apparatus beneath it. One printed primitive in two places
+// — a listing post-card's prose↔tags separator and an untitled
+// note's prose↔coda separator. 40% width matches the .prose hr so
+// the separator and an in-prose divider read as the same mark.
+%short-rule {
+  border: 0;
+  height: 1px;
+  width: 40%;
+  background-color: ink(hairline);
+}
+
+// Untitled microblog scrolls skip the fleuron close-mark — it is
+// sized for a closing flourish on a full inscription and dwarfs a
+// one-sentence note. In its place the foot carries the short rule,
+// which parts the prose from the reply/catalog coda without claiming
+// a grand inscription has closed. It sits where the colophon would,
+// the air above and below carried by .post-foot and .post-coda.
+.foot-rule {
+  @extend %short-rule;
+  margin: 0 auto;
 }
 
 // ============================================================
@@ -1196,10 +1209,7 @@ footer {
   // typographic primitive. Symmetric vertical margins keep the
   // rule centered in its own air.
   .card-rule {
-    border: 0;
-    height: 1px;
-    width: 40%;
-    background-color: ink(hairline);
+    @extend %short-rule;
     margin: space(xl) auto;
   }
 

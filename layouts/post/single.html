@@ -89,9 +89,21 @@
   </div>
 
   <div class="post-foot">
+    {{ if .Title }}
     <div class="colophon" aria-hidden="true">
       {{ partial "ornament/colophon.html" . }}
     </div>
+    {{ else }}
+    {{/*
+      An untitled note doesn't carry the fleuron close-mark — it would
+      dwarf a one-sentence note and invert the apparatus-to-prose
+      ratio. But the prose still needs parting from the catalog/reply
+      coda below it. A short centered hairline — the same separator
+      the listing post-cards use between prose and their tags — does
+      that without claiming a grand inscription has closed.
+    */}}
+    <hr class="foot-rule" aria-hidden="true">
+    {{ end }}
   </div>
 </article>
 
