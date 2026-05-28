@@ -11,6 +11,9 @@
   _default one); see either of those files for why the catalog lives in
   both places.
 */}}
+{{/* Record the URL this output is served at (/photos/) so the teleportation
+     circle can mark it current; see partials/side-scroll.html. */}}
+{{ with .OutputFormats.Get "photoshtml" }}{{ $.Store.Set "navHere" .RelPermalink }}{{ end }}
 <div class="catalog-rubric">
   <h2 class="catalog-rubric__line">The Illustrated Plates</h2>
 </div>

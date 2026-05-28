@@ -1,5 +1,11 @@
 {{ define "main" }}
 
+{{/* Record the served URL ("/") for the teleportation circle's current-page
+     marker; the /archive/ and /photos/ outputs record their own. Set here so
+     the home output never inherits a sibling output's value. See
+     partials/side-scroll.html. */}}
+{{ .Store.Set "navHere" .RelPermalink }}
+
 {{ $paginator := .Paginate (where .Site.RegularPages.ByDate.Reverse "Type" "post") }}
 {{ if gt (len $paginator.Pages) 0 }}
 {{ range $paginator.Pages }}

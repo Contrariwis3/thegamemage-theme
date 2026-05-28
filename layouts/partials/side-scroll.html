@@ -11,16 +11,24 @@
 <nav class="side-content" aria-labelledby="side-title-teleportation">
   <h2 class="side-title" id="side-title-teleportation">Teleportation Circle</h2>
   <ul>
+    {{/* The URL of the page actually being served. micro.blog renders
+         /archive/ and /photos/ as output formats of the home page, where
+         .RelPermalink stays "/" for every output — so only a "/" menu entry
+         would ever match. The output templates (index.html and the
+         list.{archive,photos}html.html wrappers) record the served URL in
+         .Store as "navHere"; everything else falls back to .RelPermalink. */}}
+    {{ $here := .RelPermalink }}
+    {{ with .Store.Get "navHere" }}{{ $here = . }}{{ end }}
     {{ range .Site.Menus.main }}
     {{ if and .Page (.Page.Params.redirect_url) }}
     <li><a href="{{ .Page.Params.redirect_url }}">{{ .Name }}</a></li>
-    {{ else if eq $.RelPermalink (.URL | relURL) }}
+    {{ else if eq $here (.URL | relURL) }}
     {{/* Current page: a Smaug-Red sigil hangs in the margin (DESIGN.md §5,
          a printed mark, never a fill or stripe); aria-current carries the
          state for assistive tech, so the sigil itself stays decorative.
-         The match compares the page's permalink against the same resolved
-         URL the href is built from — IsMenuCurrent is unreliable for the
-         URL-only menu entries this theme defines. */}}
+         The match compares the served URL against the same resolved URL the
+         href is built from — IsMenuCurrent is unreliable for the URL-only
+         menu entries this theme defines. */}}
     <li class="is-current">{{ partial "ornament/sigil.html" . }}<a href="{{ .URL | relURL | safeURL }}" aria-current="page">{{ .Name }}</a></li>
     {{ else }}
     <li><a href="{{ .URL | relURL | safeURL }}">{{ .Name }}</a></li>

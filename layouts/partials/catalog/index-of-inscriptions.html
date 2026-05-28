@@ -11,6 +11,9 @@
   _default one); see either of those files for why the catalog lives in
   both places.
 */}}
+{{/* Record the URL this output is served at (/archive/) so the teleportation
+     circle can mark it current; see partials/side-scroll.html. */}}
+{{ with .OutputFormats.Get "archivehtml" }}{{ $.Store.Set "navHere" .RelPermalink }}{{ end }}
 <div class="catalog-rubric">
   {{/*
     The surface's principal heading after the chronicle masthead.
