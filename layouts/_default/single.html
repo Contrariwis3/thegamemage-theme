@@ -1,0 +1,85 @@
+{{/*
+  The standing scroll: a single page set as an inscription, but a
+  standing one rather than a dated entry in the chronicle. Pages
+  (/subscribe/, /about/, /hello/, …) render here — kind=page, which
+  baseof opens without a masthead and without the marginalia aside,
+  so the reader lands directly on the plate the way you open a fine
+  book to a tipped-in scroll.
+
+  This is post/single.html with the dated-inscription chrome lifted
+  away. It keeps the reading-core treatment — the engraved title
+  plate, the corner-registration frame around the prose, the foot
+  colophon — and drops what only a dated entry carries: the
+  "Inscribed on…" timestamp, the reply line, the catalog/reply coda,
+  and the prev/next "step in time" handles. A page is not on the
+  timeline, so it carries one door home instead.
+
+  The body wears .reading-body--page, which holds the corner marks
+  but withholds the decorated initial: the Smaug-Red drop cap is the
+  wonder-moment that opens a *narrative inscription*, and a standing
+  reference scroll reads calmer without it.
+
+  Diegetic strings are wired to Hugo variables. No placeholder copy.
+*/}}
+{{ define "main" }}
+<article class="reading-scroll" lang="{{ .Site.Language.Lang | default "en" }}">
+  {{ with .Title }}
+  <header class="incipit">
+    {{/*
+      The engraved title plate, minus the timestamp the post incipit
+      sets between the cartouches: cartouche, pressed title, cartouche.
+      With no timestamp following the title, the title keeps its
+      symmetric margins and the two cartouches bracket it as one
+      composed plate — the page's name given the frontispiece weight
+      it has earned, without claiming a date the page does not have.
+    */}}
+    <div class="title-plate">
+      {{ partial "ornament/cartouche-rule.html" $ }}
+      <h1 class="incipit-title">{{ . }}</h1>
+      {{ partial "ornament/cartouche-rule.html" $ }}
+    </div>
+  </header>
+  {{ end }}
+
+  {{/*
+    The reading body. Corner registration marks bracket just the prose
+    — a printer's pre-trim mark around the printed image area, anchored
+    to .reading-body and suppressed below 768px (on a phone the
+    viewport edge is the trim). The --page modifier keeps these marks
+    while withholding the decorated initial.
+  */}}
+  <div class="reading-body reading-body--page">
+    {{ partial "ornament/corner-mark.html" "tl" }}
+    {{ partial "ornament/corner-mark.html" "tr" }}
+
+    <div class="prose">
+      {{ .Content }}
+    </div>
+
+    {{ partial "ornament/corner-mark.html" "bl" }}
+    {{ partial "ornament/corner-mark.html" "br" }}
+  </div>
+
+  {{/*
+    A page is a complete standing scroll, so it closes with the
+    fleuron colophon the way a full inscription does — the close-mark
+    of the scroll.
+  */}}
+  <div class="post-foot">
+    <div class="colophon" aria-hidden="true">
+      {{ partial "ornament/colophon.html" . }}
+    </div>
+  </div>
+</article>
+
+{{/*
+  One door home. baseof gives a page no masthead, so the reader needs
+  a way back to the chronicle; a page is not on the timeline, so it
+  gets the chronicle door alone — no "step backward/forward in time"
+  handles. Reuses .post-footnav, whose __home slot is grid-centered,
+  so the lone door sits on the reading axis with no extra styling.
+*/}}
+<nav class="post-footnav" aria-label="Chronicle navigation">
+  <a href="{{ "/" | relURL }}" class="post-footnav__home">Return to the chronicle</a>
+</nav>
+{{ end }}

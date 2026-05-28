@@ -633,9 +633,17 @@ footer {
   padding: 0.04em space(md) 0 0;
 }
 
-// Short / untitled reading scrolls don't carry the wonder-moment:
-// the template adds .reading-body--untitled to suppress the cap.
-.reading-body--untitled > .prose > p:first-child::first-letter {
+// Reading scrolls that don't carry the decorated-initial wonder-moment.
+// Two surfaces suppress the cap, for two reasons:
+//   --untitled : a short microblog note (no title, no narrative to open).
+//   --page     : a standing page (/about/, /subscribe/) — a reference scroll,
+//                not a dated narrative inscription. The drop cap is the mark
+//                of an inscription beginning; a page reads calmer without it.
+// The two differ at the corner marks below: --untitled drops them too (a
+// one-sentence note shouldn't be framed like a full plate), --page keeps
+// them (a page is a full standing scroll, just an undated one).
+.reading-body--untitled > .prose > p:first-child::first-letter,
+.reading-body--page > .prose > p:first-child::first-letter {
   font-family: inherit;
   color: inherit;
   float: none;
