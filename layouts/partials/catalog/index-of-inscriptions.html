@@ -1,0 +1,31 @@
+{{/*
+  The Index of Inscriptions — the chronicle's complete catalog body.
+
+  The archive surface: the complete index of every inscription, set as
+  a printed index rather than a stack of post-cards. The year-grouped
+  index body is shared with category term pages through the
+  inscription-index partial; this partial owns the surface's rubric,
+  its empty state, and the full-catalog scope.
+
+  Rendered by both list.archivehtml.html slots (the top-level one and the
+  _default one); see either of those files for why the catalog lives in
+  both places.
+*/}}
+<div class="catalog-rubric">
+  {{/*
+    The surface's principal heading after the chronicle masthead.
+    Marked up as <h2> so a reader navigating by headings hears
+    "The Game Mage / The Index of Inscriptions / 2026 / 2025…" —
+    book, then index, then each year-section beneath.
+  */}}
+  <h2 class="catalog-rubric__line">The Index of Inscriptions</h2>
+</div>
+
+{{ $inscriptions := where .Site.RegularPages "Type" "post" }}
+{{ if gt (len $inscriptions) 0 }}
+{{ partial "inscription-index.html" $inscriptions }}
+{{ else }}
+{{/* A chronicle with nothing yet indexed keeps its catalog page in
+     character rather than rendering a bare column under the rubric. */}}
+<p class="empty-scroll">No inscriptions have been indexed yet.</p>
+{{ end }}

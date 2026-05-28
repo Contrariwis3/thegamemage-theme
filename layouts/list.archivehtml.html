@@ -1,0 +1,7 @@
+{{/*
+  Top-level twin of layouts/_default/list.archivehtml.html. micro.blog's
+  base theme ships a top-level list.archivehtml.html that, under its Hugo's
+  lookup order, outranks our _default copy; this file overrides it by theme
+  priority. Both slots render the same shared body partial.
+*/}}
+{{ define "main" }}{{ partial "catalog/index-of-inscriptions.html" . }}{{ end }}

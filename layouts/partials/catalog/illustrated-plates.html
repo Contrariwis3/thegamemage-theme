@@ -1,0 +1,31 @@
+{{/*
+  The Illustrated Plates — the /photos/ surface body. Renders every
+  inscription that carries photos as a grid of plates, each linking to its
+  inscription, under the same printed rubric the other catalog surfaces use.
+
+  `.Params.photos` is micro.blog's per-post photo list; the first photo
+  stands in as the plate. The diegetic name is provisional — flag for the
+  craft pass (see the standalone-pages/photos craft FJ).
+
+  Rendered by both list.photoshtml.html slots (the top-level one and the
+  _default one); see either of those files for why the catalog lives in
+  both places.
+*/}}
+<div class="catalog-rubric">
+  <h2 class="catalog-rubric__line">The Illustrated Plates</h2>
+</div>
+
+{{ $plated := where .Site.RegularPages ".Params.photos" "!=" nil }}
+{{ if gt (len $plated) 0 }}
+<div class="plate-grid">
+  {{ range $plated }}
+  <a class="plate-grid__plate" href="{{ .Permalink }}">
+    {{ range first 1 .Params.photos }}
+    <img src="{{ . }}" alt="" loading="lazy" decoding="async">
+    {{ end }}
+  </a>
+  {{ end }}
+</div>
+{{ else }}
+<p class="empty-scroll">No plates have been tipped in yet.</p>
+{{ end }}

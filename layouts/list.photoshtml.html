@@ -1,0 +1,6 @@
+{{/*
+  Top-level twin of layouts/_default/list.photoshtml.html. Overrides the base
+  theme's top-level grid by theme priority. Both slots render the same shared
+  body partial.
+*/}}
+{{ define "main" }}{{ partial "catalog/illustrated-plates.html" . }}{{ end }}

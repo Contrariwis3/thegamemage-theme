@@ -1,32 +1,10 @@
 {{/*
-  The Index of Inscriptions — the chronicle's complete catalog.
-
-  The archive surface: the complete index of every inscription, set as
-  a printed index rather than a stack of post-cards. The year-grouped
-  index body is shared with category term pages through the
-  inscription-index partial; this template owns the surface's rubric,
-  its empty state, and the full-catalog scope.
-
-  Renders as the home page's ArchiveHTML output, which micro.blog emits
-  to /archive/; honor the host-side file name list.archivehtml.html.
+  micro.blog emits the home page's ArchiveHTML output to /archive/. Hugo's
+  lookup for that output has flipped across versions: newer Hugo resolves it
+  to _default/list.archivehtml.html, older Hugo to the top-level
+  list.archivehtml.html. micro.blog layers a base theme that ships the
+  top-level file, so our catalog must occupy BOTH slots to win regardless of
+  which order is active. This file and layouts/list.archivehtml.html are
+  identical thin wrappers over the shared body partial.
 */}}
-{{ define "main" }}
-<div class="catalog-rubric">
-  {{/*
-    The surface's principal heading after the chronicle masthead.
-    Marked up as <h2> so a reader navigating by headings hears
-    "The Game Mage / The Index of Inscriptions / 2026 / 2025…" —
-    book, then index, then each year-section beneath.
-  */}}
-  <h2 class="catalog-rubric__line">The Index of Inscriptions</h2>
-</div>
-
-{{ $inscriptions := where .Site.RegularPages "Type" "post" }}
-{{ if gt (len $inscriptions) 0 }}
-{{ partial "inscription-index.html" $inscriptions }}
-{{ else }}
-{{/* A chronicle with nothing yet indexed keeps its catalog page in
-     character rather than rendering a bare column under the rubric. */}}
-<p class="empty-scroll">No inscriptions have been indexed yet.</p>
-{{ end }}
-{{ end }}
+{{ define "main" }}{{ partial "catalog/index-of-inscriptions.html" . }}{{ end }}
